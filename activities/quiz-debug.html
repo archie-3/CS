@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Debug the Quiz Program — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Library</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../index.html">&larr; Back to library</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag debug">debug</span>
+  <span class="tag level">beginner</span>
+</div>
+<h1>Debug the Quiz Program</h1>
+<p style="max-width:60ch;">A two-question quiz has a couple of mistakes stopping it from running at all.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>This quiz program won&#x27;t run yet — it has two separate mistakes in it. Open it in Thonny and press Run. Python will stop at the first problem it finds and print an error message with a line number — read that message carefully, it tells you what kind of mistake it is. Fix that one issue, run again, and you&#x27;ll likely hit a second error further down. Keep fixing and re-running until both quiz questions work correctly. Once it runs cleanly, try extending it: add a third question of your own, and keep score of how many the player gets right.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>quiz-debug.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-quiz-debug', this)">Copy code</button>
+      <button onclick="downloadCode('src-quiz-debug', 'quiz-debug.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python"># A simple quiz program
+print(&quot;Welcome to the quiz!&quot;)
+
+answer1 = input(&quot;What does CPU stand for? &quot;)
+if answer1 == &quot;Central Processing Unit&quot;
+    print(&quot;Correct!&quot;)
+else:
+    print(&quot;Wrong! The answer is Central Processing Unit.&quot;)
+
+answer2 = input(&quot;How many bits are in a byte? &quot;)
+if answer2 = &quot;8&quot;:
+    print(&quot;Correct!&quot;)
+else:
+    print(&quot;Wrong! The answer is 8.&quot;)  # Quiz ends here
+</code></pre>
+</div>
+<textarea id="src-quiz-debug" style="position:absolute; left:-9999px; top:-9999px;" readonly># A simple quiz program
+print(&quot;Welcome to the quiz!&quot;)
+
+answer1 = input(&quot;What does CPU stand for? &quot;)
+if answer1 == &quot;Central Processing Unit&quot;
+    print(&quot;Correct!&quot;)
+else:
+    print(&quot;Wrong! The answer is Central Processing Unit.&quot;)
+
+answer2 = input(&quot;How many bits are in a byte? &quot;)
+if answer2 = &quot;8&quot;:
+    print(&quot;Correct!&quot;)
+else:
+    print(&quot;Wrong! The answer is 8.&quot;)  # Quiz ends here
+</textarea>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

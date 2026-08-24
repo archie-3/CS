@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Envelope Challenge — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Library</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../index.html">&larr; Back to library</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag extend">extend</span>
+  <span class="tag level">advanced</span>
+</div>
+<h1>The Envelope Challenge</h1>
+<p style="max-width:60ch;">Trace over a background outline image to complete a classic pen-tracing puzzle.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>This is the classic Envelope Challenge (from 101computing.net/the-envelope-challenge/). A faint envelope outline is shown behind the turtle&#x27;s starting path — your job is to continue the pen.goto() calls so the turtle traces the rest of the envelope outline exactly, without lifting the pen (penup/pendown) at the wrong moment. Look at the background image carefully to figure out the coordinates of each corner.</div>
+
+<div class="assetnote">
+  This activity uses a background image. <a href="../assets/envelopebg.png" download>Download envelopebg.png</a> and save it in the <strong>same folder</strong> as your envelope-challenge.py file &mdash; the code loads it by filename, so they need to sit side by side.
+</div>
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>envelope-challenge.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-envelope-challenge', this)">Copy code</button>
+      <button onclick="downloadCode('src-envelope-challenge', 'envelope-challenge.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python">#The Envelope Challenge - www.101computing.net/the-envelope-challenge/
+import turtle
+screen = turtle.Screen()
+
+# this assures that the size of the screen will always be 400x400 ...
+screen.setup(400, 400)
+screen.bgpic(&quot;envelopebg.png&quot;)
+
+pen = turtle.Turtle()
+pen.shape(&quot;arrow&quot;)
+pen.speed(100)
+pen.color(&quot;#810081&quot;)
+pen.pensize(6)
+pen.penup()
+
+pen.goto(-150,-150)
+pen.pendown()
+pen.goto(-150,75)
+pen.goto(150,75)
+
+#Continue the code here...
+</code></pre>
+</div>
+<textarea id="src-envelope-challenge" style="position:absolute; left:-9999px; top:-9999px;" readonly>#The Envelope Challenge - www.101computing.net/the-envelope-challenge/
+import turtle
+screen = turtle.Screen()
+
+# this assures that the size of the screen will always be 400x400 ...
+screen.setup(400, 400)
+screen.bgpic(&quot;envelopebg.png&quot;)
+
+pen = turtle.Turtle()
+pen.shape(&quot;arrow&quot;)
+pen.speed(100)
+pen.color(&quot;#810081&quot;)
+pen.pensize(6)
+pen.penup()
+
+pen.goto(-150,-150)
+pen.pendown()
+pen.goto(-150,75)
+pen.goto(150,75)
+
+#Continue the code here...
+</textarea>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

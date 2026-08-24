@@ -1,0 +1,75 @@
+[
+  {
+    "slug": "ukraine-flag",
+    "title": "Ukraine Flag",
+    "kind": "debug",
+    "level": "intermediate",
+    "summary": "A two-stripe flag is drawn, but the second stripe lands in the wrong place.",
+    "instructions": "Run the program. It should draw two horizontal stripes stacked on top of each other \u2014 blue above yellow, matching the real Ukrainian flag \u2014 but something's wrong with where the turtle draws the second rectangle. Read through the code and figure out where the turtle actually is after it finishes drawing the first (blue) rectangle. That's the bug: fix the turtle's position before it starts the yellow rectangle so the two stripes stack correctly instead of overlapping.",
+    "starter_code": "import turtle\nimport time\nturtle. fillcolor(\"blue\") # pick the colour\nturtle.begin_fill() # starts the fill \nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.right(90)\nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.end_fill() #stops the fill \ntime.sleep(5)\n\n\nturtle. fillcolor(\"yellow\") #decides the colour\nturtle.begin_fill() #starts to fill \nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.right(90)\nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.end_fill() #ends the fill "
+  },
+  {
+    "slug": "germany-flag",
+    "title": "Germany Flag",
+    "kind": "extend",
+    "level": "beginner",
+    "summary": "The flag outline and fill colours are set up \u2014 fill in the drawing code for each stripe.",
+    "instructions": "Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.\nThe top third should be 'black'.\nThe middle third should be 'red'.\nThe bottom third should be 'yellow'.\n\nEach stripe already has begin_fill()/end_fill() and a fillcolor() set \u2014 you need to add the forward()/right() movements between them to actually draw each rectangle, and move the turtle into position for the next stripe before it starts filling.",
+    "starter_code": "'''Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.\nThe top third should be 'black'.\nThe middle third should be 'red'.\nThe bottom third should be 'yellow'.'''\n\n\nimport turtle\nimport time\nturtle.penup()\nturtle.goto(-100,150)\nturtle.pendown()\n\n#Creates the black part of the flag\nturtle. fillcolor(\"black\")\nturtle.begin_fill() #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #Waits for 5 seconds\n\n#red part of the flag\n\nturtle. fillcolor(\"red\")\nturtle.begin_fill()  #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #waits for 5 seconds\n\n#Can you create the yellow part of the flag?\nturtle. fillcolor(\"yellow\")\nturtle.begin_fill()  #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #waits for 5 seconds"
+  },
+  {
+    "slug": "mali-flag",
+    "title": "Mali Flag",
+    "kind": "extend",
+    "level": "intermediate",
+    "summary": "Only a placeholder blue fill is set up \u2014 build the three vertical stripes from scratch.",
+    "instructions": "Write a program to draw a flag that is 180 turtle steps wide, and 120 turtle steps high.\nThe left third should be 'limegreen'.\nThe middle third should be 'gold'.\nThe right third should be 'red'.\n\nThe starter code only sets a blue fill colour as a placeholder \u2014 replace it with your own code (fillcolor, begin_fill, forward, right/left, end_fill) to build the correct three-stripe flag, moving the turtle into position between stripes.",
+    "starter_code": "'''Write a program to draw a flag that is 180 turtle steps wide, and 120 turtle steps high.\nThe left third should be 'limegreen'.\nThe middle third should be 'gold'.\nThe right third should be 'red'.'''\n\nimport turtle\nimport time\nturtle. fillcolor(\"blue\") \n#Your code goes here\n\nturtle.end_fill() #ends the fill \ntime.sleep(1)"
+  },
+  {
+    "slug": "bahamas-flag",
+    "title": "Bahamas Flag",
+    "kind": "extend",
+    "level": "advanced",
+    "summary": "A wider flag with horizontal stripes plus a filled triangle \u2014 build it from a blank slate.",
+    "instructions": "This flag is a little wider than the others. Write a program to draw a flag that is 200 turtle steps wide, and 120 turtle steps high.\nThe top third should be 'deepskyblue'.\nThe middle third should be 'gold'.\nThe bottom third should be 'deepskyblue'.\nThe triangle should be 'black'. It should have sides of length 120 and the internal angles should be 60 degrees.\n\nThink about the order you draw things in \u2014 you'll probably want to draw the three horizontal stripes first, then draw the black equilateral triangle on top along the left edge.",
+    "starter_code": "'''This flag is a little wider than the others. Write a program to draw a flag that is 200 turtle steps wide, and 120 turtle steps high.\nThe top third should be 'deepskyblue'.\nThe middle third should be 'gold'.\nThe bottom third should be 'deepskyblue'.\nThe triangle should be 'black'. It should have sides of length 120 and the internal angles should be 60 degrees.\n\n'''\n\nimport turtle\nimport time\nturtle. fillcolor(\"blue\") \n#Your code goes here\n\nturtle.end_fill() #ends the fill \ntime.sleep(1)"
+  },
+  {
+    "slug": "twelve-pointed-star",
+    "title": "For Loop \u2014 12 Pointed Star",
+    "kind": "extend",
+    "level": "beginner",
+    "summary": "A working 6-pointed star loop is provided \u2014 work out what to change to get 12 points.",
+    "instructions": "Run the program and watch it draw a 6-pointed star using a for loop. Read the loop carefully: it repeats a forward-and-back movement a certain number of times, turning a bit each time. Can you work out which two numbers control how many points the star has, and change them to make a 12 pointed star instead? Try changing the pensize too and see what happens.",
+    "starter_code": "import turtle\nimport time\n\n\nturtle.pencolor(\"light blue\")\nturtle.pensize (10)  #What happens if you change the number?\n\n\nfor i in range(6): #repeat the code below the number in the bracket \n  turtle.forward(100)\n  turtle.backward(100)\n  turtle.left(30)\ntime.sleep(5) # gets the program to wait 5 secs\n\n# Can you finish this program to make a 12 pointed star?"
+  },
+  {
+    "slug": "turtle-race",
+    "title": "Turtle Race",
+    "kind": "extend",
+    "level": "advanced",
+    "summary": "A racing game's title screen works \u2014 add the track, the racers, and the race logic.",
+    "instructions": "The title text already displays. Following the comments in order, extend the program to:\n1. Draw a start line and a finish line.\n2. Add 4 turtles in different colours, lined up at the start line.\n3. Write a loop where, each time through, every turtle moves forward a random number of steps between 1 and 8.\n4. Add an if statement that checks whether a turtle has reached the finish line, and if so prints out that it won and stops the race.",
+    "starter_code": "#Python Turtle Race \nimport turtle\nimport random \n\n#this code sets the background colour & writes the title\nmyPen = turtle.Turtle()\nturtle.Screen().bgcolor(\"skyblue\")\nmyPen.shape(\"arrow\")\nmyPen.pensize(2)\nmyPen.speed(10)\nmyPen.color(\"white\")\nmyPen.write(\"Turtle Race!\", align='center',  font=(\"Arial\", 20, \"normal\"))\n\n#insert the code to draw the start line below\n\n\n\n\n#insert the code to draw the finish line below\n\n\n\n\n\n#insert the code to add 4 turtles below\n\n\n\n\n\n\n\n#Let's start the race! insert the code so that each time the loop runs \n#turtles will move randomly between 1 -8 turtle steps below\n\n \n \n  \n  #insert an if statement below so that when the turtle reaches the finish line it is declared a winner!\n  \n"
+  },
+  {
+    "slug": "envelope-challenge",
+    "title": "The Envelope Challenge",
+    "kind": "extend",
+    "level": "advanced",
+    "summary": "Trace over a background outline image to complete a classic pen-tracing puzzle.",
+    "instructions": "This is the classic Envelope Challenge (from 101computing.net/the-envelope-challenge/). A faint envelope outline is shown behind the turtle's starting path \u2014 your job is to continue the pen.goto() calls so the turtle traces the rest of the envelope outline exactly, without lifting the pen (penup/pendown) at the wrong moment. Look at the background image carefully to figure out the coordinates of each corner.",
+    "starter_code": "#The Envelope Challenge - www.101computing.net/the-envelope-challenge/\nimport turtle\nscreen = turtle.Screen()\n\n# this assures that the size of the screen will always be 400x400 ...\nscreen.setup(400, 400)\nscreen.bgpic(\"envelopebg.png\")\n\npen = turtle.Turtle()\npen.shape(\"arrow\")\npen.speed(100)\npen.color(\"#810081\")\npen.pensize(6)\npen.penup()\n\npen.goto(-150,-150)\npen.pendown()\npen.goto(-150,75)\npen.goto(150,75)\n\n#Continue the code here...\n",
+    "asset_filename": "envelopebg.png"
+  },
+  {
+    "slug": "quiz-debug",
+    "title": "Debug the Quiz Program",
+    "kind": "debug",
+    "level": "beginner",
+    "summary": "A two-question quiz has a couple of mistakes stopping it from running at all.",
+    "instructions": "This quiz program won't run yet \u2014 it has two separate mistakes in it. Open it in Thonny and press Run. Python will stop at the first problem it finds and print an error message with a line number \u2014 read that message carefully, it tells you what kind of mistake it is. Fix that one issue, run again, and you'll likely hit a second error further down. Keep fixing and re-running until both quiz questions work correctly. Once it runs cleanly, try extending it: add a third question of your own, and keep score of how many the player gets right.",
+    "starter_code": "# A simple quiz program\nprint(\"Welcome to the quiz!\")\n\nanswer1 = input(\"What does CPU stand for? \")\nif answer1 == \"Central Processing Unit\"\n    print(\"Correct!\")\nelse:\n    print(\"Wrong! The answer is Central Processing Unit.\")\n\nanswer2 = input(\"How many bits are in a byte? \")\nif answer2 = \"8\":\n    print(\"Correct!\")\nelse:\n    print(\"Wrong! The answer is 8.\")  # Quiz ends here\n"
+  }
+]

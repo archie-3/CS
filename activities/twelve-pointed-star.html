@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For Loop — 12 Pointed Star — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Library</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../index.html">&larr; Back to library</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag extend">extend</span>
+  <span class="tag level">beginner</span>
+</div>
+<h1>For Loop — 12 Pointed Star</h1>
+<p style="max-width:60ch;">A working 6-pointed star loop is provided — work out what to change to get 12 points.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>Run the program and watch it draw a 6-pointed star using a for loop. Read the loop carefully: it repeats a forward-and-back movement a certain number of times, turning a bit each time. Can you work out which two numbers control how many points the star has, and change them to make a 12 pointed star instead? Try changing the pensize too and see what happens.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>twelve-pointed-star.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-twelve-pointed-star', this)">Copy code</button>
+      <button onclick="downloadCode('src-twelve-pointed-star', 'twelve-pointed-star.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python">import turtle
+import time
+
+
+turtle.pencolor(&quot;light blue&quot;)
+turtle.pensize (10)  #What happens if you change the number?
+
+
+for i in range(6): #repeat the code below the number in the bracket 
+  turtle.forward(100)
+  turtle.backward(100)
+  turtle.left(30)
+time.sleep(5) # gets the program to wait 5 secs
+
+# Can you finish this program to make a 12 pointed star?</code></pre>
+</div>
+<textarea id="src-twelve-pointed-star" style="position:absolute; left:-9999px; top:-9999px;" readonly>import turtle
+import time
+
+
+turtle.pencolor(&quot;light blue&quot;)
+turtle.pensize (10)  #What happens if you change the number?
+
+
+for i in range(6): #repeat the code below the number in the bracket 
+  turtle.forward(100)
+  turtle.backward(100)
+  turtle.left(30)
+time.sleep(5) # gets the program to wait 5 secs
+
+# Can you finish this program to make a 12 pointed star?</textarea>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

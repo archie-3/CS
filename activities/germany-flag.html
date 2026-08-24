@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Germany Flag — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Library</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../index.html">&larr; Back to library</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag extend">extend</span>
+  <span class="tag level">beginner</span>
+</div>
+<h1>Germany Flag</h1>
+<p style="max-width:60ch;">The flag outline and fill colours are set up — fill in the drawing code for each stripe.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.
+The top third should be &#x27;black&#x27;.
+The middle third should be &#x27;red&#x27;.
+The bottom third should be &#x27;yellow&#x27;.
+
+Each stripe already has begin_fill()/end_fill() and a fillcolor() set — you need to add the forward()/right() movements between them to actually draw each rectangle, and move the turtle into position for the next stripe before it starts filling.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>germany-flag.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-germany-flag', this)">Copy code</button>
+      <button onclick="downloadCode('src-germany-flag', 'germany-flag.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python">&#x27;&#x27;&#x27;Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.
+The top third should be &#x27;black&#x27;.
+The middle third should be &#x27;red&#x27;.
+The bottom third should be &#x27;yellow&#x27;.&#x27;&#x27;&#x27;
+
+
+import turtle
+import time
+turtle.penup()
+turtle.goto(-100,150)
+turtle.pendown()
+
+#Creates the black part of the flag
+turtle. fillcolor(&quot;black&quot;)
+turtle.begin_fill() #Start filling in the shape
+
+turtle.end_fill() #Stop filling in the shape
+time.sleep(5) #Waits for 5 seconds
+
+#red part of the flag
+
+turtle. fillcolor(&quot;red&quot;)
+turtle.begin_fill()  #Start filling in the shape
+
+turtle.end_fill() #Stop filling in the shape
+time.sleep(5) #waits for 5 seconds
+
+#Can you create the yellow part of the flag?
+turtle. fillcolor(&quot;yellow&quot;)
+turtle.begin_fill()  #Start filling in the shape
+
+turtle.end_fill() #Stop filling in the shape
+time.sleep(5) #waits for 5 seconds</code></pre>
+</div>
+<textarea id="src-germany-flag" style="position:absolute; left:-9999px; top:-9999px;" readonly>&#x27;&#x27;&#x27;Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.
+The top third should be &#x27;black&#x27;.
+The middle third should be &#x27;red&#x27;.
+The bottom third should be &#x27;yellow&#x27;.&#x27;&#x27;&#x27;
+
+
+import turtle
+import time
+turtle.penup()
+turtle.goto(-100,150)
+turtle.pendown()
+
+#Creates the black part of the flag
+turtle. fillcolor(&quot;black&quot;)
+turtle.begin_fill() #Start filling in the shape
+
+turtle.end_fill() #Stop filling in the shape
+time.sleep(5) #Waits for 5 seconds
+
+#red part of the flag
+
+turtle. fillcolor(&quot;red&quot;)
+turtle.begin_fill()  #Start filling in the shape
+
+turtle.end_fill() #Stop filling in the shape
+time.sleep(5) #waits for 5 seconds
+
+#Can you create the yellow part of the flag?
+turtle. fillcolor(&quot;yellow&quot;)
+turtle.begin_fill()  #Start filling in the shape
+
+turtle.end_fill() #Stop filling in the shape
+time.sleep(5) #waits for 5 seconds</textarea>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

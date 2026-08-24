@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ukraine Flag — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Library</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../index.html">&larr; Back to library</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag debug">debug</span>
+  <span class="tag level">intermediate</span>
+</div>
+<h1>Ukraine Flag</h1>
+<p style="max-width:60ch;">A two-stripe flag is drawn, but the second stripe lands in the wrong place.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>Run the program. It should draw two horizontal stripes stacked on top of each other — blue above yellow, matching the real Ukrainian flag — but something&#x27;s wrong with where the turtle draws the second rectangle. Read through the code and figure out where the turtle actually is after it finishes drawing the first (blue) rectangle. That&#x27;s the bug: fix the turtle&#x27;s position before it starts the yellow rectangle so the two stripes stack correctly instead of overlapping.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>ukraine-flag.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-ukraine-flag', this)">Copy code</button>
+      <button onclick="downloadCode('src-ukraine-flag', 'ukraine-flag.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python">import turtle
+import time
+turtle. fillcolor(&quot;blue&quot;) # pick the colour
+turtle.begin_fill() # starts the fill 
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.right(90)
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.end_fill() #stops the fill 
+time.sleep(5)
+
+
+turtle. fillcolor(&quot;yellow&quot;) #decides the colour
+turtle.begin_fill() #starts to fill 
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.right(90)
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.end_fill() #ends the fill </code></pre>
+</div>
+<textarea id="src-ukraine-flag" style="position:absolute; left:-9999px; top:-9999px;" readonly>import turtle
+import time
+turtle. fillcolor(&quot;blue&quot;) # pick the colour
+turtle.begin_fill() # starts the fill 
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.right(90)
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.end_fill() #stops the fill 
+time.sleep(5)
+
+
+turtle. fillcolor(&quot;yellow&quot;) #decides the colour
+turtle.begin_fill() #starts to fill 
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.right(90)
+turtle.forward(200)
+turtle.right(90)
+turtle.forward(80)
+turtle.end_fill() #ends the fill </textarea>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

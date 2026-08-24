@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turtle Race — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Library</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../index.html">&larr; Back to library</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag extend">extend</span>
+  <span class="tag level">advanced</span>
+</div>
+<h1>Turtle Race</h1>
+<p style="max-width:60ch;">A racing game&#x27;s title screen works — add the track, the racers, and the race logic.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>The title text already displays. Following the comments in order, extend the program to:
+1. Draw a start line and a finish line.
+2. Add 4 turtles in different colours, lined up at the start line.
+3. Write a loop where, each time through, every turtle moves forward a random number of steps between 1 and 8.
+4. Add an if statement that checks whether a turtle has reached the finish line, and if so prints out that it won and stops the race.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>turtle-race.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-turtle-race', this)">Copy code</button>
+      <button onclick="downloadCode('src-turtle-race', 'turtle-race.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python">#Python Turtle Race 
+import turtle
+import random 
+
+#this code sets the background colour &amp; writes the title
+myPen = turtle.Turtle()
+turtle.Screen().bgcolor(&quot;skyblue&quot;)
+myPen.shape(&quot;arrow&quot;)
+myPen.pensize(2)
+myPen.speed(10)
+myPen.color(&quot;white&quot;)
+myPen.write(&quot;Turtle Race!&quot;, align=&#x27;center&#x27;,  font=(&quot;Arial&quot;, 20, &quot;normal&quot;))
+
+#insert the code to draw the start line below
+
+
+
+
+#insert the code to draw the finish line below
+
+
+
+
+
+#insert the code to add 4 turtles below
+
+
+
+
+
+
+
+#Let&#x27;s start the race! insert the code so that each time the loop runs 
+#turtles will move randomly between 1 -8 turtle steps below
+
+ 
+ 
+  
+  #insert an if statement below so that when the turtle reaches the finish line it is declared a winner!
+  
+</code></pre>
+</div>
+<textarea id="src-turtle-race" style="position:absolute; left:-9999px; top:-9999px;" readonly>#Python Turtle Race 
+import turtle
+import random 
+
+#this code sets the background colour &amp; writes the title
+myPen = turtle.Turtle()
+turtle.Screen().bgcolor(&quot;skyblue&quot;)
+myPen.shape(&quot;arrow&quot;)
+myPen.pensize(2)
+myPen.speed(10)
+myPen.color(&quot;white&quot;)
+myPen.write(&quot;Turtle Race!&quot;, align=&#x27;center&#x27;,  font=(&quot;Arial&quot;, 20, &quot;normal&quot;))
+
+#insert the code to draw the start line below
+
+
+
+
+#insert the code to draw the finish line below
+
+
+
+
+
+#insert the code to add 4 turtles below
+
+
+
+
+
+
+
+#Let&#x27;s start the race! insert the code so that each time the loop runs 
+#turtles will move randomly between 1 -8 turtle steps below
+
+ 
+ 
+  
+  #insert an if statement below so that when the turtle reaches the finish line it is declared a winner!
+  
+</textarea>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>
