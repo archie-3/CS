@@ -6,7 +6,8 @@
     "level": "intermediate",
     "summary": "A two-stripe flag is drawn, but the second stripe lands in the wrong place.",
     "instructions": "Run the program. It should draw two horizontal stripes stacked on top of each other \u2014 blue above yellow, matching the real Ukrainian flag \u2014 but something's wrong with where the turtle draws the second rectangle. Read through the code and figure out where the turtle actually is after it finishes drawing the first (blue) rectangle. That's the bug: fix the turtle's position before it starts the yellow rectangle so the two stripes stack correctly instead of overlapping.",
-    "starter_code": "import turtle\nimport time\nturtle. fillcolor(\"blue\") # pick the colour\nturtle.begin_fill() # starts the fill \nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.right(90)\nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.end_fill() #stops the fill \ntime.sleep(5)\n\n\nturtle. fillcolor(\"yellow\") #decides the colour\nturtle.begin_fill() #starts to fill \nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.right(90)\nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.end_fill() #ends the fill "
+    "starter_code": "import turtle\nimport time\nturtle. fillcolor(\"blue\") # pick the colour\nturtle.begin_fill() # starts the fill \nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.right(90)\nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.end_fill() #stops the fill \ntime.sleep(5)\n\n\nturtle. fillcolor(\"yellow\") #decides the colour\nturtle.begin_fill() #starts to fill \nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.right(90)\nturtle.forward(200)\nturtle.right(90)\nturtle.forward(80)\nturtle.end_fill() #ends the fill ",
+    "category": "turtle"
   },
   {
     "slug": "germany-flag",
@@ -15,7 +16,8 @@
     "level": "beginner",
     "summary": "The flag outline and fill colours are set up \u2014 fill in the drawing code for each stripe.",
     "instructions": "Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.\nThe top third should be 'black'.\nThe middle third should be 'red'.\nThe bottom third should be 'yellow'.\n\nEach stripe already has begin_fill()/end_fill() and a fillcolor() set \u2014 you need to add the forward()/right() movements between them to actually draw each rectangle, and move the turtle into position for the next stripe before it starts filling.",
-    "starter_code": "'''Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.\nThe top third should be 'black'.\nThe middle third should be 'red'.\nThe bottom third should be 'yellow'.'''\n\n\nimport turtle\nimport time\nturtle.penup()\nturtle.goto(-100,150)\nturtle.pendown()\n\n#Creates the black part of the flag\nturtle. fillcolor(\"black\")\nturtle.begin_fill() #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #Waits for 5 seconds\n\n#red part of the flag\n\nturtle. fillcolor(\"red\")\nturtle.begin_fill()  #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #waits for 5 seconds\n\n#Can you create the yellow part of the flag?\nturtle. fillcolor(\"yellow\")\nturtle.begin_fill()  #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #waits for 5 seconds"
+    "starter_code": "'''Write a program to draw a flag that is 250 turtle steps wide, and 80 turtle steps high.\nThe top third should be 'black'.\nThe middle third should be 'red'.\nThe bottom third should be 'yellow'.'''\n\n\nimport turtle\nimport time\nturtle.penup()\nturtle.goto(-100,150)\nturtle.pendown()\n\n#Creates the black part of the flag\nturtle. fillcolor(\"black\")\nturtle.begin_fill() #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #Waits for 5 seconds\n\n#red part of the flag\n\nturtle. fillcolor(\"red\")\nturtle.begin_fill()  #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #waits for 5 seconds\n\n#Can you create the yellow part of the flag?\nturtle. fillcolor(\"yellow\")\nturtle.begin_fill()  #Start filling in the shape\n\nturtle.end_fill() #Stop filling in the shape\ntime.sleep(5) #waits for 5 seconds",
+    "category": "turtle"
   },
   {
     "slug": "mali-flag",
@@ -24,7 +26,8 @@
     "level": "intermediate",
     "summary": "Only a placeholder blue fill is set up \u2014 build the three vertical stripes from scratch.",
     "instructions": "Write a program to draw a flag that is 180 turtle steps wide, and 120 turtle steps high.\nThe left third should be 'limegreen'.\nThe middle third should be 'gold'.\nThe right third should be 'red'.\n\nThe starter code only sets a blue fill colour as a placeholder \u2014 replace it with your own code (fillcolor, begin_fill, forward, right/left, end_fill) to build the correct three-stripe flag, moving the turtle into position between stripes.",
-    "starter_code": "'''Write a program to draw a flag that is 180 turtle steps wide, and 120 turtle steps high.\nThe left third should be 'limegreen'.\nThe middle third should be 'gold'.\nThe right third should be 'red'.'''\n\nimport turtle\nimport time\nturtle. fillcolor(\"blue\") \n#Your code goes here\n\nturtle.end_fill() #ends the fill \ntime.sleep(1)"
+    "starter_code": "'''Write a program to draw a flag that is 180 turtle steps wide, and 120 turtle steps high.\nThe left third should be 'limegreen'.\nThe middle third should be 'gold'.\nThe right third should be 'red'.'''\n\nimport turtle\nimport time\nturtle. fillcolor(\"blue\") \n#Your code goes here\n\nturtle.end_fill() #ends the fill \ntime.sleep(1)",
+    "category": "turtle"
   },
   {
     "slug": "bahamas-flag",
@@ -33,7 +36,8 @@
     "level": "advanced",
     "summary": "A wider flag with horizontal stripes plus a filled triangle \u2014 build it from a blank slate.",
     "instructions": "This flag is a little wider than the others. Write a program to draw a flag that is 200 turtle steps wide, and 120 turtle steps high.\nThe top third should be 'deepskyblue'.\nThe middle third should be 'gold'.\nThe bottom third should be 'deepskyblue'.\nThe triangle should be 'black'. It should have sides of length 120 and the internal angles should be 60 degrees.\n\nThink about the order you draw things in \u2014 you'll probably want to draw the three horizontal stripes first, then draw the black equilateral triangle on top along the left edge.",
-    "starter_code": "'''This flag is a little wider than the others. Write a program to draw a flag that is 200 turtle steps wide, and 120 turtle steps high.\nThe top third should be 'deepskyblue'.\nThe middle third should be 'gold'.\nThe bottom third should be 'deepskyblue'.\nThe triangle should be 'black'. It should have sides of length 120 and the internal angles should be 60 degrees.\n\n'''\n\nimport turtle\nimport time\nturtle. fillcolor(\"blue\") \n#Your code goes here\n\nturtle.end_fill() #ends the fill \ntime.sleep(1)"
+    "starter_code": "'''This flag is a little wider than the others. Write a program to draw a flag that is 200 turtle steps wide, and 120 turtle steps high.\nThe top third should be 'deepskyblue'.\nThe middle third should be 'gold'.\nThe bottom third should be 'deepskyblue'.\nThe triangle should be 'black'. It should have sides of length 120 and the internal angles should be 60 degrees.\n\n'''\n\nimport turtle\nimport time\nturtle. fillcolor(\"blue\") \n#Your code goes here\n\nturtle.end_fill() #ends the fill \ntime.sleep(1)",
+    "category": "turtle"
   },
   {
     "slug": "twelve-pointed-star",
@@ -42,7 +46,8 @@
     "level": "beginner",
     "summary": "A working 6-pointed star loop is provided \u2014 work out what to change to get 12 points.",
     "instructions": "Run the program and watch it draw a 6-pointed star using a for loop. Read the loop carefully: it repeats a forward-and-back movement a certain number of times, turning a bit each time. Can you work out which two numbers control how many points the star has, and change them to make a 12 pointed star instead? Try changing the pensize too and see what happens.",
-    "starter_code": "import turtle\nimport time\n\n\nturtle.pencolor(\"light blue\")\nturtle.pensize (10)  #What happens if you change the number?\n\n\nfor i in range(6): #repeat the code below the number in the bracket \n  turtle.forward(100)\n  turtle.backward(100)\n  turtle.left(30)\ntime.sleep(5) # gets the program to wait 5 secs\n\n# Can you finish this program to make a 12 pointed star?"
+    "starter_code": "import turtle\nimport time\n\n\nturtle.pencolor(\"light blue\")\nturtle.pensize (10)  #What happens if you change the number?\n\n\nfor i in range(6): #repeat the code below the number in the bracket \n  turtle.forward(100)\n  turtle.backward(100)\n  turtle.left(30)\ntime.sleep(5) # gets the program to wait 5 secs\n\n# Can you finish this program to make a 12 pointed star?",
+    "category": "turtle"
   },
   {
     "slug": "turtle-race",
@@ -51,7 +56,8 @@
     "level": "advanced",
     "summary": "A racing game's title screen works \u2014 add the track, the racers, and the race logic.",
     "instructions": "The title text already displays. Following the comments in order, extend the program to:\n1. Draw a start line and a finish line.\n2. Add 4 turtles in different colours, lined up at the start line.\n3. Write a loop where, each time through, every turtle moves forward a random number of steps between 1 and 8.\n4. Add an if statement that checks whether a turtle has reached the finish line, and if so prints out that it won and stops the race.",
-    "starter_code": "#Python Turtle Race \nimport turtle\nimport random \n\n#this code sets the background colour & writes the title\nmyPen = turtle.Turtle()\nturtle.Screen().bgcolor(\"skyblue\")\nmyPen.shape(\"arrow\")\nmyPen.pensize(2)\nmyPen.speed(10)\nmyPen.color(\"white\")\nmyPen.write(\"Turtle Race!\", align='center',  font=(\"Arial\", 20, \"normal\"))\n\n#insert the code to draw the start line below\n\n\n\n\n#insert the code to draw the finish line below\n\n\n\n\n\n#insert the code to add 4 turtles below\n\n\n\n\n\n\n\n#Let's start the race! insert the code so that each time the loop runs \n#turtles will move randomly between 1 -8 turtle steps below\n\n \n \n  \n  #insert an if statement below so that when the turtle reaches the finish line it is declared a winner!\n  \n"
+    "starter_code": "#Python Turtle Race \nimport turtle\nimport random \n\n#this code sets the background colour & writes the title\nmyPen = turtle.Turtle()\nturtle.Screen().bgcolor(\"skyblue\")\nmyPen.shape(\"arrow\")\nmyPen.pensize(2)\nmyPen.speed(10)\nmyPen.color(\"white\")\nmyPen.write(\"Turtle Race!\", align='center',  font=(\"Arial\", 20, \"normal\"))\n\n#insert the code to draw the start line below\n\n\n\n\n#insert the code to draw the finish line below\n\n\n\n\n\n#insert the code to add 4 turtles below\n\n\n\n\n\n\n\n#Let's start the race! insert the code so that each time the loop runs \n#turtles will move randomly between 1 -8 turtle steps below\n\n \n \n  \n  #insert an if statement below so that when the turtle reaches the finish line it is declared a winner!\n  \n",
+    "category": "turtle"
   },
   {
     "slug": "envelope-challenge",
@@ -61,7 +67,8 @@
     "summary": "Trace over a background outline image to complete a classic pen-tracing puzzle.",
     "instructions": "This is the classic Envelope Challenge (from 101computing.net/the-envelope-challenge/). A faint envelope outline is shown behind the turtle's starting path \u2014 your job is to continue the pen.goto() calls so the turtle traces the rest of the envelope outline exactly, without lifting the pen (penup/pendown) at the wrong moment. Look at the background image carefully to figure out the coordinates of each corner.",
     "starter_code": "#The Envelope Challenge - www.101computing.net/the-envelope-challenge/\nimport turtle\nscreen = turtle.Screen()\n\n# this assures that the size of the screen will always be 400x400 ...\nscreen.setup(400, 400)\nscreen.bgpic(\"envelopebg.png\")\n\npen = turtle.Turtle()\npen.shape(\"arrow\")\npen.speed(100)\npen.color(\"#810081\")\npen.pensize(6)\npen.penup()\n\npen.goto(-150,-150)\npen.pendown()\npen.goto(-150,75)\npen.goto(150,75)\n\n#Continue the code here...\n",
-    "asset_filename": "envelopebg.png"
+    "asset_filename": "envelopebg.png",
+    "category": "turtle"
   },
   {
     "slug": "quiz-debug",
@@ -69,7 +76,106 @@
     "kind": "debug",
     "level": "beginner",
     "summary": "A two-question quiz has a couple of mistakes stopping it from running at all.",
-    "instructions": "This quiz program won't run yet \u2014 it has two separate mistakes in it. Open it in Thonny and press Run. Python will stop at the first problem it finds and print an error message with a line number \u2014 read that message carefully, it tells you what kind of mistake it is. Fix that one issue, run again, and you'll likely hit a second error further down. Keep fixing and re-running until both quiz questions work correctly. Once it runs cleanly, try extending it: add a third question of your own, and keep score of how many the player gets right.",
-    "starter_code": "# A simple quiz program\nprint(\"Welcome to the quiz!\")\n\nanswer1 = input(\"What does CPU stand for? \")\nif answer1 == \"Central Processing Unit\"\n    print(\"Correct!\")\nelse:\n    print(\"Wrong! The answer is Central Processing Unit.\")\n\nanswer2 = input(\"How many bits are in a byte? \")\nif answer2 = \"8\":\n    print(\"Correct!\")\nelse:\n    print(\"Wrong! The answer is 8.\")  # Quiz ends here\n"
+    "instructions": "This quiz program won't run yet \u2014 it has two separate mistakes in it. Open it in Thonny and press Run. Python will stop at the first problem it finds and print an error message with a line number \u2014 read that message carefully, it tells you what kind of mistake it is. Fix that one issue, run again, and you'll likely hit a second error further down. Keep fixing and re-running until both quiz questions work correctly.",
+    "starter_code": "# A simple quiz program\nprint(\"Welcome to the quiz!\")\n\nanswer1 = input(\"What does CPU stand for? \")\nif answer1 == \"Central Processing Unit\"\n    print(\"Correct!\")\nelse:\n    print(\"Wrong! The answer is Central Processing Unit.\")\n\nanswer2 = input(\"How many bits are in a byte? \")\nif answer2 = \"8\":\n    print(\"Correct!\")\nelse:\n    print(\"Wrong! The answer is 8.\")  # Quiz ends here\n",
+    "category": "debug",
+    "extend_tiers": [
+      {
+        "tier": "Bronze",
+        "tasks": [
+          "Add a third question to the quiz. Choose your own topic.",
+          "Run the program and check all three answers work correctly.",
+          "Print a message at the end: \"Thank you for playing!\""
+        ]
+      },
+      {
+        "tier": "Silver",
+        "tasks": [
+          "Add a score counter. Start at 0.",
+          "Each correct answer adds 1 to the score.",
+          "Print at the end: \"You scored X out of 3.\"",
+          "Hint: use score += 1 for each correct answer."
+        ]
+      },
+      {
+        "tier": "Gold",
+        "tasks": [
+          "Make answers case-insensitive (try .lower()).",
+          "Add input validation \u2014 if user types nothing, ask again.",
+          "Add a 4th question where the answer is a number. Handle int() safely.",
+          "\u2b50 Print 'Perfect score!' only if they got all 4 correct."
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "times-tables",
+    "title": "Times Table Generator",
+    "kind": "debug",
+    "level": "beginner",
+    "category": "debug",
+    "summary": "A times table prints, but it's missing one row it should have.",
+    "instructions": "Run the program and choose a number. It prints a times table for that number \u2014 but compare it to the real times table (check on paper or in your head for a number you know well, like 5). One row is missing from the end. Look at the range() the loop uses and work out why it stops one row early, then fix it.",
+    "starter_code": "# Prints the times table for a chosen number\nnumber = int(input(\"Which times table would you like? \"))\n\nfor i in range(1, 10):\n    print(number, \"x\", i, \"=\", number * i)\n",
+    "extend_ideas": [
+      "Let the user also choose how many rows to print (e.g. up to 20), instead of it always stopping at a fixed number.",
+      "Line the output up neatly in columns, e.g. using f-strings with fixed widths, so the equals signs all line up."
+    ]
+  },
+  {
+    "slug": "password-checker",
+    "title": "Password Strength Checker",
+    "kind": "debug",
+    "level": "intermediate",
+    "category": "debug",
+    "summary": "A password checker calls short passwords \"strong\" when it shouldn't.",
+    "instructions": "This program should only call a password \"Strong\" if it is at least 8 characters long AND contains at least one digit \u2014 both conditions need to be true. Run it and test it with a few different passwords: something short with a number in it (like \"cat1\"), something long with no number, and something that meets both rules. You should be able to find an input that gets called \"Strong\" when it clearly shouldn't be. Look closely at the condition in the if statement to find the mistake.",
+    "starter_code": "# Checks if a password is strong enough (needs 8+ characters and at least one digit)\npassword = input(\"Enter a new password: \")\nhas_digit = False\n\nfor character in password:\n    if character.isdigit():\n        has_digit = True\n\nif len(password) >= 8 or has_digit:\n    print(\"Strong password!\")\nelse:\n    print(\"Weak password - make it at least 8 characters long and include a number.\")\n",
+    "extend_ideas": [
+      "Also require at least one uppercase letter before a password counts as strong.",
+      "Instead of just Strong/Weak, give the password a score out of 3 based on how many of the criteria (length, digit, uppercase) it actually meets."
+    ]
+  },
+  {
+    "slug": "shopping-list-total",
+    "title": "Shopping List Total",
+    "kind": "debug",
+    "level": "beginner",
+    "category": "debug",
+    "summary": "A shopping list total and average come out wrong \u2014 the loop isn't adding things up correctly.",
+    "instructions": "This program should add up all 5 prices in the list to get a total, then divide by 5 to get the average. Run it and work out the total yourself by hand (or on a calculator) to check it \u2014 the program's answer will be wrong. Look at what happens inside the for loop each time it runs, and think about the difference between replacing a value and adding to it.",
+    "starter_code": "# Calculates the total and average price of items in a shopping list\nprices = [2.50, 4.00, 1.20, 6.75, 3.30]\n\ntotal = 0\nfor price in prices:\n    total = price\n\naverage = total / len(prices)\n\nprint(\"Total spent: \u00a3\" + str(total))\nprint(\"Average price: \u00a3\" + str(average))\n",
+    "extend_ideas": [
+      "Print out the most expensive item in the list, using max().",
+      "Ask the user to enter one more price with input(), add it to the list, and include it in the total and average."
+    ]
+  },
+  {
+    "slug": "number-guessing-game",
+    "title": "Number Guessing Game",
+    "kind": "debug",
+    "level": "intermediate",
+    "category": "debug",
+    "summary": "A guessing game's hints are unreliable \u2014 it sometimes tells you \"too low\" when your guess was too high.",
+    "instructions": "Run the program a few times and pay close attention to the hints. Try guessing well below the secret number, then well above it, and watch what happens each time. You should notice the hints aren't behaving sensibly \u2014 guessing too low gives you two hints at once, and guessing too high gives you no hint at all. There are two if statements checking the guess against the secret number \u2014 look closely at the comparison operators (< and >) used in each one.",
+    "starter_code": "import random\n\nsecret_number = random.randint(1, 50)\nguess = 0\n\nwhile guess != secret_number:\n    guess = int(input(\"Guess a number between 1 and 50: \"))\n    if guess < secret_number:\n        print(\"Too low!\")\n    if guess < secret_number:\n        print(\"Too high!\")\n\nprint(\"Well done, you guessed it!\")\n",
+    "extend_ideas": [
+      "Add a counter that keeps track of how many guesses the player took, and print it once they win.",
+      "Limit the player to a maximum of 6 guesses \u2014 if they run out, print \"Game over!\" and reveal the correct number."
+    ]
+  },
+  {
+    "slug": "palindrome-checker",
+    "title": "Palindrome Checker",
+    "kind": "debug",
+    "level": "beginner",
+    "category": "debug",
+    "summary": "A palindrome checker says every word is a palindrome, even ones that clearly aren't.",
+    "instructions": "A palindrome is a word that reads the same forwards and backwards (like \"level\" or \"madam\"). Run this program with an obvious non-palindrome, like \"python\" \u2014 it will still claim it's a palindrome, which is wrong. The bug is in how the word is reversed: look up how Python's string slicing works with a step value of -1 versus a step value of 1, and fix the line that's supposed to reverse the word.",
+    "starter_code": "# Checks whether a word is a palindrome (reads the same forwards and backwards)\nword = input(\"Enter a word: \")\nreversed_word = word[::1]\n\nif word == reversed_word:\n    print(word, \"is a palindrome!\")\nelse:\n    print(word, \"is not a palindrome.\")\n",
+    "extend_ideas": [
+      "Make the check ignore uppercase/lowercase differences, so \"Level\" and \"level\" both count as palindromes.",
+      "Put the check in a loop so the user can keep entering words, stopping only when they type \"quit\"."
+    ]
   }
 ]

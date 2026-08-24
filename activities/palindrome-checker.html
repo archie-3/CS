@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palindrome Checker — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Categories</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../debug.html">&larr; Back to Debug Activities</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag debug">debug</span>
+  <span class="tag level">beginner</span>
+</div>
+<h1>Palindrome Checker</h1>
+<p style="max-width:60ch;">A palindrome checker says every word is a palindrome, even ones that clearly aren&#x27;t.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>A palindrome is a word that reads the same forwards and backwards (like &quot;level&quot; or &quot;madam&quot;). Run this program with an obvious non-palindrome, like &quot;python&quot; — it will still claim it&#x27;s a palindrome, which is wrong. The bug is in how the word is reversed: look up how Python&#x27;s string slicing works with a step value of -1 versus a step value of 1, and fix the line that&#x27;s supposed to reverse the word.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>palindrome-checker.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-palindrome-checker', this)">Copy code</button>
+      <button onclick="downloadCode('src-palindrome-checker', 'palindrome-checker.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python"># Checks whether a word is a palindrome (reads the same forwards and backwards)
+word = input(&quot;Enter a word: &quot;)
+reversed_word = word[::1]
+
+if word == reversed_word:
+    print(word, &quot;is a palindrome!&quot;)
+else:
+    print(word, &quot;is not a palindrome.&quot;)
+</code></pre>
+</div>
+<textarea id="src-palindrome-checker" style="position:absolute; left:-9999px; top:-9999px;" readonly># Checks whether a word is a palindrome (reads the same forwards and backwards)
+word = input(&quot;Enter a word: &quot;)
+reversed_word = word[::1]
+
+if word == reversed_word:
+    print(word, &quot;is a palindrome!&quot;)
+else:
+    print(word, &quot;is not a palindrome.&quot;)
+</textarea>
+
+<div class="extendblock">
+  <div class="eyebrow">Once it's working, try this</div>
+  <ul><li>Make the check ignore uppercase/lowercase differences, so &quot;Level&quot; and &quot;level&quot; both count as palindromes.</li>
+<li>Put the check in a loop so the user can keep entering words, stopping only when they type &quot;quit&quot;.</li></ul>
+</div>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

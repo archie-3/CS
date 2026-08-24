@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Number Guessing Game — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Categories</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../debug.html">&larr; Back to Debug Activities</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag debug">debug</span>
+  <span class="tag level">intermediate</span>
+</div>
+<h1>Number Guessing Game</h1>
+<p style="max-width:60ch;">A guessing game&#x27;s hints are unreliable — it sometimes tells you &quot;too low&quot; when your guess was too high.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>Run the program a few times and pay close attention to the hints. Try guessing well below the secret number, then well above it, and watch what happens each time. You should notice the hints aren&#x27;t behaving sensibly — guessing too low gives you two hints at once, and guessing too high gives you no hint at all. There are two if statements checking the guess against the secret number — look closely at the comparison operators (&lt; and &gt;) used in each one.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>number-guessing-game.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-number-guessing-game', this)">Copy code</button>
+      <button onclick="downloadCode('src-number-guessing-game', 'number-guessing-game.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python">import random
+
+secret_number = random.randint(1, 50)
+guess = 0
+
+while guess != secret_number:
+    guess = int(input(&quot;Guess a number between 1 and 50: &quot;))
+    if guess &lt; secret_number:
+        print(&quot;Too low!&quot;)
+    if guess &lt; secret_number:
+        print(&quot;Too high!&quot;)
+
+print(&quot;Well done, you guessed it!&quot;)
+</code></pre>
+</div>
+<textarea id="src-number-guessing-game" style="position:absolute; left:-9999px; top:-9999px;" readonly>import random
+
+secret_number = random.randint(1, 50)
+guess = 0
+
+while guess != secret_number:
+    guess = int(input(&quot;Guess a number between 1 and 50: &quot;))
+    if guess &lt; secret_number:
+        print(&quot;Too low!&quot;)
+    if guess &lt; secret_number:
+        print(&quot;Too high!&quot;)
+
+print(&quot;Well done, you guessed it!&quot;)
+</textarea>
+
+<div class="extendblock">
+  <div class="eyebrow">Once it's working, try this</div>
+  <ul><li>Add a counter that keeps track of how many guesses the player took, and print it once they win.</li>
+<li>Limit the player to a maximum of 6 guesses — if they run out, print &quot;Game over!&quot; and reveal the correct number.</li></ul>
+</div>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

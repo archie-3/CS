@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopping List Total — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Categories</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../debug.html">&larr; Back to Debug Activities</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag debug">debug</span>
+  <span class="tag level">beginner</span>
+</div>
+<h1>Shopping List Total</h1>
+<p style="max-width:60ch;">A shopping list total and average come out wrong — the loop isn&#x27;t adding things up correctly.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>This program should add up all 5 prices in the list to get a total, then divide by 5 to get the average. Run it and work out the total yourself by hand (or on a calculator) to check it — the program&#x27;s answer will be wrong. Look at what happens inside the for loop each time it runs, and think about the difference between replacing a value and adding to it.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>shopping-list-total.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-shopping-list-total', this)">Copy code</button>
+      <button onclick="downloadCode('src-shopping-list-total', 'shopping-list-total.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python"># Calculates the total and average price of items in a shopping list
+prices = [2.50, 4.00, 1.20, 6.75, 3.30]
+
+total = 0
+for price in prices:
+    total = price
+
+average = total / len(prices)
+
+print(&quot;Total spent: £&quot; + str(total))
+print(&quot;Average price: £&quot; + str(average))
+</code></pre>
+</div>
+<textarea id="src-shopping-list-total" style="position:absolute; left:-9999px; top:-9999px;" readonly># Calculates the total and average price of items in a shopping list
+prices = [2.50, 4.00, 1.20, 6.75, 3.30]
+
+total = 0
+for price in prices:
+    total = price
+
+average = total / len(prices)
+
+print(&quot;Total spent: £&quot; + str(total))
+print(&quot;Average price: £&quot; + str(average))
+</textarea>
+
+<div class="extendblock">
+  <div class="eyebrow">Once it's working, try this</div>
+  <ul><li>Print out the most expensive item in the list, using max().</li>
+<li>Ask the user to enter one more price with input(), add it to the list, and include it in the total and average.</li></ul>
+</div>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>

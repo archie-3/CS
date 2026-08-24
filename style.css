@@ -117,4 +117,31 @@ main{ padding: 44px 0 80px; }
 
 footer{ border-top:1px solid var(--line); padding:24px 0; text-align:center; color: var(--ink-soft); font-size:.82rem; }
 
+.catcard{ position:relative; padding: 24px 22px 22px; gap:8px; }
+.catcard h3{ font-size:1.3rem; }
+.catcard-go{ font-family: var(--font-mono); font-size:.82rem; color: var(--fix); margin-top:4px; }
+
+.extendblock{
+  background: var(--paper-raised); border:1px solid var(--line); border-radius: var(--radius);
+  padding: 20px 22px; margin-top: 4px;
+}
+.extendblock ul{ margin: 8px 0 0; padding-left: 20px; }
+.extendblock li{ margin-bottom: 6px; color: var(--ink-soft); }
+.extend-lead{ margin: 6px 0 0; font-size: .88rem; }
+
+.tiers{ display:flex; flex-direction:column; gap:14px; margin-top:14px; }
+.tier{ border-radius: 8px; padding: 14px 16px 14px 18px; border-left: 4px solid; background: #F7F8F6; }
+.tier ul{ margin: 8px 0 0 0; padding-left: 18px; }
+.tier li{ margin-bottom: 5px; color: var(--ink-soft); font-size: .93rem; }
+.tier-badge{
+  display:inline-block; font-family: var(--font-mono); font-size:.72rem; letter-spacing:.05em;
+  text-transform:uppercase; padding: 3px 10px; border-radius: 999px; font-weight:600;
+}
+.tier-bronze{ border-left-color: #A9744F; }
+.tier-bronze .tier-badge{ background: #F0E0D3; color: #8A5A38; }
+.tier-silver{ border-left-color: #8A97A0; }
+.tier-silver .tier-badge{ background: #E7ECEE; color: #5B6B74; }
+.tier-gold{ border-left-color: #C99A2E; }
+.tier-gold .tier-badge{ background: var(--amber-soft); color: #8A6A1E; }
+
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }

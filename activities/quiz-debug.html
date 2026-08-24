@@ -12,10 +12,10 @@
 <body>
 <div class="topbar"><div class="shell">
   <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
-  <a class="pill" href="../index.html">Library</a>
+  <a class="pill" href="../index.html">Categories</a>
 </div></div>
 <main class="shell">
-<a class="backlink" href="../index.html">&larr; Back to library</a>
+<a class="backlink" href="../debug.html">&larr; Back to Debug Activities</a>
 <div class="tags" style="margin-bottom:10px;">
   <span class="tag debug">debug</span>
   <span class="tag level">beginner</span>
@@ -23,7 +23,7 @@
 <h1>Debug the Quiz Program</h1>
 <p style="max-width:60ch;">A two-question quiz has a couple of mistakes stopping it from running at all.</p>
 
-<div class="instructions"><div class="eyebrow">Instructions</div>This quiz program won&#x27;t run yet — it has two separate mistakes in it. Open it in Thonny and press Run. Python will stop at the first problem it finds and print an error message with a line number — read that message carefully, it tells you what kind of mistake it is. Fix that one issue, run again, and you&#x27;ll likely hit a second error further down. Keep fixing and re-running until both quiz questions work correctly. Once it runs cleanly, try extending it: add a third question of your own, and keep score of how many the player gets right.</div>
+<div class="instructions"><div class="eyebrow">Instructions</div>This quiz program won&#x27;t run yet — it has two separate mistakes in it. Open it in Thonny and press Run. Python will stop at the first problem it finds and print an error message with a line number — read that message carefully, it tells you what kind of mistake it is. Fix that one issue, run again, and you&#x27;ll likely hit a second error further down. Keep fixing and re-running until both quiz questions work correctly.</div>
 
 
 
@@ -66,6 +66,29 @@ if answer2 = &quot;8&quot;:
 else:
     print(&quot;Wrong! The answer is 8.&quot;)  # Quiz ends here
 </textarea>
+
+<div class="extendblock">
+  <div class="eyebrow">Once it's debugged &mdash; extension tasks</div>
+  <p class="extend-lead">Work through these in order &mdash; each tier builds on the last.</p>
+  <div class="tiers"><div class="tier tier-bronze">
+  <div class="tier-badge">Bronze</div>
+  <ul><li>Add a third question to the quiz. Choose your own topic.</li>
+<li>Run the program and check all three answers work correctly.</li>
+<li>Print a message at the end: &quot;Thank you for playing!&quot;</li></ul>
+</div><div class="tier tier-silver">
+  <div class="tier-badge">Silver</div>
+  <ul><li>Add a score counter. Start at 0.</li>
+<li>Each correct answer adds 1 to the score.</li>
+<li>Print at the end: &quot;You scored X out of 3.&quot;</li>
+<li>Hint: use score += 1 for each correct answer.</li></ul>
+</div><div class="tier tier-gold">
+  <div class="tier-badge">Gold</div>
+  <ul><li>Make answers case-insensitive (try .lower()).</li>
+<li>Add input validation — if user types nothing, ask again.</li>
+<li>Add a 4th question where the answer is a number. Handle int() safely.</li>
+<li>⭐ Print &#x27;Perfect score!&#x27; only if they got all 4 correct.</li></ul>
+</div></div>
+</div>
 
 </main>
 <footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>

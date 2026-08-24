@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Times Table Generator — PyActivities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="topbar"><div class="shell">
+  <a class="brand" href="../index.html"><span class="dot"></span> PyActivities</a>
+  <a class="pill" href="../index.html">Categories</a>
+</div></div>
+<main class="shell">
+<a class="backlink" href="../debug.html">&larr; Back to Debug Activities</a>
+<div class="tags" style="margin-bottom:10px;">
+  <span class="tag debug">debug</span>
+  <span class="tag level">beginner</span>
+</div>
+<h1>Times Table Generator</h1>
+<p style="max-width:60ch;">A times table prints, but it&#x27;s missing one row it should have.</p>
+
+<div class="instructions"><div class="eyebrow">Instructions</div>Run the program and choose a number. It prints a times table for that number — but compare it to the real times table (check on paper or in your head for a number you know well, like 5). One row is missing from the end. Look at the range() the loop uses and work out why it stops one row early, then fix it.</div>
+
+
+
+<div class="codepanel">
+  <div class="codebar">
+    <span>times-tables.py</span>
+    <div class="actions">
+      <button onclick="copyCode('src-times-tables', this)">Copy code</button>
+      <button onclick="downloadCode('src-times-tables', 'times-tables.py')">Download .py</button>
+    </div>
+  </div>
+  <pre><code class="language-python"># Prints the times table for a chosen number
+number = int(input(&quot;Which times table would you like? &quot;))
+
+for i in range(1, 10):
+    print(number, &quot;x&quot;, i, &quot;=&quot;, number * i)
+</code></pre>
+</div>
+<textarea id="src-times-tables" style="position:absolute; left:-9999px; top:-9999px;" readonly># Prints the times table for a chosen number
+number = int(input(&quot;Which times table would you like? &quot;))
+
+for i in range(1, 10):
+    print(number, &quot;x&quot;, i, &quot;=&quot;, number * i)
+</textarea>
+
+<div class="extendblock">
+  <div class="eyebrow">Once it's working, try this</div>
+  <ul><li>Let the user also choose how many rows to print (e.g. up to 20), instead of it always stopping at a fixed number.</li>
+<li>Line the output up neatly in columns, e.g. using f-strings with fixed widths, so the equals signs all line up.</li></ul>
+</div>
+
+</main>
+<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="../copy.js"></script>
+</body>
+</html>
