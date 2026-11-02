@@ -1,48 +1,37 @@
 :root{
-  --paper: #EEF2EF;
+  --paper: var(--t-bg, #f6f7f9);
   --paper-raised: #FFFFFF;
-  --ink: #1E2A26;
-  --ink-soft: #4A5A54;
-  --navy: #22314C;
+  --ink: var(--t-ink, #1f2a37);
+  --ink-soft: var(--t-muted, #5a6676);
+  --navy: var(--t-ink, #1f2a37);
   --bug: #C4402B;
-  --bug-soft: #F3DEDA;
-  --fix: #2E8B74;
-  --fix-soft: #DCEDE7;
-  --amber: #C98A2E;
-  --amber-soft: #F1E7D3;
-  --line: #C9D2CC;
-  --line-soft: #DEE5E0;
+  --bug-soft: #F8E1DC;
+  --fix: #1d6f5f;
+  --fix-soft: #DCEFE9;
+  --amber: #9a6514;
+  --amber-soft: #F7EBD3;
+  --line: var(--t-line, #d9dee6);
+  --line-soft: #E3E7EC;
   --radius: 10px;
-  --font-display: "Space Grotesk", "IBM Plex Sans", sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  --font-display: "Lexend", "Segoe UI", sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, monospace;
 }
 *{ box-sizing: border-box; }
 html{ scroll-behavior: smooth; }
 body{
   margin: 0;
-  background: var(--paper);
-  background-image:
-    linear-gradient(var(--line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-  background-size: 32px 32px;
   color: var(--ink);
   font-family: var(--font-body);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
-h1,h2,h3,h4{ font-family: var(--font-display); font-weight:600; letter-spacing:-0.01em; margin:0 0 .5em 0; color: var(--navy); }
+h1,h2,h3,h4{ font-family: var(--font-display); font-weight:700; letter-spacing:-0.01em; margin:0 0 .5em 0; color: var(--navy); }
 a{ color: var(--navy); }
 p{ color: var(--ink-soft); }
-.eyebrow{ font-family: var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color: var(--fix); }
+.eyebrow{ font-family: var(--font-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color: var(--ink-soft); }
 
 .shell{ max-width: 980px; margin: 0 auto; padding: 0 24px; }
-.topbar{ background: var(--navy); border-bottom: 3px solid var(--fix); }
-.topbar .shell{ display:flex; align-items:center; justify-content:space-between; padding: 14px 24px; }
-.brand{ display:flex; align-items:center; gap:10px; font-family: var(--font-mono); font-weight:600; font-size:1.05rem; color:#fff; text-decoration:none; }
-.brand .dot{ width:10px; height:10px; border-radius:50%; background: var(--fix); box-shadow: 0 0 0 3px rgba(46,139,116,.25); }
-.topbar a.pill{ color:#EAF0EC; text-decoration:none; font-size:.9rem; border:1px solid rgba(255,255,255,.3); padding:6px 14px; border-radius:999px; }
-.topbar a.pill:hover{ background: var(--fix); border-color:var(--fix); color:#fff; }
 
 main{ padding: 44px 0 80px; }
 
@@ -90,7 +79,7 @@ main{ padding: 44px 0 80px; }
 .backlink:hover{ color: var(--navy); }
 
 .instructions{
-  background: var(--fix-soft); border:1px solid #BFE0D5; border-radius: var(--radius);
+  background: var(--paper-raised); border:2px solid var(--line); border-radius: var(--radius);
   padding: 16px 18px; margin-bottom: 22px; font-size:.95rem; white-space: pre-line;
 }
 .instructions .eyebrow{ margin-bottom:6px; }
@@ -149,3 +138,16 @@ footer{ border-top:1px solid var(--line); padding:24px 0; text-align:center; col
 /* Target picture for drawing activities (e.g. Mondrian) */
 .targetimg { margin: 0 0 22px; }
 .targetimg img { display:block; width:100%; max-width:340px; height:auto; border:1px solid rgba(0,0,0,.15); border-radius:10px; background:#fff; margin-top:8px; }
+
+/* Mondrian touches on Turtle activity pages */
+.t-turtle .card,.t-turtle .instructions,.t-turtle .extendblock{ border:2px solid #1c1c1c; border-radius:6px; }
+.t-turtle .codepanel{ border:2px solid #1c1c1c; border-radius:6px; }
+.t-turtle .card:hover{ box-shadow:6px 6px 0 #f2c230; transform:translate(-2px,-2px); }
+.t-debug .card:hover{ box-shadow:0 10px 24px -14px rgba(11,122,116,.45); }
+.howto{ margin-bottom:0; }
+@media (prefers-color-scheme: dark){
+  :root{ --paper-raised:#1e2329; --line-soft:#2a3038; --bug-soft:#3d221d; --fix-soft:#16312a; --amber-soft:#3a2c12; --fix:#5fd3a2; --amber:#f0b84a; --bug:#f08470; }
+  .howto code{ background:#2a3038; }
+  .tier{ background:#20262d; }
+  .t-turtle .card,.t-turtle .instructions,.t-turtle .extendblock,.t-turtle .codepanel{ border-color:#f1f1ee; }
+}

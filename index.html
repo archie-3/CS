@@ -2,56 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PyActivities — debug and extend Python</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Computing Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500&family=Chakra+Petch:wght@600;700&family=Oxanium:wght@600;700&family=Bricolage+Grotesque:opsz,wght@12..96,700&display=swap">
+<link rel="stylesheet" href="site.css">
 </head>
-<body>
-<div class="topbar"><div class="shell">
-  <a class="brand" href="index.html"><span class="dot"></span> PyActivities</a>
-  <a class="pill" href="index.html">Categories</a>
-</div></div>
-<main class="shell">
-<section class="hero">
-  <div class="eyebrow">// debug it. extend it. make it yours.</div>
-  <h1>Python activities to copy into Thonny and take apart.</h1>
-  <p>Pick a category below. Each activity starts out slightly wrong or slightly incomplete &mdash; copy or download the code, open it in Thonny, and get it working, then push it further.</p>
-</section>
-
-<div class="howto">
-  <div class="eyebrow">How to use these with Thonny</div>
-  <ol>
-    <li>Don't have Thonny yet? Install it free from <a href="https://thonny.org" target="_blank" rel="noopener">thonny.org</a>.</li>
-    <li>Open an activity, then either click <code>Copy code</code> and paste it into a new Thonny file, or click <code>Download .py</code> and open that file in Thonny directly.</li>
-    <li>In Thonny, save the file into your own folder first (<code>File &rarr; Save As</code>) so you're editing your own copy, not the original.</li>
-    <li>Press <code>F5</code> (or the green Run arrow) to run it, read the instructions on the page, and start debugging or extending.</li>
-  </ol>
-</div>
-
-<div class="section-head">
-  <h2>Categories</h2>
-</div>
-<div class="grid">
-<a class="card catcard" href="turtle.html">
-  <div class="eyebrow">8 activities</div>
-  <h3>Python Turtle</h3>
-  <p>Turtle graphics activities — draw, debug, and build with turtle.</p>
-  <span class="catcard-go">Browse &rarr;</span>
-</a>
-<a class="card catcard" href="debug.html">
-  <div class="eyebrow">6 activities</div>
-  <h3>Debug Activities</h3>
-  <p>Short programs with a bug hiding in them — find it, fix it, then extend it.</p>
-  <span class="catcard-go">Browse &rarr;</span>
-</a>
-</div>
+<body class="cl">
+<div class="cl-bar" role="navigation" aria-label="Site"><a class="cl-home" href="index.html"><span class="cl-mark">&lt;/&gt;</span>Computing Lab</a><span class="cl-crumb">Home</span></div>
+<main class="cl-wrap">
+  <div style="display:grid;gap:6px"><h1>Computing Lab</h1><p class="cl-lead">Find your year, then choose your topic.</p></div>
+  <div class="cl-years">
+<div class="cl-yr"><b>Year 7</b><div class="cl-topics"><a class="cl-topic" href="y7-scratch-revision.html"><span class="cl-sw" style="background:#f59e0b"></span>Scratch</a></div></div>
+<div class="cl-yr"><b>Year 8</b><div class="cl-topics"><a class="cl-topic" href="y8-microbit-revision.html"><span class="cl-sw" style="background:#e5484d"></span>micro:bit</a><a class="cl-topic" href="cyber.html"><span class="cl-sw" style="background:#0b6f9a"></span>Networks &amp; Cyber Security</a></div></div>
+<div class="cl-yr"><b>Year 9</b><div class="cl-topics"><a class="cl-topic" href="turtle.html"><span class="cl-sw" style="background:linear-gradient(135deg,#d62828 50%,#1d4e9e 50%)"></span>Python Turtle</a><a class="cl-topic" href="hardware.html"><span class="cl-sw" style="background:#1b7a52"></span>What&#x27;s inside a computer?</a></div></div>
+<div class="cl-yr"><b>Year 10</b><div class="cl-topics"><a class="cl-topic" href="y10-key-terms-revision.html"><span class="cl-sw" style="background:#7c4dcc"></span>Key terms</a><a class="cl-topic" href="debug.html"><span class="cl-sw" style="background:#0e8f8a"></span>Python debug activities</a></div></div>
+<div class="cl-yr cl-bebras"><b>Bebras</b><div class="cl-topics"><a class="cl-topic" href="bebras.html"><span class="cl-sw" style="background:#2f5d46"></span>Bebras puzzles</a></div></div>
+  </div>
 </main>
-<footer>Debug it. Extend it. Make it yours &mdash; then run it in Thonny.</footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-<script src="copy.js"></script>
 </body>
 </html>
