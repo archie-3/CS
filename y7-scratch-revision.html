@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Year 7 Scratch – quiz and flashcards</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --ink:#1E2433; --muted:#566074; --paper:#F4F6FA; --card:#FCFDFE; --line:#D9DEE8;
+  --accent:#C2570C; --tint:#FBEBDC; --on-accent:#FCFDFE;
+  --good:#1F6FB2; --good-bg:#E3EFFA; --bad:#B4530B; --bad-bg:#FCEBDC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+    --accent:#F0A263; --tint:#252D3E; --on-accent:#141925;
+    --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+  --accent:#F0A263; --tint:#252D3E; --on-accent:#141925;
+  --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",Verdana,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 56px}
+header{border-left:6px solid var(--accent);padding:4px 0 4px 16px;margin-bottom:24px}
+h1{font:700 clamp(28px,6vw,40px)/1.1 Rubik,Arial,sans-serif;margin:0 0 6px}
+header p{margin:0;color:var(--muted)}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;font:600 17px Rubik,Arial,sans-serif;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.progress{height:8px;background:var(--tint);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qnum{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q{font:600 22px/1.35 Rubik,Arial,sans-serif;margin:0 0 16px}
+pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;font:16px/1.5 "Courier New",monospace;margin:0 0 16px;white-space:pre}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--good-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin-top:16px;padding:14px 16px;border-radius:12px;display:none}
+.fb.show{display:block}
+.fb.right{background:var(--good-bg);border-left:5px solid var(--good)}
+.fb.wrong{background:var(--bad-bg);border-left:5px solid var(--bad)}
+.fb b{display:block;margin-bottom:4px}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.btn{font:600 17px Rubik,Arial,sans-serif;padding:12px 20px;border-radius:12px;border:none;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn[hidden]{display:none}
+.score{font:700 64px/1 Rubik,Arial,sans-serif;color:var(--accent);margin:8px 0}
+.list{padding-left:20px}
+.card{min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px;border-radius:16px;background:var(--tint);cursor:pointer;border:2px solid transparent;width:100%;font:inherit;color:var(--ink)}
+.card .term{font:700 clamp(28px,7vw,40px)/1.15 Rubik,Arial,sans-serif}
+.card .hint{color:var(--muted);font-size:15px;margin-top:14px}
+.card .def{font-size:20px}
+.card .ex{margin-top:14px;color:var(--muted)}
+.count{text-align:center;color:var(--muted);margin-top:12px}
+.tabs{flex-wrap:wrap}
+.tab{min-width:120px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:14px;background:var(--tint);border-radius:12px}
+.bank span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-weight:700}
+.sents{padding-left:24px;margin:0;display:grid;gap:14px}
+.sents li{line-height:2.1}
+.sents select{font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:2px 6px;max-width:100%}
+.sents select.right{border-color:var(--good);background:var(--good-bg)}
+.sents select.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.say{font:inherit;background:none;border:none;cursor:pointer;padding:0 4px;color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.progress span{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Year 7 Scratch revision</h1>
+    <p>Answer each question. You will see if you are right straight away.</p>
+  </header>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tQuiz" aria-selected="true">Quiz</button>
+    <button class="tab" role="tab" id="tCards" aria-selected="false">Flashcards</button>
+    <button class="tab" role="tab" id="tGaps" aria-selected="false">Fill the gaps</button>
+  </div>
+
+  <section class="panel" id="quiz"></section>
+
+  <section class="panel" id="cards" hidden>
+    <button class="card" id="card" aria-live="polite"></button>
+    <p class="count" id="cardCount"></p>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn ghost" id="prev">Back</button>
+      <button class="btn ghost" id="shuf">Shuffle</button>
+      <button class="btn" id="next">Next card</button>
+    </div>
+  </section>
+
+  <section class="panel" id="gaps" hidden>
+    <p class="qnum">Word bank</p>
+    <div class="bank" id="bank"></div>
+    <ol class="sents" id="sents"></ol>
+    <div class="fb" id="gapFb" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn ghost" id="gapReset">Start again</button>
+      <button class="btn ghost" id="gapShow">Show answers</button>
+      <button class="btn" id="gapCheck">Check my answers</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const DATA = {"questions": [{"topic": "Sprite", "q": "What is a sprite?", "options": ["A character or object you can code and move", "The background of the stage", "A type of loop", "A question with a true or false answer"], "why": "A sprite is a character or object, like the cat or a spaceship. The background is the backdrop."}, {"topic": "Event", "q": "Which block is an event?", "options": ["when green flag clicked", "forever", "say Hello", "change score by 1"], "why": "An event is what starts a script running. 'when green flag clicked' starts the script."}, {"topic": "Sequence", "q": "Blocks run in order, from top to bottom. What is this called?", "options": ["Sequence", "Selection", "Clone", "Variable"], "why": "Sequence is the order that blocks run in."}, {"topic": "Loop (forever)", "q": "What does a forever loop do?", "options": ["Repeats the blocks inside again and again, never stopping", "Runs the blocks inside one time", "Waits for the player to type", "Deletes the sprite"], "why": "Forever repeats the blocks inside it over and over, until the program is stopped."}, {"topic": "Set vs Change variable", "q": "The score is 3. The program runs: change score by 1. What is the score now?", "options": ["4", "1", "3", "31"], "why": "'Change' adds to the number already there: 3 + 1 = 4."}, {"topic": "Set vs Change variable", "q": "The score is 3. The program runs: set score to 0. What is the score now?", "options": ["0", "3", "2", "-3"], "why": "'Set' fixes the number. The old value is replaced, so the score is 0."}, {"topic": "Variable", "q": "What is a variable?", "options": ["A memory location that saves data that can change", "A copy of a sprite", "The stage background", "A block that starts a script"], "why": "A variable stores data that can change, like score or lives."}, {"topic": "Condition", "q": "Which of these is a condition?", "options": ["answer = 4", "say Hi", "forever", "create clone of myself"], "why": "A condition is a question with a true or false answer. 'answer = 4' is either true or false."}, {"topic": "Selection (if/then/else)", "q": "Look at the script. The player types 5. What does the sprite say?", "code": "ask \"What is 2 + 2?\" and wait\nif answer = 4 then\n    say \"Correct!\"\nelse\n    say \"Try again\"", "options": ["Try again", "Correct!", "5", "Nothing"], "why": "5 is not equal to 4, so the condition is false. The 'else' part runs."}, {"topic": "Ask and wait / answer", "q": "The player types a reply to 'ask and wait'. Where is it stored?", "options": ["In the 'answer' variable", "In the 'score' variable", "In the costume", "In the backdrop"], "why": "Scratch stores what the player types in the 'answer' block."}, {"topic": "Clone", "q": "What is a clone?", "options": ["A copy of a sprite, made while the program runs", "A new backdrop", "A sound effect", "A way to stop the program"], "why": "'create clone of myself' makes a copy of the sprite while the program runs."}, {"topic": "Costume vs Backdrop", "q": "You want the sprite to look different when the answer is correct. What do you switch?", "options": ["The costume", "The backdrop", "The variable", "The event"], "why": "A costume is how a sprite looks. The backdrop is the stage background."}, {"topic": "Debug", "q": "The score never goes up in your game. Finding and fixing this mistake is called…", "options": ["Debugging", "Sequencing", "Cloning", "Looping"], "why": "Debugging means finding a mistake in your code and fixing it."}], "cards": [{"term": "Algorithm", "meaning": "A set of clear steps to solve a problem.", "example": "The plan for a game, before you code it."}, {"term": "Sprite", "meaning": "A character or object you can code and move.", "example": "The cat, the ghost, the spaceship."}, {"term": "Sequence", "meaning": "The order that blocks run in, top to bottom.", "example": "wait 1s → say “Hi” → say “Bye”."}, {"term": "Event", "meaning": "What starts a script running.", "example": "when green flag clicked / when this sprite clicked."}, {"term": "Loop (forever)", "meaning": "Repeats the blocks inside, over and over, never stopping.", "example": "forever: go to random position."}, {"term": "Variable", "meaning": "A memory location that saves data that can change.", "example": "score, lives."}, {"term": "Set vs Change", "meaning": "“Set” fixes a number. “Change” adds to the number already there.", "example": "set score to 0, then change score by 1."}, {"term": "Condition", "meaning": "A question with a true or false answer.", "example": "answer = 4 ?"}, {"term": "Selection (if/then/else)", "meaning": "Chooses one action or another, based on a condition.", "example": "if correct then add point, else say try again."}, {"term": "Ask and wait / answer", "meaning": "Gets typed input from the player and stores it in the “answer” variable.", "example": "ask “What is 2+2?” and wait."}, {"term": "Clone", "meaning": "A copy of a sprite, made while the program runs.", "example": "create clone of myself."}, {"term": "When I start as a clone", "meaning": "Code that runs for every clone made.", "example": "glide, then delete this clone."}, {"term": "Costume vs Backdrop", "meaning": "Costume = how a sprite looks. Backdrop = the stage background.", "example": "Switch costume for correct/incorrect; switch backdrop between scenes."}, {"term": "Debug", "meaning": "Find a mistake in your code and fix it.", "example": "Working out why the score never changes."}], "gaps": [{"s": "An ___ is a set of clear steps to solve a problem.", "a": ["algorithm"]}, {"s": "A ___ is a character or object you can code and move.", "a": ["sprite"]}, {"s": "The order that blocks run in, from top to bottom, is called ___.", "a": ["sequence"]}, {"s": "An ___ is what starts a script running, like “when green flag clicked”.", "a": ["event"]}, {"s": "A ___ loop repeats the blocks inside and never stops.", "a": ["forever"]}, {"s": "A ___ saves data that can change, like score or lives.", "a": ["variable"]}, {"s": "The block “___ score to 0” fixes the number.", "a": ["set"]}, {"s": "The block “___ score by 1” adds to the number already there.", "a": ["change"]}, {"s": "A ___ is a question with a true or false answer.", "a": ["condition"]}, {"s": "When the player types a reply, Scratch stores it in the ___ variable.", "a": ["answer"]}, {"s": "A ___ is a copy of a sprite, made while the program runs.", "a": ["clone"]}, {"s": "A ___ is how a sprite looks. The ___ is the stage background.", "a": ["costume", "backdrop"]}, {"s": "To ___ means to find a mistake in your code and fix it.", "a": ["debug"]}]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+// Tabs
+const TIPS = {
+  quiz: 'Answer each question. You will see if you are right straight away.',
+  cards: 'Say the meaning out loud first. Then tap the card to check.',
+  gaps: 'Choose a word from the word bank for each gap. Tap 🔊 to hear the sentence.'
+};
+function showTab(which){
+  ['quiz', 'cards', 'gaps'].forEach(t => {
+    $('#t' + t[0].toUpperCase() + t.slice(1)).setAttribute('aria-selected', which === t);
+    $('#' + t).hidden = which !== t;
+  });
+  $('header p').textContent = TIPS[which];
+}
+$('#tQuiz').onclick = () => showTab('quiz');
+$('#tCards').onclick = () => showTab('cards');
+$('#tGaps').onclick = () => showTab('gaps');
+
+// Quiz
+let order, qi, score, missed, answered;
+function startQuiz(){
+  order = shuffle(DATA.questions.map((q, i) => i));
+  qi = 0; score = 0; missed = []; renderQ();
+}
+function renderQ(){
+  const q = DATA.questions[order[qi]];
+  answered = false;
+  const opts = shuffle(q.options.map((t, i) => ({ t, i })));
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:${(qi / order.length) * 100}%"></span></div>
+    <p class="qnum">Question ${qi + 1} of ${order.length}</p>
+    <p class="q">${esc(q.q)}</p>
+    ${q.code ? `<pre>${esc(q.code)}</pre>` : ''}
+    <div class="opts">${opts.map(o => `<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="nextQ" hidden>${qi + 1 === order.length ? 'See my score' : 'Next question'}</button></div>`;
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(b, q));
+  $('#nextQ').onclick = () => { qi++; qi < order.length ? renderQ() : renderEnd(); };
+}
+function choose(btn, q){
+  if (answered) return;
+  answered = true;
+  const pick = +btn.dataset.i, ok = pick === 0;
+  if (ok) score++; else missed.push(q.topic);
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (+b.dataset.i === 0) b.classList.add('right');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = $('#fb');
+  fb.className = 'fb show ' + (ok ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${ok ? 'Correct!' : 'Not quite. The answer is: ' + esc(q.options[0])}</b>${esc(q.why)}`;
+  const n = $('#nextQ'); n.hidden = false; n.focus();
+}
+function renderEnd(){
+  const pct = Math.round(score / order.length * 100);
+  const msg = pct >= 80 ? 'Great work. You know this well.' : pct >= 50 ? 'Good start. Revise the keywords below.' : 'Keep going. Use the flashcards, then try again.';
+  const topics = [...new Set(missed)];
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:100%"></span></div>
+    <p class="qnum">Your score</p>
+    <p class="score">${score} / ${order.length}</p>
+    <p>${msg}</p>
+    ${topics.length ? `<p><b>Revise these keywords:</b></p><ul class="list">${topics.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '<p>You got every question right!</p>'}
+    <p><b>Write your score on your exit ticket in Google Classroom.</b></p>
+    <div class="row"><button class="btn ghost" id="toCards">Practise with flashcards</button><button class="btn" id="again">Try again</button></div>`;
+  $('#again').onclick = startQuiz;
+  $('#toCards').onclick = () => showTab('cards');
+}
+
+// Flashcards
+let deck = DATA.cards.slice(), ci = 0, flipped = false;
+function renderCard(){
+  const c = deck[ci];
+  $('#card').innerHTML = flipped
+    ? `<div class="def">${esc(c.meaning)}</div>${c.example ? `<div class="ex">Example: ${esc(c.example)}</div>` : ''}`
+    : `<div class="term">${esc(c.term)}</div><div class="hint">Tap to see the meaning</div>`;
+  $('#cardCount').textContent = `Card ${ci + 1} of ${deck.length}`;
+}
+$('#card').onclick = () => { flipped = !flipped; renderCard(); };
+$('#next').onclick = () => { ci = (ci + 1) % deck.length; flipped = false; renderCard(); };
+$('#prev').onclick = () => { ci = (ci - 1 + deck.length) % deck.length; flipped = false; renderCard(); };
+$('#shuf').onclick = () => { deck = shuffle(deck); ci = 0; flipped = false; renderCard(); };
+
+startQuiz(); renderCard();
+
+// Fill the gaps
+const BANK = shuffle([...new Set(DATA.gaps.flatMap(g => g.a))]);
+function renderGaps(){
+  $('#bank').innerHTML = BANK.map(w => `<span>${esc(w)}</span>`).join('');
+  const opts = '<option value="">choose…</option>' + BANK.map(w => `<option>${esc(w)}</option>`).join('');
+  $('#sents').innerHTML = DATA.gaps.map((g, i) => {
+    const parts = g.s.split('___');
+    let h = esc(parts[0]);
+    for (let k = 1; k < parts.length; k++) h += `<select data-g="${i}" data-k="${k - 1}" aria-label="Gap ${k} in sentence ${i + 1}">${opts}</select>` + esc(parts[k]);
+    return `<li>${h} <button class="say" data-g="${i}" aria-label="Listen to sentence ${i + 1}">🔊</button></li>`;
+  }).join('');
+  document.querySelectorAll('.say').forEach(b => b.onclick = () => speak(+b.dataset.g));
+  document.querySelectorAll('#sents select').forEach(s => s.onchange = () => s.classList.remove('right', 'wrong'));
+  const fb = $('#gapFb'); fb.className = 'fb'; fb.innerHTML = '';
+}
+function speak(i){
+  if (!('speechSynthesis' in window)) return;
+  const g = DATA.gaps[i], parts = g.s.split('___');
+  const sels = [...document.querySelectorAll(`#sents select[data-g="${i}"]`)];
+  let t = parts[0];
+  for (let k = 1; k < parts.length; k++) t += ' ' + (sels[k - 1].value || 'blank') + ' ' + parts[k];
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t.replace(/[“”"]/g, ''));
+  u.lang = 'en-GB'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+$('#gapCheck').onclick = () => {
+  let right = 0, total = 0, empty = 0;
+  document.querySelectorAll('#sents select').forEach(s => {
+    const ans = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    total++;
+    s.classList.remove('right', 'wrong');
+    if (!s.value) { empty++; return; }
+    if (s.value === ans) { right++; s.classList.add('right'); } else s.classList.add('wrong');
+  });
+  const fb = $('#gapFb');
+  fb.className = 'fb show ' + (right === total ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${right} out of ${total} correct.</b>` +
+    (right === total ? 'Brilliant! Every gap is right.' :
+     empty ? `You still have ${empty} empty gap${empty > 1 ? 's' : ''}. Orange gaps are wrong: try another word.` :
+     'Orange gaps are wrong. Try another word, then check again.');
+};
+$('#gapShow').onclick = () => {
+  document.querySelectorAll('#sents select').forEach(s => {
+    s.value = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    s.classList.remove('wrong'); s.classList.add('right');
+  });
+  const fb = $('#gapFb'); fb.className = 'fb show right';
+  fb.innerHTML = '<b>Answers shown.</b>Read each sentence out loud. Then press Start again and try without looking.';
+};
+$('#gapReset').onclick = renderGaps;
+renderGaps();
+</script>
+</body>
+</html>

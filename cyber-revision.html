@@ -1,0 +1,131 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cyber Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: revision desk with three tools (flashcards, practice quiz, fill the gaps), filtered by lesson. */
+:root{
+  --paper:#f3f6f8; --panel:#ffffff; --ink:#0f2233; --muted:#4d6273; --line:#cbd7e0;
+  --fibre:#0b8aa8; --fibre-soft:#dff1f6; --amber:#c98a0b; --amber-soft:#fbf0d6; --coral:#c2412d; --coral-soft:#fbe3de; --ok:#1f8a4c; --ok-soft:#dcf2e4;
+  --display:"Chakra Petch","Segoe UI",Arial,sans-serif; --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1824; --panel:#122536; --ink:#e4eef4; --muted:#9db3c2; --line:#284257;
+  --fibre:#4cc3de; --fibre-soft:#123a48; --amber:#f0b84a; --amber-soft:#3b2f12; --coral:#f08470; --coral-soft:#40201b; --ok:#5fd08e; --ok-soft:#143826; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1824; --panel:#122536; --ink:#e4eef4; --muted:#9db3c2; --line:#284257;
+  --fibre:#4cc3de; --fibre-soft:#123a48; --amber:#f0b84a; --amber-soft:#3b2f12; --coral:#f08470; --coral-soft:#40201b; --ok:#5fd08e; --ok-soft:#143826; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45}
+.wrap{max-width:960px;margin:0 auto;padding-block:16px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,5vw,44px)} h2{font-size:26px}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:inherit;font-family:var(--display);font-weight:700;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select{font:inherit;color:inherit;background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 10px}
+.panel{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px;min-width:0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--fibre);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn:focus-visible,.tab:focus-visible,.card:focus-visible,select:focus-visible,.opt:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.card{min-height:220px;border-radius:16px;border:3px solid var(--fibre);background:var(--fibre-soft);display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;font:inherit;color:var(--ink);width:100%}
+.card .word{font-family:var(--display);font-size:clamp(30px,6vw,46px);font-weight:700}
+.card .mean{font-size:22px;max-width:36ch}
+.card.flip{background:var(--panel);border-color:var(--amber)}
+.small{font-size:15px;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)} .opt.wrong{background:var(--coral-soft);border-color:var(--coral)}
+.msg{font-weight:700;min-height:1.4em} .msg.good{color:var(--ok)} .msg.bad{color:var(--coral)}
+.score{font-family:var(--display);font-size:28px;font-weight:700}
+.gap{display:grid;gap:6px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.gap select{min-width:120px}
+.gap.right select{border-color:var(--ok);background:var(--ok-soft)} .gap.wrong select{border-color:var(--coral);background:var(--coral-soft)}
+.prog{height:10px;border-radius:999px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;background:var(--fibre)}
+a{color:var(--fibre)}
+</style>
+<div class="wrap">
+  <div><div class="eyebrow">Year 8 · Networks &amp; Cyber Security</div><h1>Cyber Revision</h1>
+    <p>Get ready for the unit quiz. Use the flashcards to learn the keywords, then test yourself.</p></div>
+  <div class="bar">
+    <div class="tabs" role="tablist"><button class="tab" role="tab" id="t-cards" aria-selected="true">Flashcards</button><button class="tab" role="tab" id="t-quiz" aria-selected="false">Practice quiz</button><button class="tab" role="tab" id="t-gaps" aria-selected="false">Fill the gaps</button></div>
+    <label for="lesson">Lesson:</label><select id="lesson"></select>
+  </div>
+
+  <section class="panel" id="p-cards">
+    <div class="bar"><span id="cardpos" class="small"></span><div class="prog" style="flex:1"><i id="cardprog"></i></div></div>
+    <button class="card" id="card" aria-live="polite"></button>
+    <p class="small">Click the card to turn it over. Say the meaning out loud before you turn it!</p>
+    <div class="bar"><button class="btn ghost" id="prev">Previous</button><button class="btn" id="next">Next</button><button class="btn ghost" id="shuffle">Shuffle</button></div>
+  </section>
+
+  <section class="panel" id="p-quiz" hidden>
+    <div class="bar"><span id="qpos" class="small"></span><span class="score" id="qscore" style="margin-left:auto"></span></div>
+    <h2 id="qtext"></h2>
+    <div class="opts" id="qopts"></div>
+    <p class="msg" id="qmsg" role="status"></p>
+    <div class="bar"><button class="btn" id="qnext" hidden>Next question</button><button class="btn ghost" id="qrestart">Start again</button></div>
+  </section>
+
+  <section class="panel" id="p-gaps" hidden>
+    <p>Choose the missing word for each sentence, then press <b>Check</b>.</p>
+    <div id="gaplist" style="display:grid;gap:10px"></div>
+    <div class="bar"><button class="btn" id="gapcheck">Check</button><span class="score" id="gapscore"></span></div>
+    <p class="msg" id="gapmsg" role="status"></p>
+  </section>
+
+  <p class="small">Want more practice? Go back to the activities in the <a id="lablink" target="_blank" rel="noopener">Cyber Lab</a>.</p>
+</div>
+<script>
+const D={"kw": {"1": [["router", "A device that sends data the right way across networks."], ["packet", "A small piece of a message. Big messages are split into packets."], ["LAN", "Local Area Network: a network in a small area, like one school."], ["WAN", "Wide Area Network: a network over a big area, like the internet."]], "2": [["server", "A computer that stores websites or files and sends them to other computers."], ["IP address", "A number that identifies a device on a network, like a home address."], ["DNS", "Turns website names (bbc.co.uk) into IP addresses, like a phone book."], ["undersea cable", "A cable on the seabed that carries data between countries."]], "3": [["binary", "A number system that only uses 0 and 1."], ["bit", "One binary digit: a single 0 or 1."], ["byte", "A group of 8 bits."], ["parity bit", "An extra bit added to check if data changed when it was sent."]], "4": [["white hat", "A hacker with permission who finds weaknesses so they can be fixed."], ["grey hat", "A hacker who breaks in without permission, but not to cause harm."], ["black hat", "A hacker who breaks in without permission to steal or cause damage."], ["Computer Misuse Act", "The UK law that makes hacking without permission illegal."]], "5": [["malware", "Bad software made to harm a computer or steal data."], ["ransomware", "Malware that locks your files and asks for money."], ["phishing", "A trick message that tries to get your password or details."], ["social engineering", "Tricking a person, not a computer, to give away information."]], "6": [["encryption", "Scrambling data with a key so only the right person can read it."], ["key", "The secret that locks and unlocks a cipher."], ["ciphertext", "The scrambled message after encryption."], ["brute force", "Trying every possible key or password until one works."]], "7": [["passphrase", "A long password made of random words."], ["2FA", "Two-factor authentication: a second check, like a code sent to your phone."], ["backup", "A safe copy of your files."], ["firewall", "Checks data coming in and out and blocks anything dangerous."]]}, "titles": {"1": "How does a message travel?", "2": "Inside the internet", "3": "Binary: the secret language", "4": "What is a hacker?", "5": "Cyber threats", "6": "Keep it secret: encryption", "7": "Keep it safe: defences"}, "practice": [["Your message is split into 6 packets. Packet 4 does not arrive. What happens?", ["The computer asks for packet 4 again", "The message is lost forever", "The router deletes all packets", "Packet 5 becomes packet 4"], 0, "Packets are numbered, so the computer knows which one is missing and asks for it again.", 1], ["A cable between two routers is cut. What do the routers do?", ["Find another route", "Stop working", "Send the data by email", "Wait for the cable to be fixed"], 0, "Networks have many routes, so routers send packets another way.", 1], ["Which is a LAN?", ["The computers in our school", "The internet", "Cables between Thailand and Europe", "A bank's offices in 5 countries"], 0, "LAN = Local Area Network: one small area like a school.", 1], ["Which command shows your computer's IP address?", ["ipconfig", "tracert", "nslookup", "ping"], 0, "ipconfig shows your IP address and your router (default gateway).", 2], ["Which command counts how many routers (hops) a packet passes through?", ["tracert", "ipconfig", "ping", "nslookup"], 0, "tracert traces the route and lists every hop.", 2], ["What does ping measure?", ["How long a message takes to reach a computer and come back", "How many websites you visited", "Your password strength", "The size of a file"], 0, "ping measures time in milliseconds (ms).", 2], ["What is a server?", ["A computer that stores websites and sends them to other computers", "A cable under the sea", "A type of malware", "A small piece of a message"], 0, "When you open a website, a server sends it to you.", 2], ["What is 11111 in normal numbers? (16 8 4 2 1)", ["31", "11", "5", "32"], 0, "16 + 8 + 4 + 2 + 1 = 31.", 3], ["How many bits are in a byte?", ["8", "2", "10", "16"], 0, "1 byte = 8 bits.", 3], ["What does a parity bit help a computer do?", ["Find if data changed when it was sent", "Make pictures bigger", "Encrypt a message", "Count the hops"], 0, "If a row is suddenly odd, the computer knows a bit changed.", 3], ["Is hacking always illegal?", ["No: with permission it is ethical hacking", "Yes, always", "Only at night", "Only for adults"], 0, "White hat hackers have permission. Hacking without permission is illegal.", 4], ["A hacker finds a hole in a game without permission, does no harm, and tells the company. What hat?", ["Grey hat", "White hat", "Black hat", "Red hat"], 0, "No permission (so not white), but no harm (so not black).", 4], ["What is a bug bounty?", ["A reward for reporting a security problem", "A virus that eats files", "A type of cable", "A fine for hacking"], 0, "Companies pay hackers who report problems legally.", 4], ["Which malware spreads across a network all by itself?", ["Worm", "Trojan", "Ransomware", "Antivirus"], 0, "A worm copies itself without anyone opening a file.", 5], ["A free game download secretly contains malware. What is it?", ["Trojan", "Worm", "Firewall", "Backup"], 0, "Like the Trojan horse: it hides inside something you want.", 5], ["Someone calls: 'I'm from IT, tell me your password.' What is this?", ["Social engineering", "Encryption", "A backup", "A bug bounty"], 0, "They trick a person, not a computer. IT will never ask for your password.", 5], ["Decrypt KHOOR with key 3.", ["HELLO", "JGNNQ", "HOLLE", "WORLD"], 0, "Move each letter back 3: K\u2192H, H\u2192E, O\u2192L, O\u2192L, R\u2192O.", 6], ["What does the padlock and HTTPS on a website mean?", ["Data between you and the site is encrypted", "The website is a game", "The website is free", "The site has no adverts"], 0, "HTTPS = secure: the data is encrypted while it travels.", 6], ["Trying every possible key until one works is called\u2026", ["Brute force", "Phishing", "Parity", "Routing"], 0, "Brute force: try them all. Only 25 for a Caesar cipher!", 6], ["What does the NCSC say makes a good password?", ["Three random words", "Your pet's name", "Your birthday", "The same password everywhere"], 0, "Three random words are long, easy to remember and hard to guess.", 7], ["What does a firewall do?", ["Checks data in and out and blocks danger", "Makes a copy of your files", "Speeds up the internet", "Cools the computer"], 0, "A firewall is like a security guard at the door of the network.", 7], ["Why should you install updates?", ["They fix security holes", "They make the screen brighter", "They delete your files", "They change your password"], 0, "Hackers use old holes. Updates close them.", 7]], "gaps": [["A big message is split into small ___ that travel separately.", "packet", 1], ["A ___ sends data the right way across networks.", "router", 1], ["A network in one school is a ___.", "LAN", 1], ["The internet is the biggest ___.", "WAN", 1], ["A ___ stores websites and sends them to other computers.", "server", 2], ["A number that identifies a device on a network is an ___.", "IP address", 2], ["___ turns a website name into an IP address.", "DNS", 2], ["Most data between countries travels through an ___.", "undersea cable", 2], ["A number system that only uses 0 and 1 is called ___.", "binary", 3], ["A single 0 or 1 is called a ___.", "bit", 3], ["8 bits make 1 ___.", "byte", 3], ["An extra bit that checks if data changed is a ___.", "parity bit", 3], ["A ___ hacker has permission to find weaknesses.", "white hat", 4], ["A ___ hacker breaks in to steal or cause damage.", "black hat", 4], ["A ___ hacker has no permission but does not cause harm.", "grey hat", 4], ["Hacking without permission breaks the ___.", "Computer Misuse Act", 4], ["Bad software made to harm a computer is called ___.", "malware", 5], ["___ locks your files and asks for money.", "ransomware", 5], ["A trick email that asks for your password is called ___.", "phishing", 5], ["Tricking a person to give away information is ___.", "social engineering", 5], ["Scrambling data so only the right person can read it is ___.", "encryption", 6], ["The secret that locks and unlocks a cipher is the ___.", "key", 6], ["The scrambled message is called the ___.", "ciphertext", 6], ["Trying every possible key until one works is a ___ attack.", "brute force", 6], ["A long password made of random words is a ___.", "passphrase", 7], ["A second check, like a code sent to your phone, is ___.", "2FA", 7], ["A safe copy of your files is a ___.", "backup", 7], ["A ___ blocks dangerous data coming in and out of a network.", "firewall", 7]], "lab": "cyber-lab.html"};
+const $=id=>document.getElementById(id);
+$("lablink").href=D.lab;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("lesson").innerHTML='<option value="all">All lessons</option>'+Object.entries(D.titles).map(([k,t])=>`<option value="${k}">Lesson ${k}: ${esc(t)}</option>`).join("");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let L="all";
+// tabs
+const TABS=["cards","quiz","gaps"];
+TABS.forEach(t=>$("t-"+t).onclick=()=>{TABS.forEach(x=>{$("t-"+x).setAttribute("aria-selected",x===t);$("p-"+x).hidden=x!==t;});});
+$("lesson").onchange=()=>{L=$("lesson").value;cardsInit();quizInit();gapsInit();};
+// flashcards
+let cards=[],ci=0,flipped=false;
+function cardsInit(){cards=[];Object.entries(D.kw).forEach(([k,v])=>{if(L==="all"||L===k)v.forEach(([w,m])=>cards.push({w,m,k}));});ci=0;flipped=false;cardDraw();}
+function cardDraw(){const c=cards[ci];$("card").classList.toggle("flip",flipped);
+  $("card").innerHTML=flipped?`<span class="mean">${esc(c.m)}</span>`:`<span><span class="word">${esc(c.w)}</span><br><span class="small">Lesson ${c.k}</span></span>`;
+  $("card").setAttribute("aria-label",flipped?"Meaning: "+c.m:"Keyword: "+c.w+". Click to see the meaning.");
+  $("cardpos").textContent=`Card ${ci+1} of ${cards.length}`;$("cardprog").style.width=((ci+1)/cards.length*100)+"%";}
+$("card").onclick=()=>{flipped=!flipped;cardDraw();};
+$("next").onclick=()=>{ci=(ci+1)%cards.length;flipped=false;cardDraw();};
+$("prev").onclick=()=>{ci=(ci-1+cards.length)%cards.length;flipped=false;cardDraw();};
+$("shuffle").onclick=()=>{cards=shuffle(cards);ci=0;flipped=false;cardDraw();};
+// quiz
+let qs=[],qi=0,score=0,answered=false;
+function quizInit(){qs=shuffle(D.practice.filter(q=>L==="all"||String(q[4])===L));qi=0;score=0;quizDraw();}
+function quizDraw(){$("qmsg").textContent="";$("qnext").hidden=true;answered=false;
+  if(qi>=qs.length){$("qtext").textContent=`Finished! You scored ${score} out of ${qs.length}.`;$("qopts").innerHTML="";$("qpos").textContent="";$("qscore").textContent=`${score} / ${qs.length}`;
+    $("qmsg").className="msg good";$("qmsg").textContent=score===qs.length?"Perfect score! You are ready.":"Press Start again to try the questions in a new order.";return;}
+  const [q,opts,ans]=qs[qi];const order=shuffle(opts.map((o,i)=>i));
+  $("qpos").textContent=`Question ${qi+1} of ${qs.length}`;$("qscore").textContent=`Score ${score}`;$("qtext").textContent=q;
+  $("qopts").innerHTML=order.map(i=>`<button class="opt" data-i="${i}">${esc(opts[i])}</button>`).join("");}
+$("qopts").onclick=e=>{const b=e.target.closest(".opt");if(!b||answered)return;answered=true;const [,,ans,why]=qs[qi],i=+b.dataset.i;
+  document.querySelectorAll(".opt").forEach(o=>{if(+o.dataset.i===ans)o.classList.add("right");});
+  if(i===ans){score++;$("qmsg").className="msg good";$("qmsg").textContent="Correct! "+why;}else{b.classList.add("wrong");$("qmsg").className="msg bad";$("qmsg").textContent="Not quite. "+why;}
+  $("qscore").textContent=`Score ${score}`;$("qnext").hidden=false;$("qnext").focus();};
+$("qnext").onclick=()=>{qi++;quizDraw();};$("qrestart").onclick=quizInit;
+// gaps
+let gaps=[];
+function gapsInit(){gaps=D.gaps.filter(g=>L==="all"||String(g[2])===L);const bank=[...new Set(D.gaps.flatMap(g=>g[1].split("|")))].sort((a,b)=>a.localeCompare(b));
+  $("gaplist").innerHTML=gaps.map(([s,a],gi)=>{const parts=s.split("___");return `<div class="gap" id="g${gi}"><p>${parts.map((p,pi)=>esc(p)+(pi<parts.length-1?`<select aria-label="Missing word ${pi+1}" data-g="${gi}" data-p="${pi}"><option value="">…</option>${bank.map(w=>`<option>${esc(w)}</option>`).join("")}</select>`:"")).join("")}</p></div>`;}).join("");
+  $("gapscore").textContent="";$("gapmsg").textContent="";}
+$("gapcheck").onclick=()=>{let s=0;gaps.forEach(([t,a],gi)=>{const want=a.split("|"),got=[...document.querySelectorAll(`select[data-g="${gi}"]`)].map(x=>x.value);
+  const ok=want.every((w,i)=>w===got[i]);$("g"+gi).classList.toggle("right",ok);$("g"+gi).classList.toggle("wrong",!ok);if(ok)s++;});
+  $("gapscore").textContent=`${s} / ${gaps.length}`;$("gapmsg").className=s===gaps.length?"msg good":"msg bad";$("gapmsg").textContent=s===gaps.length?"All correct!":"Red sentences need another look. Use the flashcards to help.";};
+cardsInit();quizInit();gapsInit();
+</script>
+
+</body></html>

@@ -1,0 +1,1006 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cyber Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a lab bench. Top bar with lab tabs, one mission area per lab, results card at the end of each lab.
+   Palette from submarine-cable world: seabed navy ink, fibre cyan, signal amber, alert coral, paper. */
+:root{
+  --paper:#f3f6f8; --panel:#ffffff; --ink:#0f2233; --muted:#4d6273; --line:#cbd7e0;
+  --fibre:#0b8aa8; --fibre-soft:#dff1f6; --amber:#c98a0b; --amber-soft:#fbf0d6; --coral:#c2412d; --coral-soft:#fbe3de; --ok:#1f8a4c; --ok-soft:#dcf2e4;
+  --display:"Chakra Petch","Segoe UI",Arial,sans-serif; --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1824; --panel:#122536; --ink:#e4eef4; --muted:#9db3c2; --line:#284257;
+  --fibre:#4cc3de; --fibre-soft:#123a48; --amber:#f0b84a; --amber-soft:#3b2f12; --coral:#f08470; --coral-soft:#40201b; --ok:#5fd08e; --ok-soft:#143826; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1824; --panel:#122536; --ink:#e4eef4; --muted:#9db3c2; --line:#284257;
+  --fibre:#4cc3de; --fibre-soft:#123a48; --amber:#f0b84a; --amber-soft:#3b2f12; --coral:#f08470; --coral-soft:#40201b; --ok:#5fd08e; --ok-soft:#143826; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45}
+.wrap{max-width:1080px;margin:0 auto;padding-block:16px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:clamp(30px,5vw,44px)}
+h2{font-size:clamp(24px,3.6vw,32px)}
+h3{font-size:21px}
+p{margin:0}
+a{color:var(--fibre)}
+.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;justify-content:space-between}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+nav{display:flex;flex-wrap:wrap;gap:8px}
+nav a{font-family:var(--display);font-weight:700;text-decoration:none;color:var(--ink);background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 14px}
+nav a[aria-current="page"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.lab{display:grid;gap:18px}
+.intro{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:8px}
+.lesson{font-family:var(--mono);font-size:14px;color:var(--fibre);font-weight:700}
+.mission{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:12px;min-width:0}
+.mission.done{border-color:var(--ok)}
+.mhead{display:flex;gap:12px;align-items:center}
+.mnum{flex:none;width:40px;height:40px;border-radius:50%;background:var(--fibre);color:var(--paper);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:20px}
+.mission.done .mnum{background:var(--ok)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--fibre);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,input:focus-visible,select:focus-visible,nav a:focus-visible,.cell:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{font-weight:700;min-height:1.4em}
+.msg.good{color:var(--ok)} .msg.bad{color:var(--coral)}
+input,select{font:inherit;color:inherit;background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+.svgwrap{overflow-x:auto}
+svg text{font-family:var(--body)}
+.node{cursor:pointer}
+.kbd{font-family:var(--mono);background:var(--fibre-soft);border-radius:6px;padding:1px 6px}
+/* packets */
+.packets{display:flex;flex-wrap:wrap;gap:8px}
+.pkt{font-family:var(--mono);border:2px solid var(--fibre);background:var(--fibre-soft);border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--ink);font-size:16px}
+.pkt b{display:block;font-size:12px;color:var(--fibre)}
+.pkt[disabled]{opacity:.35;cursor:default}
+.slots{display:flex;flex-wrap:wrap;gap:8px;min-height:62px;border:2px dashed var(--line);border-radius:10px;padding:8px}
+.sorter{display:grid;gap:8px}
+.sitem{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.sitem.right{background:var(--ok-soft);border-color:var(--ok)} .sitem.wrong{background:var(--coral-soft);border-color:var(--coral)}
+/* binary */
+.cards{display:flex;flex-wrap:wrap;gap:10px}
+.bcard{width:86px;height:118px;border-radius:12px;border:2px solid var(--ink);background:var(--panel);display:grid;place-items:center;cursor:pointer;font-family:var(--display);font-size:34px;font-weight:700;color:var(--ink);position:relative}
+.bcard .dots{font-size:13px;font-family:var(--mono);color:var(--muted);position:absolute;bottom:8px}
+.bcard.off{background:var(--ink);color:var(--ink)}
+.bcard.off .dots{color:var(--ink)}
+.bits{font-family:var(--mono);font-size:28px;letter-spacing:.2em;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);border-radius:999px;padding:4px 12px;font-weight:700;font-variant-numeric:tabular-nums}
+.chip.ok{border-color:var(--ok);background:var(--ok-soft)}
+.grid{display:grid;gap:3px;width:max-content}
+.cell{width:34px;height:34px;border:1px solid var(--line);background:var(--panel);cursor:pointer;padding:0}
+.cell.on{background:var(--ink)}
+.cell.flash{outline:3px solid var(--amber)}
+.code{font-family:var(--mono);font-size:16px;line-height:1.9}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+/* phish */
+.email{border:2px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.ehead{background:var(--fibre-soft);padding:10px 14px;display:grid;gap:2px;font-size:16px}
+.ebody{padding:12px 14px;display:grid;gap:8px}
+.flag{border-radius:4px;cursor:pointer;padding:0 2px;border-bottom:2px dotted transparent}
+.flag:hover{border-bottom-color:var(--muted)}
+.flag.found{background:var(--coral-soft);border-bottom-color:var(--coral)}
+.fakebtn{display:inline-block;background:var(--fibre);color:var(--paper);border-radius:8px;padding:6px 12px;font-weight:700}
+.fakebtn.found{background:var(--coral);color:var(--paper);outline:3px solid var(--coral-soft)}
+.note{font-size:15px;color:var(--muted)}
+/* cipher */
+.wheel{display:block;margin:0 auto;max-width:100%}
+.alpha{font-family:var(--mono);font-size:18px;display:grid;gap:4px;overflow-x:auto}
+.alpha div{white-space:nowrap}
+textarea{font:16px/1.5 var(--mono);width:100%;min-height:84px;border:2px solid var(--line);border-radius:10px;padding:10px;background:var(--panel);color:var(--ink)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left}
+th{background:var(--fibre-soft)}
+td.mono{font-family:var(--mono)}
+.bars{display:flex;gap:3px;align-items:flex-end;height:120px;overflow-x:auto}
+.bar{width:22px;background:var(--fibre);border-radius:3px 3px 0 0;position:relative;flex:none}
+.bar span{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--ink)}
+/* password */
+.meter{height:16px;border-radius:999px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--coral);transition:width .3s}
+.big{font-family:var(--display);font-size:clamp(24px,4vw,34px);font-weight:700}
+/* results */
+.results{background:var(--panel);border:3px solid var(--fibre);border-radius:16px;padding:16px 18px;display:grid;gap:10px}
+.results pre{white-space:pre-wrap;font-family:var(--mono);font-size:15px;background:var(--fibre-soft);border-radius:10px;padding:10px 12px;margin:0}
+.links{display:grid;gap:6px}
+.home{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.tile{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:6px;text-decoration:none;color:var(--ink)}
+.tile:hover{border-color:var(--fibre)}
+.tile b{font-family:var(--display);font-size:22px}
+.dpool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:8px;border:2px dashed var(--line);border-radius:10px}
+.dchip{font:inherit;font-size:16px;font-weight:700;border:2px solid var(--amber);background:var(--amber-soft);color:var(--ink);border-radius:8px;padding:7px 12px;cursor:grab;touch-action:none}
+.dchip.sel{outline:3px solid var(--fibre);outline-offset:2px}
+.dzones{display:grid;gap:10px}
+.dzone{border:2px dashed var(--line);border-radius:10px;padding:8px 10px;min-height:56px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);cursor:pointer}
+.dzone .zl{flex:1 1 180px;font-size:15px;color:var(--muted)}
+.dzone.over{border-color:var(--fibre);background:var(--fibre-soft)}
+.dzone.right{border-style:solid;border-color:var(--ok);background:var(--ok-soft)} .dzone.wrong{border-style:solid;border-color:var(--coral);background:var(--coral-soft)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cols .dzone{flex-direction:column;align-items:stretch;min-height:160px}
+.cols .dzone .zl{flex:none}
+.cols .dzone h4{margin:0;font-family:var(--display);font-size:18px;color:var(--ink)}
+.netmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.region{border:2px dashed var(--fibre);border-radius:12px;padding:10px;display:grid;gap:8px;background:var(--fibre-soft)}
+.region.wan{border-color:var(--amber);background:var(--amber-soft)}
+.nd{display:flex;gap:10px;align-items:center}
+.nd svg{flex:none}
+.pgap{display:grid;gap:8px}
+.pgap .g{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px}
+.pgap .g.right select{border-color:var(--ok);background:var(--ok-soft)} .pgap .g.wrong select{border-color:var(--coral);background:var(--coral-soft)}
+.plen{border-color:var(--amber)} .plen .mnum{background:var(--amber)}
+.mr{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.mr.right{background:var(--ok-soft);border-color:var(--ok)} .mr.wrong{background:var(--coral-soft);border-color:var(--coral)}
+.czone{border:3px dashed var(--coral);border-radius:14px;padding:14px 18px;display:grid;gap:6px;background:var(--coral-soft)}
+.chal{border-color:var(--coral)} .chal .mnum{background:var(--coral);font-size:16px}
+.qlist{display:grid;gap:10px}
+.qcard{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:8px}
+.qrow{display:grid;gap:6px}
+.qrow select{width:100%;min-width:0;max-width:640px}
+.mission>*{min-width:0}
+.mission{grid-template-columns:minmax(0,1fr)}
+.qrow.right select{border-color:var(--ok);background:var(--ok-soft)} .qrow.wrong select{border-color:var(--coral);background:var(--coral-soft)}
+.term{font-family:var(--mono);font-size:14px;background:#0f2233;color:#9be5b0;border-radius:10px;padding:12px 14px;margin:0;overflow-x:auto;white-space:pre}
+.ascii{display:flex;flex-wrap:wrap;gap:4px;font-family:var(--mono);font-size:14px}
+.ascii span{border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.word{font-family:var(--mono);font-size:18px;font-weight:700;word-break:break-word}
+.cell.ro{cursor:default}
+@media (prefers-reduced-motion:reduce){.meter i{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div><div class="eyebrow">Year 8 · Networks &amp; Cyber Security</div><h1>Cyber Lab</h1></div>
+    <nav aria-label="Labs">
+      <a href="#home">Start</a><a href="#packets">1 Packet Journey</a><a href="#builder">2 Network Builder</a><a href="#binary">3 Binary Lab</a><a href="#hats">4 Hacker Hats</a><a href="#phish">5 Phish Spotter</a><a href="#cipher">6 Cipher Lab</a><a href="#password">7 Password Lab</a>
+    </nav>
+  </div>
+
+  <!-- HOME -->
+  <section class="lab" id="v-home">
+    <div class="intro">
+      <p>Choose the lab for today's lesson. Screenshot your finished tasks and paste them into your <b>portfolio</b>. Finished early? Every lab has a <b>Challenge zone</b>. Every lab ends with a <b>fill-the-gaps plenary</b> to check yourself.</p>
+    </div>
+    <div class="home">
+      <a class="tile" href="#packets"><span class="lesson">Lesson 1</span><b>Packet Journey</b><span>Find the fastest route, fix a broken cable, rebuild the packets.</span></a>
+      <a class="tile" href="#builder"><span class="lesson">Lesson 2</span><b>Network Builder</b><span>Drag the hardware into the school network.</span></a>
+      <a class="tile" href="#binary"><span class="lesson">Lesson 3</span><b>Binary Lab</b><span>Binary cards, your initials in binary, a hidden picture and a magic trick.</span></a>
+      <a class="tile" href="#hats"><span class="lesson">Lesson 4</span><b>Hacker Hats</b><span>Myth or real? Which hat? Legal or illegal?</span></a>
+      <a class="tile" href="#phish"><span class="lesson">Lesson 5</span><b>Phish Spotter</b><span>Is it real or a trick? Find the red flags.</span></a>
+      <a class="tile" href="#cipher"><span class="lesson">Lesson 6</span><b>Cipher Lab</b><span>Encrypt with a cipher wheel, then crack a secret message.</span></a>
+      <a class="tile" href="#password"><span class="lesson">Lesson 7</span><b>Password Lab</b><span>How long would a hacker need to guess it?</span></a>
+    </div>
+  </section>
+
+  <!-- PACKET JOURNEY -->
+  <section class="lab" id="v-packets" hidden>
+    <div class="intro"><span class="lesson">Lesson 1 · How does a message travel?</span><h2>Packet Journey</h2>
+      <p>You send a message from <b>You</b> (Bangkok) to a <b>Server</b> in London. It travels through <b>routers</b>. The numbers on each cable are the time in <b>milliseconds (ms)</b>.</p></div>
+
+    <article class="mission" id="pm1"><div class="mhead"><div class="mnum">1</div><h3>Find the fastest route</h3></div>
+      <p>Click the routers in order, from <b>You</b> to <b>Server</b>. Then press <b>Send</b>.</p>
+      <div class="svgwrap"><svg id="net1" viewBox="0 0 640 300" width="640" style="max-width:100%;height:auto" role="img" aria-label="Network map"></svg></div>
+      <div class="row"><span>Your route: <b class="kbd" id="r1path">You</b> · Time: <b id="r1time">0</b> ms</span></div>
+      <div class="row"><button class="btn" id="r1send">Send</button><button class="btn ghost" id="r1reset">Start again</button></div>
+      <p class="msg" id="r1msg" role="status"></p>
+    </article>
+
+    <article class="mission" id="pm2"><div class="mhead"><div class="mnum">2</div><h3>Oh no! A cable is cut</h3></div>
+      <p>A fishing boat's anchor has cut the cable between <b>D</b> and <b>E</b>. The routers must find a new way. Find the new fastest route.</p>
+      <div class="svgwrap"><svg id="net2" viewBox="0 0 640 300" width="640" style="max-width:100%;height:auto" role="img" aria-label="Network map with a broken cable"></svg></div>
+      <div class="row"><span>Your route: <b class="kbd" id="r2path">You</b> · Time: <b id="r2time">0</b> ms</span></div>
+      <div class="row"><button class="btn" id="r2send">Send</button><button class="btn ghost" id="r2reset">Start again</button></div>
+      <p class="msg" id="r2msg" role="status"></p>
+    </article>
+
+    <article class="mission" id="pm3"><div class="mhead"><div class="mnum">3</div><h3>Rebuild the packets</h3></div>
+      <p>Your message was split into numbered <b>packets</b>. They took different routes and arrived in the wrong order. Click them in order: packet 1 first.</p>
+      <div class="packets" id="pktpool"></div>
+      <p class="note">Your message:</p>
+      <div class="slots" id="pktslots"></div>
+      <div id="pktmissing" hidden class="mission" style="border-style:dashed">
+        <p><b>One packet is missing!</b> Which packet number did not arrive?</p>
+        <div class="row"><select id="misssel" aria-label="Missing packet number"><option value="">Choose…</option></select><button class="btn" id="missbtn">Ask for it again</button></div>
+      </div>
+      <p class="msg" id="pktmsg" role="status"></p>
+      <div class="row"><button class="btn ghost" id="pktreset">Start again</button></div>
+    </article>
+
+    <article class="mission" id="pm4"><div class="mhead"><div class="mnum">4</div><h3>LAN or WAN?</h3></div>
+      <p><b>LAN</b> = Local Area Network: a <b>small area</b> (one building). <b>WAN</b> = Wide Area Network: a <b>big area</b> (cities, countries).</p>
+      <div class="sorter" id="lansort"></div>
+      <div class="row"><button class="btn" id="lancheck">Check</button></div>
+      <p class="msg" id="lanmsg" role="status"></p>
+    </article>
+
+
+    <article class="mission" id="pm5"><div class="mhead"><div class="mnum">5</div><h3>Label the network</h3></div>
+      <p>Drag each label to the right place. (Or click a label, then click the box.)</p>
+      <div class="dpool" id="d1pool"></div>
+      <div class="netmap">
+        <div class="region"><div class="dzone" data-task="d1" data-ans="LAN"><span class="zl">This whole area (our school) is a…</span></div>
+          <div class="nd"><svg width="46" height="34" viewBox="0 0 46 34"><rect x="7" y="3" width="32" height="21" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><rect x="2" y="26" width="42" height="5" rx="2" fill="currentColor"/></svg><div class="dzone" data-task="d1" data-ans="device" style="flex:1"><span class="zl">Laptop in class</span></div></div>
+          <div class="nd"><svg width="46" height="34" viewBox="0 0 46 34"><rect x="3" y="16" width="40" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><line x1="12" y1="16" x2="8" y2="3" stroke="currentColor" stroke-width="3"/><line x1="34" y1="16" x2="38" y2="3" stroke="currentColor" stroke-width="3"/><circle cx="12" cy="23" r="2.5" fill="currentColor"/><circle cx="20" cy="23" r="2.5" fill="currentColor"/></svg><div class="dzone" data-task="d1" data-ans="router" style="flex:1"><span class="zl">Sends data out of our school</span></div></div></div>
+        <div class="region wan"><div class="dzone" data-task="d1" data-ans="WAN"><span class="zl">The network between countries is a…</span></div>
+          <div class="nd"><svg width="46" height="34" viewBox="0 0 46 34"><rect x="8" y="2" width="30" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><rect x="8" y="13" width="30" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><rect x="8" y="24" width="30" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="3"/></svg><div class="dzone" data-task="d1" data-ans="server" style="flex:1"><span class="zl">Stores the website in London</span></div></div>
+          <div class="nd"><span class="pkt" style="cursor:default;font-size:14px"><b>Packet 3</b>THE</span><div class="dzone" data-task="d1" data-ans="packet" style="flex:1"><span class="zl">A small piece of the message</span></div></div></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d1">Check</button><button class="btn ghost" data-reset="d1">Start again</button></div>
+      <p class="msg" id="d1msg" role="status"></p>
+    </article>
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="pmc1"><div class="mhead"><div class="mnum">C1</div><h3>Big network: fastest route</h3></div>
+      <p>A bigger network! Click the routers in order from <b>You</b> to <b>Server</b> and find the fastest route.</p>
+      <div class="svgwrap"><svg id="netc1" viewBox="0 0 640 340" width="640" style="max-width:100%;height:auto" role="img" aria-label="Big network map"></svg></div>
+      <div class="row"><span>Your route: <b class="kbd" id="rc1path">You</b> · Time: <b id="rc1time">0</b> ms</span></div>
+      <div class="row"><button class="btn" id="rc1send">Send</button><button class="btn ghost" id="rc1reset">Start again</button></div>
+      <p class="msg" id="rc1msg" role="status"></p>
+    </article>
+    <article class="mission chal" id="pmc2"><div class="mhead"><div class="mnum">C2</div><h3>Router F is broken!</h3></div>
+      <p>Router <b>F</b> has stopped working. No data can go through it. Find the new fastest route.</p>
+      <div class="svgwrap"><svg id="netc2" viewBox="0 0 640 340" width="640" style="max-width:100%;height:auto" role="img" aria-label="Big network map with router F broken"></svg></div>
+      <div class="row"><span>Your route: <b class="kbd" id="rc2path">You</b> · Time: <b id="rc2time">0</b> ms</span></div>
+      <div class="row"><button class="btn" id="rc2send">Send</button><button class="btn ghost" id="rc2reset">Start again</button></div>
+      <p class="msg" id="rc2msg" role="status"></p>
+    </article>
+    <article class="mission chal" id="pmc3"><div class="mhead"><div class="mnum">C3</div><h3>Packet maths</h3></div>
+      <p>Think like a computer. Choose the right answer.</p>
+      <div class="qlist" id="pqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="pq">Check</button></div>
+      <p class="msg" id="pqmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen1"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg1"></div>
+      <div class="row"><button class="btn" data-pcheck="1">Check</button><span class="big" id="pgs1"></span></div>
+      <p class="msg" id="pgm1" role="status"></p></article>
+    <div class="results"><h3>My Packet Journey results</h3><pre id="pres"></pre><div class="row"><button class="btn" data-copy="pres">Copy results</button><span class="msg" role="status"></span></div>
+      <p class="note">Finished? Try <a href="https://www.csfieldguide.org.nz/en/interactives/packet-attack/" target="_blank" rel="noopener">Packet Attack (CS Field Guide)</a>: attack the packets and see how the network fights back.</p></div>
+  </section>
+
+  <!-- BINARY LAB -->
+  <section class="lab" id="v-binary" hidden>
+    <div class="intro"><span class="lesson">Lesson 3 · Binary: the secret language</span><h2>Binary Lab</h2>
+      <p>Computers only understand <b>1</b> (on) and <b>0</b> (off). Each 1 or 0 is a <b>bit</b>.</p></div>
+
+    <article class="mission" id="bm1"><div class="mhead"><div class="mnum">1</div><h3>Binary cards</h3></div>
+      <p>Click a card to turn it <b>on (1)</b> or <b>off (0)</b>. Add up the cards that are on. Make each target number.</p>
+      <div class="cards" id="bcards"></div>
+      <div class="row"><span>Binary: <span class="bits" id="bbits">00000</span></span><span>Number: <span class="big" id="bval">0</span></span></div>
+      <div class="chips" id="btargets"></div>
+      <p class="msg" id="bmsg" role="status"></p>
+    </article>
+
+    <article class="mission" id="bm2"><div class="mhead"><div class="mnum">2</div><h3>Your initials in binary</h3></div>
+      <p>Every letter has a number code. <span class="kbd">A</span> = 65, <span class="kbd">B</span> = 66 … The computer stores that number in <b>8 bits</b> (1 <b>byte</b>).</p>
+      <div class="row"><label for="initials">Type your initials:</label><input id="initials" maxlength="3" style="width:120px;text-transform:uppercase" autocomplete="off"></div>
+      <div class="tablewrap"><table id="inittab"><tr><th>Letter</th><th>Number</th><th>Binary (8 bits)</th></tr></table></div>
+    </article>
+
+    <article class="mission" id="bm3"><div class="mhead"><div class="mnum">3</div><h3>The hidden picture</h3></div>
+      <p>Each row of the picture is stored as binary. <b>1 = black square</b>, <b>0 = white square</b>. Click squares to colour the picture, then press <b>Check</b>.</p>
+      <div class="two"><div class="code" id="pixcode"></div><div class="grid" id="pixgrid" style="grid-template-columns:repeat(8,34px)"></div></div>
+      <div class="row"><button class="btn" id="pixcheck">Check</button><button class="btn ghost" id="pixnext">Next picture</button></div>
+      <p class="msg" id="pixmsg" role="status"></p>
+    </article>
+
+    <article class="mission" id="bm4"><div class="mhead"><div class="mnum">4</div><h3>The magic trick (parity)</h3></div>
+      <p><b>Step 1:</b> Add squares in the <b>last row and column</b> so that every row and column has an <b>even</b> number of black squares (0, 2, 4…).</p>
+      <p><b>Step 2:</b> Press <b>Flip one</b>. The computer secretly flips one square. Can you find it?</p>
+      <div class="grid" id="pargrid" style="grid-template-columns:repeat(6,34px)"></div>
+      <div class="row"><button class="btn" id="parready">Step 1: Check my parity</button><button class="btn" id="parflip" disabled>Step 2: Flip one</button><button class="btn ghost" id="parnew">New grid</button></div>
+      <p class="msg" id="parmsg" role="status"></p>
+      <p class="note">This is how computers check for errors when data is sent: an extra <b>parity bit</b> shows if something changed.</p>
+    </article>
+
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="bmc1"><div class="mhead"><div class="mnum">C1</div><h3>Secret binary message</h3></div>
+      <p>A spy sent 3 words in binary. Each letter is <b>8 bits</b> (1 byte). Work out the number, then the letter. Place values: <span class="kbd">128 64 32 16 8 4 2 1</span></p>
+      <div class="ascii" id="asciitab"></div>
+      <div class="qlist" id="secretlist"></div>
+      <div class="row"><button class="btn" id="secretcheck">Check</button></div>
+      <p class="msg" id="secretmsg" role="status"></p>
+    </article>
+    <article class="mission chal" id="bmc2"><div class="mhead"><div class="mnum">C2</div><h3>Pixel artist</h3></div>
+      <p><b>Step 1:</b> Draw your own 8 × 8 picture. The computer shows the binary for each row.</p>
+      <div class="two"><div class="grid" id="artgrid" style="grid-template-columns:repeat(8,34px)"></div><pre class="code" id="artcode" style="margin:0"></pre></div>
+      <div class="row"><button class="btn" data-copy="artcode">Copy my code</button><span class="msg" role="status"></span><button class="btn ghost" id="artclear">Clear</button></div>
+      <p><b>Step 2:</b> Send your code (only the code!) to a partner. Paste your partner's 8 rows here and press <b>Draw it</b>. Can you guess their picture?</p>
+      <textarea id="artin" aria-label="Partner's binary code" placeholder="00111100&#10;01000010&#10;…"></textarea>
+      <div class="row"><button class="btn" id="artdraw">Draw it</button></div>
+      <div class="grid" id="artout" style="grid-template-columns:repeat(8,34px)"></div>
+      <p class="msg" id="artmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen3"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg3"></div>
+      <div class="row"><button class="btn" data-pcheck="3">Check</button><span class="big" id="pgs3"></span></div>
+      <p class="msg" id="pgm3" role="status"></p></article>
+    <div class="results"><h3>My Binary Lab results</h3><pre id="bres"></pre><div class="row"><button class="btn" data-copy="bres">Copy results</button><span class="msg" role="status"></span></div></div>
+  </section>
+
+  <!-- PHISH SPOTTER -->
+  <section class="lab" id="v-phish" hidden>
+    <div class="intro"><span class="lesson">Lesson 5 · Cyber threats</span><h2>Phish Spotter</h2>
+      <p><b>Phishing</b> is a trick message that tries to get your password, money or personal details. For each message: decide <b>Phish</b> or <b>Safe</b>. If it is a phish, click on the <b>red flags</b> in the message.</p>
+      <p class="note">Training examples only. All names, companies and links are invented.</p></div>
+    <div id="phishlist" class="lab"></div>
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="phc1"><div class="mhead"><div class="mnum">C1</div><h3>Name the malware</h3></div>
+      <p>Drag each type of malware to what it does. (Or click a card, then click the box.)</p>
+      <div class="dpool" id="d5pool"></div>
+      <div class="dzones">
+        <div class="dzone" data-task="d5" data-ans="virus"><span class="zl">Hides in a file and spreads when the file is opened or shared</span></div>
+        <div class="dzone" data-task="d5" data-ans="worm"><span class="zl">Copies itself across a network on its own</span></div>
+        <div class="dzone" data-task="d5" data-ans="trojan"><span class="zl">Hides inside something that looks useful, like a free game</span></div>
+        <div class="dzone" data-task="d5" data-ans="ransomware"><span class="zl">Locks your files and asks for money</span></div>
+        <div class="dzone" data-task="d5" data-ans="spyware"><span class="zl">Secretly watches what you type and sends it to a criminal</span></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d5">Check</button><button class="btn ghost" data-reset="d5">Start again</button></div>
+      <p class="msg" id="d5msg" role="status"></p>
+    </article>
+    <article class="mission chal" id="phc2"><div class="mhead"><div class="mnum">C2</div><h3>Social engineering: what would you do?</h3></div>
+      <p>Social engineering tricks <b>people</b>, not computers. Choose the safest thing to do.</p>
+      <div class="qlist" id="sqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="sq">Check</button></div>
+      <p class="msg" id="sqmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen5"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg5"></div>
+      <div class="row"><button class="btn" data-pcheck="5">Check</button><span class="big" id="pgs5"></span></div>
+      <p class="msg" id="pgm5" role="status"></p></article>
+    <div class="results"><h3>My Phish Spotter results</h3><pre id="phres"></pre><div class="row"><button class="btn" data-copy="phres">Copy results</button><span class="msg" role="status"></span></div>
+      <p class="note">Next: try the real <a href="https://phishingquiz.withgoogle.com/" target="_blank" rel="noopener">Google Phishing Quiz</a> and screenshot your score.</p></div>
+  </section>
+
+  <!-- CIPHER LAB -->
+  <section class="lab" id="v-cipher" hidden>
+    <div class="intro"><span class="lesson">Lesson 6 · Keep it secret: encryption</span><h2>Cipher Lab</h2>
+      <p>A <b>Caesar cipher</b> moves every letter along the alphabet by the same number. That number is the <b>key</b>.</p></div>
+
+    <article class="mission" id="cm1"><div class="mhead"><div class="mnum">1</div><h3>The cipher wheel</h3></div>
+      <div class="row"><label for="ckey">Key (shift):</label><input type="range" id="ckey" min="0" max="25" value="3" style="width:220px"><b class="big" id="ckeyv">3</b></div>
+      <div class="alpha" aria-label="Alphabet with shift"><div id="aplain"></div><div id="acipher" style="color:var(--fibre)"></div></div>
+      <div class="two">
+        <div><label for="cplain"><b>Plaintext</b> (your message)</label><textarea id="cplain">MEET ME AT LUNCH</textarea></div>
+        <div><label for="cciph"><b>Ciphertext</b> (secret message)</label><textarea id="cciph"></textarea></div>
+      </div>
+      <p class="note">Type in either box. Send your ciphertext and the key to your partner. Can they decrypt it?</p>
+    </article>
+
+    <article class="mission" id="cm2"><div class="mhead"><div class="mnum">2</div><h3>Crack the code</h3></div>
+      <p>A spy intercepted this message. Nobody knows the key. There are only <b>25</b> possible keys, so a computer can try them all. This is called a <b>brute force</b> attack.</p>
+      <p class="code" style="font-size:20px" id="spymsg"></p>
+      <div class="row"><button class="btn" id="brute">Try every key</button></div>
+      <div class="tablewrap" id="brutewrap" hidden><table id="brutetab"></table></div>
+      <div class="row"><label for="crackkey">The key was:</label><input id="crackkey" inputmode="numeric" style="width:90px"><label for="crackword">The message says:</label><input id="crackword" style="width:220px"><button class="btn" id="crackcheck">Check</button></div>
+      <p class="msg" id="crackmsg" role="status"></p>
+    </article>
+
+    <article class="mission" id="cm3"><div class="mhead"><div class="mnum">3</div><h3>Letter detective</h3></div>
+      <p>In English, the most common letter is <b>E</b>. Count the letters in a long secret message. The most common letter is probably E, which gives away the key!</p>
+      <p class="code" id="longmsg"></p>
+      <div class="bars" id="freqbars" aria-label="Letter counts"></div>
+      <div style="height:20px"></div>
+      <div class="row"><label for="freqkey">Most common letter is</label><input id="freqlet" maxlength="1" style="width:60px;text-transform:uppercase" aria-label="Most common letter"><label for="freqkey">so the key is</label><input id="freqkey" inputmode="numeric" style="width:80px"><button class="btn" id="freqcheck">Check</button></div>
+      <p class="msg" id="freqmsg" role="status"></p>
+    </article>
+
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="cmc1"><div class="mhead"><div class="mnum">C1</div><h3>Spy chain</h3></div>
+      <p>Decrypt 3 spy messages. Each message tells you the <b>key</b> for the next one. Use the cipher wheel in Task 1 to help (type the ciphertext into the ciphertext box).</p>
+      <div class="qlist" id="chainlist"></div>
+      <p class="msg" id="chainmsg" role="status"></p>
+    </article>
+    <article class="mission chal" id="cmc2"><div class="mhead"><div class="mnum">C2</div><h3>Brute force race</h3></div>
+      <p>A hacker uses brute force: trying every possible key. Drag these into order, from <b>fastest</b> to crack (1) to <b>slowest</b> (5).</p>
+      <div class="dpool" id="d6pool"></div>
+      <div class="dzones">
+        <div class="dzone" data-task="d6" data-ans="Caesar cipher (25 keys)"><span class="zl"><b>1</b> fastest</span></div>
+        <div class="dzone" data-task="d6" data-ans="3-digit bike lock (1,000 codes)"><span class="zl"><b>2</b></span></div>
+        <div class="dzone" data-task="d6" data-ans="4-digit phone PIN (10,000 codes)"><span class="zl"><b>3</b></span></div>
+        <div class="dzone" data-task="d6" data-ans="8 small letters (about 200 billion)"><span class="zl"><b>4</b></span></div>
+        <div class="dzone" data-task="d6" data-ans="Three random words (trillions and trillions)"><span class="zl"><b>5</b> slowest</span></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d6">Check</button><button class="btn ghost" data-reset="d6">Start again</button></div>
+      <p class="msg" id="d6msg" role="status"></p>
+      <div class="qlist" id="bqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="bq">Check</button></div>
+      <p class="msg" id="bqmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen6"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg6"></div>
+      <div class="row"><button class="btn" data-pcheck="6">Check</button><span class="big" id="pgs6"></span></div>
+      <p class="msg" id="pgm6" role="status"></p></article>
+    <div class="results"><h3>My Cipher Lab results</h3><pre id="cres"></pre><div class="row"><button class="btn" data-copy="cres">Copy results</button><span class="msg" role="status"></span></div></div>
+  </section>
+
+  <!-- PASSWORD LAB -->
+  <section class="lab" id="v-password" hidden>
+    <div class="intro"><span class="lesson">Lesson 7 · Keep it safe: defences</span><h2>Password Lab</h2>
+      <p><b>Never type a real password here.</b> Make up practice ones. Nothing you type is saved or sent anywhere.</p></div>
+
+    <article class="mission" id="wm1"><div class="mhead"><div class="mnum">1</div><h3>How long to crack it?</h3></div>
+      <p>A hacker's computer can guess about <b>10 billion</b> passwords every second. Type a <b>practice</b> password:</p>
+      <input id="pw" autocomplete="off" spellcheck="false" style="width:100%;font-family:var(--mono)" aria-label="Practice password">
+      <div class="meter"><i id="pwbar"></i></div>
+      <p>Time to crack: <span class="big" id="pwtime">instantly</span></p>
+      <p class="note" id="pwwhy"></p>
+      <p class="note">This is a rough estimate. Real hackers also try lists of common words and names, so choose words that are random, not your favourite things.</p>
+    </article>
+
+    <article class="mission" id="wm2"><div class="mhead"><div class="mnum">2</div><h3>Three random words</h3></div>
+      <p>UK cyber experts (the NCSC) say: join <b>three random words</b>. Easy to remember, hard to guess. <a href="https://www.ncsc.gov.uk/collection/top-tips-for-staying-secure-online/three-random-words" target="_blank" rel="noopener">Read the NCSC advice</a>.</p>
+      <div class="row"><button class="btn" id="threew">Make three random words</button><span class="kbd" id="threeout" style="font-size:20px"></span></div>
+      <div class="row"><button class="btn ghost" id="threetest">Test it above</button></div>
+    </article>
+
+    <article class="mission" id="wm3"><div class="mhead"><div class="mnum">3</div><h3>Challenge</h3></div>
+      <p>Make up a practice password that would take <b>over 1 million years</b> to crack, without using a real one.</p>
+      <div class="chips" id="pwchal"><span class="chip" id="ch1">Over 1 year</span><span class="chip" id="ch2">Over 1,000 years</span><span class="chip" id="ch3">Over 1 million years</span></div>
+    </article>
+
+
+    <article class="mission" id="wm4"><div class="mhead"><div class="mnum">4</div><h3>Match the threat to the defence</h3></div>
+      <p>Drag each defence to the threat it stops best. (Or click a defence, then click the box.)</p>
+      <div class="dpool" id="d7pool"></div>
+      <div class="dzones">
+        <div class="dzone" data-task="d7" data-ans="passphrase"><span class="zl">Someone guesses your password</span></div>
+        <div class="dzone" data-task="d7" data-ans="backup"><span class="zl">Ransomware locks all your files</span></div>
+        <div class="dzone" data-task="d7" data-ans="update"><span class="zl">A worm uses a hole in old software</span></div>
+        <div class="dzone" data-task="d7" data-ans="antivirus"><span class="zl">You download a trojan by mistake</span></div>
+        <div class="dzone" data-task="d7" data-ans="2FA"><span class="zl">A phishing attack steals your password</span></div>
+        <div class="dzone" data-task="d7" data-ans="firewall"><span class="zl">A stranger tries to connect to your computer</span></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d7">Check</button><button class="btn ghost" data-reset="d7">Start again</button></div>
+      <p class="msg" id="d7msg" role="status"></p>
+    </article>
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="wmc1"><div class="mhead"><div class="mnum">C1</div><h3>Help Arun stay safe</h3></div>
+      <p>Arun has some bad cyber habits. Choose the best fix for each one.</p>
+      <div class="qlist" id="aqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="aq">Check</button></div>
+      <p class="msg" id="aqmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen7"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg7"></div>
+      <div class="row"><button class="btn" data-pcheck="7">Check</button><span class="big" id="pgs7"></span></div>
+      <p class="msg" id="pgm7" role="status"></p></article>
+    <div class="results"><h3>My Password Lab results</h3><pre id="wres"></pre><div class="row"><button class="btn" data-copy="wres">Copy results</button><span class="msg" role="status"></span></div>
+      <p class="note">Your results show the <b>type</b> of password you made, never the password itself.</p></div>
+  </section>
+  <!-- NETWORK BUILDER -->
+  <section class="lab" id="v-builder" hidden>
+    <div class="intro"><span class="lesson">Lesson 2 · Inside the internet</span><h2>Network Builder</h2>
+      <p>Build our school network. Drag each piece of hardware to its job. (Or click a card, then click the box.)</p></div>
+    <article class="mission" id="nm1"><div class="mhead"><div class="mnum">1</div><h3>Who does what?</h3></div>
+      <div class="dpool" id="d2pool"></div>
+      <div class="dzones">
+        <div class="dzone" data-task="d2" data-ans="router"><span class="zl">Connects our school to the internet</span></div>
+        <div class="dzone" data-task="d2" data-ans="switch"><span class="zl">Connects all the wired devices inside our LAN</span></div>
+        <div class="dzone" data-task="d2" data-ans="Wi-Fi access point"><span class="zl">Connects laptops and phones with no cable</span></div>
+        <div class="dzone" data-task="d2" data-ans="server"><span class="zl">Stores the school's files and website, and sends them out</span></div>
+        <div class="dzone" data-task="d2" data-ans="device"><span class="zl">A computer or phone that sends and receives data</span></div>
+        <div class="dzone" data-task="d2" data-ans="undersea cable"><span class="zl">Carries our data from Thailand to other countries</span></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d2">Check</button><button class="btn ghost" data-reset="d2">Start again</button></div>
+      <p class="msg" id="d2msg" role="status"></p>
+    </article>
+    <article class="mission" id="nm2"><div class="mhead"><div class="mnum">2</div><h3>Put the journey in order</h3></div>
+      <p>You open a website at school. Drag the steps into order: 1 is first.</p>
+      <div class="dpool" id="d2bpool"></div>
+      <div class="dzones">
+        <div class="dzone" data-task="d2b" data-ans="Your laptop asks for the website"><span class="zl"><b>1</b></span></div>
+        <div class="dzone" data-task="d2b" data-ans="DNS finds the website's IP address"><span class="zl"><b>2</b></span></div>
+        <div class="dzone" data-task="d2b" data-ans="The school router sends the request out"><span class="zl"><b>3</b></span></div>
+        <div class="dzone" data-task="d2b" data-ans="Packets travel through routers and undersea cables"><span class="zl"><b>4</b></span></div>
+        <div class="dzone" data-task="d2b" data-ans="The server sends the website back in packets"><span class="zl"><b>5</b></span></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d2b">Check</button><button class="btn ghost" data-reset="d2b">Start again</button></div>
+      <p class="msg" id="d2bmsg" role="status"></p>
+    </article>
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="nmc1"><div class="mhead"><div class="mnum">C1</div><h3>Read the tracert</h3></div>
+      <p>A student in Bangkok typed <span class="kbd">tracert bbc.co.uk</span>. Each line is one <b>hop</b> (one router). The times are in ms. <span class="note">(bkk = Bangkok, sg = Singapore, mrs = Marseille in France, lon = London)</span></p>
+      <pre class="term">C:\> tracert bbc.co.uk
+
+Tracing route to bbc.co.uk [151.101.0.81]
+  1     1 ms     1 ms     1 ms   192.168.1.1
+  2     3 ms     4 ms     3 ms   10.20.0.1
+  3     7 ms     8 ms     7 ms   bkk-core.th-net.example
+  4    34 ms    35 ms    34 ms   sg-core.sea-net.example
+  5   188 ms   190 ms   189 ms   mrs-core.eu-net.example
+  6   197 ms   198 ms   197 ms   lon-edge.uk-net.example
+  7   199 ms   199 ms   198 ms   151.101.0.81
+
+Trace complete.</pre>
+      <div class="qlist" id="tqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="tq">Check</button></div>
+      <p class="msg" id="tqmsg" role="status"></p>
+    </article>
+    <article class="mission chal" id="nmc2"><div class="mhead"><div class="mnum">C2</div><h3>Internet detective: what went wrong?</h3></div>
+      <p>Something has broken. Which part of the network is the problem?</p>
+      <div class="qlist" id="iqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="iq">Check</button></div>
+      <p class="msg" id="iqmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen2"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg2"></div>
+      <div class="row"><button class="btn" data-pcheck="2">Check</button><span class="big" id="pgs2"></span></div>
+      <p class="msg" id="pgm2" role="status"></p></article>
+    <div class="results"><h3>My Network Builder results</h3><pre id="nres"></pre><div class="row"><button class="btn" data-copy="nres">Copy results</button><span class="msg" role="status"></span></div>
+      <p class="note">Next: explore the <a href="https://www.submarinecablemap.com/" target="_blank" rel="noopener">Submarine Cable Map</a>.</p></div>
+  </section>
+
+  <!-- HACKER HATS -->
+  <section class="lab" id="v-hats" hidden>
+    <div class="intro"><span class="lesson">Lesson 4 · What is a hacker?</span><h2>Hacker Hats</h2>
+      <p>Hacking means finding a way into a computer system. <b>With permission</b> it is legal (ethical hacking). <b>Without permission</b> it is illegal.</p></div>
+    <article class="mission" id="hm1"><div class="mhead"><div class="mnum">1</div><h3>Myth or real?</h3></div>
+      <div class="sorter" id="mythlist"></div>
+      <div class="row"><button class="btn" id="mythcheck">Check</button></div>
+      <p class="msg" id="mythmsg" role="status"></p>
+    </article>
+    <article class="mission" id="hm2"><div class="mhead"><div class="mnum">2</div><h3>Which hat?</h3></div>
+      <p>Drag each person into the right hat. (Or click a card, then click the hat.)</p>
+      <div class="dpool" id="d4pool"></div>
+      <div class="cols">
+        <div class="dzone" data-task="d4" data-ans="white"><h4>White hat</h4><span class="zl">Has permission. Helps fix problems.</span></div>
+        <div class="dzone" data-task="d4" data-ans="grey"><h4>Grey hat</h4><span class="zl">No permission, but no harm.</span></div>
+        <div class="dzone" data-task="d4" data-ans="black"><h4>Black hat</h4><span class="zl">No permission. Steals or causes damage.</span></div>
+      </div>
+      <div class="row"><button class="btn" data-check="d4">Check</button><button class="btn ghost" data-reset="d4">Start again</button></div>
+      <p class="msg" id="d4msg" role="status"></p>
+    </article>
+    <article class="mission" id="hm3"><div class="mhead"><div class="mnum">3</div><h3>Legal or illegal?</h3></div>
+      <div class="sorter" id="legallist"></div>
+      <div class="row"><button class="btn" id="legalcheck">Check</button></div>
+      <p class="msg" id="legalmsg" role="status"></p>
+    </article>
+    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <article class="mission chal" id="hmc1"><div class="mhead"><div class="mnum">C1</div><h3>Hacker case files</h3></div>
+      <p>Read each case file. Answer all 3 questions for each one.</p>
+      <div class="qlist" id="hqlist"></div>
+      <div class="row"><button class="btn" data-qcheck="hq">Check</button></div>
+      <p class="msg" id="hqmsg" role="status"></p>
+    </article>
+    <article class="mission plen" id="plen4"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg4"></div>
+      <div class="row"><button class="btn" data-pcheck="4">Check</button><span class="big" id="pgs4"></span></div>
+      <p class="msg" id="pgm4" role="status"></p></article>
+    <div class="results"><h3>My Hacker Hats results</h3><pre id="hres"></pre><div class="row"><button class="btn" data-copy="hres">Copy results</button><span class="msg" role="status"></span></div></div>
+  </section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NS="http://www.w3.org/2000/svg";
+
+/* ---------- routing ---------- */
+const VIEWS=["home","packets","builder","binary","hats","phish","cipher","password"];
+function route(){
+  const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"home";
+  VIEWS.forEach(x=>$("v-"+x).hidden=x!==v);
+  document.querySelectorAll("nav a").forEach(el=>{if(el.getAttribute("href")==="#"+v)el.setAttribute("aria-current","page");else el.removeAttribute("aria-current");});
+}
+addEventListener("hashchange",()=>{route();scrollTo(0,0)});
+
+/* ---------- copy buttons ---------- */
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-copy]"); if(!b) return;
+  const pre=$(b.dataset.copy), m=b.nextElementSibling;
+  try{await navigator.clipboard.writeText(pre.textContent);m.className="msg good";m.textContent="Copied! Paste it into your portfolio.";}
+  catch(err){const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);m.className="msg";m.textContent="Press Ctrl+C to copy the selected text.";}
+});
+
+/* ---------- Packet Journey ---------- */
+const NODES={Y:[50,150,"You"],A:[200,60,"A"],B:[200,240,"B"],C:[380,60,"C"],D:[340,240,"D"],E:[470,200,"E"],S:[590,150,"Server"]};
+const EDGES=[["Y","A",4],["Y","B",2],["A","C",3],["B","C",6],["B","D",3],["C","S",5],["D","E",2],["E","S",4]];
+function shortest(edges){ // Dijkstra
+  const g={};edges.forEach(([a,b,w])=>{(g[a]=g[a]||[]).push([b,w]);(g[b]=g[b]||[]).push([a,w]);});
+  const dist={Y:0},done=new Set();
+  while(true){let u=null;for(const k in dist)if(!done.has(k)&&(u===null||dist[k]<dist[u]))u=k;if(u===null)break;done.add(u);
+    (g[u]||[]).forEach(([v,w])=>{if(dist[v]===undefined||dist[u]+w<dist[v])dist[v]=dist[u]+w;});}
+  return dist.S;
+}
+const PJ={tries1:0,tries2:0,best1:null,best2:null,ok1:false,ok2:false,triesc1:0,triesc2:0,bestc1:null,bestc2:null,okc1:false,okc2:false,pkt:"",pktok:false,missing:false,lan:null};
+function makeNet(svgId,edges,cut,state,nodes,all,down){
+  nodes=nodes||NODES;all=all||EDGES;
+  const svg=$(svgId);svg.innerHTML="";
+  all.forEach(([a,b,w])=>{
+    const [x1,y1]=nodes[a],[x2,y2]=nodes[b];const isCut=(cut&&cut[0]===a&&cut[1]===b)||(down&&(a===down||b===down));
+    const l=document.createElementNS(NS,"line");Object.entries({x1,y1,x2,y2,stroke:isCut?"var(--coral)":"var(--line)","stroke-width":isCut?4:6,"stroke-dasharray":isCut?"8 8":""}).forEach(([k,v])=>l.setAttribute(k,v));l.dataset.e=a+b;svg.appendChild(l);
+    const mx=(x1+x2)/2,my=(y1+y2)/2;
+    const bg=document.createElementNS(NS,"rect");Object.entries({x:mx-22,y:my-14,width:44,height:26,rx:6,fill:"var(--panel)",stroke:isCut?"var(--coral)":"var(--fibre)","stroke-width":2}).forEach(([k,v])=>bg.setAttribute(k,v));svg.appendChild(bg);
+    const t=document.createElementNS(NS,"text");Object.entries({x:mx,y:my+5,"text-anchor":"middle","font-size":15,"font-weight":700,fill:isCut?"var(--coral)":"var(--ink)"}).forEach(([k,v])=>t.setAttribute(k,v));t.textContent=isCut?(down?"✕":"CUT"):w+" ms";svg.appendChild(t);
+  });
+  Object.entries(nodes).forEach(([k,[x,y,lab]])=>{
+    const g=document.createElementNS(NS,"g");g.setAttribute("class","node");g.setAttribute("tabindex","0");g.setAttribute("role","button");g.setAttribute("aria-label",lab);
+    const end=k==="Y"||k==="S";
+    const c=document.createElementNS(NS,end?"rect":"circle");
+    if(end)Object.entries({x:x-40,y:y-22,width:80,height:44,rx:10}).forEach(([kk,v])=>c.setAttribute(kk,v));else Object.entries({cx:x,cy:y,r:24}).forEach(([kk,v])=>c.setAttribute(kk,v));
+    c.setAttribute("fill",state.path.includes(k)?"var(--fibre)":k===down?"var(--coral-soft)":"var(--panel)");c.setAttribute("stroke",k===down?"var(--coral)":"var(--ink)");c.setAttribute("stroke-width",3);
+    const t=document.createElementNS(NS,"text");Object.entries({x,y:y+6,"text-anchor":"middle","font-size":end?16:18,"font-weight":700,fill:state.path.includes(k)?"var(--paper)":"var(--ink)"}).forEach(([kk,v])=>t.setAttribute(kk,v));t.textContent=lab;
+    g.append(c,t);const go=()=>state.click(k);g.addEventListener("click",go);g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}});svg.appendChild(g);
+  });
+  // highlight path edges
+  for(let i=1;i<state.path.length;i++){const p=state.path[i-1],q=state.path[i];svg.querySelectorAll("line").forEach(l=>{if(l.dataset.e===p+q||l.dataset.e===q+p){l.setAttribute("stroke","var(--fibre)");}});}
+}
+function routeMission(n,edges,cut,nodes,all,down){
+  nodes=nodes||NODES;
+  const st={path:["Y"],click(k){
+    const last=st.path[st.path.length-1];if(last==="S")return;
+    if(k===down){$("r"+n+"msg").className="msg bad";$("r"+n+"msg").textContent="Router "+down+" is broken! Find another way.";return;}
+    const e=edges.find(([a,b])=>(a===last&&b===k)||(b===last&&a===k));
+    if(!e){$("r"+n+"msg").className="msg bad";$("r"+n+"msg").textContent=(cut&&((cut[0]===last&&cut[1]===k)||(cut[1]===last&&cut[0]===k)))?"That cable is cut! Find another way.":"There is no cable from "+nodes[last][2]+" to "+nodes[k][2]+".";return;}
+    if(st.path.includes(k)){$("r"+n+"msg").className="msg bad";$("r"+n+"msg").textContent="You have already been to "+nodes[k][2]+".";return;}
+    st.path.push(k);st.time+=e[2];$("r"+n+"msg").textContent="";draw();},time:0};
+  const draw=()=>{makeNet("net"+n,edges,cut,st,nodes,all,down);$("r"+n+"path").textContent=st.path.map(k=>nodes[k][2]).join(" → ");$("r"+n+"time").textContent=st.time;};
+  $("r"+n+"reset").onclick=()=>{st.path=["Y"];st.time=0;$("r"+n+"msg").textContent="";draw();};
+  $("r"+n+"send").onclick=()=>{
+    const m=$("r"+n+"msg");if(st.path[st.path.length-1]!=="S"){m.className="msg bad";m.textContent="Your route must end at the Server.";return;}
+    const best=shortest(edges);PJ["tries"+n]++;PJ["best"+n]=PJ["best"+n]===null?st.time:Math.min(PJ["best"+n],st.time);
+    if(st.time===best){PJ["ok"+n]=true;m.className="msg good";m.textContent=`Delivered in ${st.time} ms. That is the fastest route!`;$("pm"+n).classList.add("done");}
+    else{m.className="msg bad";m.textContent=`Delivered in ${st.time} ms. There is a faster route. Try again!`;}
+    pres();};
+  draw();
+}
+routeMission(1,EDGES,null);
+routeMission(2,EDGES.filter(([a,b])=>!(a==="D"&&b==="E")),["D","E"]);
+const BN={Y:[45,170,"You"],A:[160,60,"A"],B:[160,280,"B"],C:[270,170,"C"],D:[310,55,"D"],E:[310,285,"E"],F:[420,170,"F"],G:[470,60,"G"],H:[470,280,"H"],S:[595,170,"Server"]};
+const BE=[["Y","A",3],["Y","B",4],["A","D",5],["A","C",4],["B","C",2],["B","E",6],["C","D",3],["C","F",3],["C","E",4],["D","G",4],["E","H",3],["F","G",2],["F","H",2],["F","S",6],["G","S",3],["H","S",5]];
+routeMission("c1",BE,null,BN,BE,null);
+routeMission("c2",BE.filter(([a,b])=>a!=="F"&&b!=="F"),null,BN,BE,"F");
+
+const MSG=["MEET","AT","THE","SCHOOL","GATE","AT","3PM"];const MISSING=5; // packet number 5 (GATE) goes missing
+let pktNext=1,pktOrder=[];
+function pktSetup(){
+  pktNext=1;$("pktslots").innerHTML="";$("pktmsg").textContent="";$("pktmissing").hidden=true;
+  const nums=MSG.map((w,i)=>i+1).filter(n=>n!==MISSING).sort(()=>Math.random()-.5);
+  $("pktpool").innerHTML=nums.map(n=>`<button class="pkt" data-n="${n}"><b>Packet ${n}</b>${MSG[n-1]}</button>`).join("");
+  $("misssel").innerHTML='<option value="">Choose…</option>'+MSG.map((w,i)=>`<option>${i+1}</option>`).join("");
+}
+$("pktpool").addEventListener("click",e=>{
+  const b=e.target.closest(".pkt");if(!b||b.disabled)return;const n=+b.dataset.n,m=$("pktmsg");
+  if(pktNext===MISSING){m.className="msg bad";m.textContent=`Packet ${pktNext} should come next… but can you find it?`;$("pktmissing").hidden=false;return;}
+  if(n!==pktNext){m.className="msg bad";m.textContent=`Not yet: the computer needs packet ${pktNext} next.`;return;}
+  b.disabled=true;$("pktslots").insertAdjacentHTML("beforeend",`<span class="pkt"><b>Packet ${n}</b>${MSG[n-1]}</span>`);pktNext++;m.textContent="";
+  if(pktNext===MISSING){m.className="msg bad";m.textContent=`Packet ${MISSING} should come next… but it is not here!`;$("pktmissing").hidden=false;}
+  if(pktNext>MSG.length){PJ.pktok=true;m.className="msg good";m.textContent="Message rebuilt: "+MSG.join(" ");$("pm3").classList.add("done");pres();}
+});
+$("missbtn").onclick=()=>{const v=+$("misssel").value,m=$("pktmsg");
+  if(v!==MISSING){m.className="msg bad";m.textContent="Look at the packet numbers again. Which number is not there?";return;}
+  PJ.missing=true;$("pktmissing").hidden=true;$("pktslots").insertAdjacentHTML("beforeend",`<span class="pkt" style="border-color:var(--amber);background:var(--amber-soft)"><b>Packet ${MISSING} (sent again)</b>${MSG[MISSING-1]}</span>`);pktNext++;
+  m.className="msg good";m.textContent=`Packet ${MISSING} was sent again. Keep going!`;pres();};
+$("pktreset").onclick=()=>{pktSetup();};
+pktSetup();
+
+const LAN=[["The computers in our school","LAN"],["The whole internet","WAN"],["Wi-Fi in your home","LAN"],["A bank connecting its offices in 5 countries","WAN"],["Two computers and a printer in one office","LAN"],["The undersea cables between Thailand and Europe","WAN"],["A computer room with 30 computers","LAN"],["A company with shops in Bangkok and Chiang Mai","WAN"]];
+$("lansort").innerHTML=LAN.map(([t],i)=>`<div class="sitem" id="li${i}"><span>${t}</span><span class="row"><label><input type="radio" name="l${i}" value="LAN"> LAN</label><label><input type="radio" name="l${i}" value="WAN"> WAN</label></span></div>`).join("");
+$("lancheck").onclick=()=>{let s=0,all=true;LAN.forEach(([t,a],i)=>{const v=(document.querySelector(`input[name=l${i}]:checked`)||{}).value;if(!v)all=false;const el=$("li"+i);el.classList.toggle("right",v===a);el.classList.toggle("wrong",!!v&&v!==a);if(v===a)s++;});
+  const m=$("lanmsg");PJ.lan=s;m.className=s===LAN.length?"msg good":"msg bad";m.textContent=`${s} / ${LAN.length} correct.`+(all?"":" Answer every one.")+(s<LAN.length?" Red ones are wrong: try again.":"");if(s===LAN.length)$("pm4").classList.add("done");pres();};
+function pres(){
+  $("pres").textContent=[`Packet Journey results`,
+  `Mission 1 fastest route: ${PJ.ok1?"found (11 ms)":"not yet"} (${PJ.tries1} tries)`,
+  `Mission 2 broken cable: ${PJ.ok2?"new route found (12 ms)":"not yet"} (${PJ.tries2} tries)`,
+  `Mission 3 packets: ${PJ.pktok?"message rebuilt":"not finished"}; missing packet ${PJ.missing?"found (packet 5)":"not found yet"}`,
+  `Mission 4 LAN or WAN: ${PJ.lan===null?"not checked":PJ.lan+" / 8"}`,
+  (typeof DT!=="undefined"&&DT.d1?dline("d1","Mission 5 label the network"):""),
+  (PJ.triesc1?`Challenge 1 big network: ${PJ.okc1?"fastest route found ("+shortest(BE)+" ms)":"not yet"} (${PJ.triesc1} tries)`:""),
+  (PJ.triesc2?`Challenge 2 broken router: ${PJ.okc2?"new route found":"not yet"} (${PJ.triesc2} tries)`:""),qL("pq","Challenge 3 packet maths"),(typeof PG!=="undefined"&&PG[1]?pline(1):""),
+  `Routers choose the fastest route. If a cable breaks, they find another way. Packets are numbered so the message can be rebuilt.`].filter(Boolean).join("\n");}
+pres();
+
+/* ---------- Binary Lab ---------- */
+const VAL=[16,8,4,2,1];let on=[0,0,0,0,0];const TARGETS=[5,13,21,31];const hit=new Set();
+function bdraw(){
+  $("bcards").innerHTML=VAL.map((v,i)=>`<button class="bcard ${on[i]?"":"off"}" data-i="${i}" aria-pressed="${!!on[i]}" aria-label="${v} card, ${on[i]?"on":"off"}">${v}<span class="dots">${on[i]?"1":"0"}</span></button>`).join("");
+  const n=on.reduce((a,b,i)=>a+b*VAL[i],0);$("bbits").textContent=on.join("");$("bval").textContent=n;
+  if(TARGETS.includes(n))hit.add(n);
+  $("btargets").innerHTML="Targets: "+TARGETS.map(t=>`<span class="chip ${hit.has(t)?"ok":""}">${t}${hit.has(t)?" ✓":""}</span>`).join("");
+  $("bmsg").className="msg good";$("bmsg").textContent=hit.size===TARGETS.length?"All targets made! Can you make your age? Your birthday date?":"";
+  if(hit.size===TARGETS.length)$("bm1").classList.add("done");bres();
+}
+$("bcards").addEventListener("click",e=>{const c=e.target.closest(".bcard");if(!c)return;on[+c.dataset.i]^=1;bdraw();});
+let initialsDone="";
+$("initials").addEventListener("input",e=>{const s=e.target.value.toUpperCase().replace(/[^A-Z]/g,"");e.target.value=s;
+  $("inittab").innerHTML="<tr><th>Letter</th><th>Number</th><th>Binary (8 bits)</th></tr>"+[...s].map(ch=>`<tr><td><b>${ch}</b></td><td>${ch.charCodeAt(0)}</td><td class="mono">${ch.charCodeAt(0).toString(2).padStart(8,"0")}</td></tr>`).join("");
+  initialsDone=s;if(s.length)$("bm2").classList.add("done");bres();});
+const PICS=[["Heart",["01100110","11111111","11111111","11111111","01111110","00111100","00011000","00000000"]],
+  ["Space invader",["00011000","00111100","01111110","11011011","11111111","00100100","01011010","10100101"]]];
+let pic=0,px=[],picsDone=new Set();
+function pixSetup(){px=Array(64).fill(0);$("pixcode").innerHTML=PICS[pic][1].map((r,i)=>`Row ${i+1}: <b>${r}</b>`).join("<br>");
+  $("pixgrid").innerHTML=px.map((v,i)=>`<button class="cell" data-i="${i}" aria-label="Row ${Math.floor(i/8)+1}, square ${i%8+1}"></button>`).join("");$("pixmsg").textContent="";}
+$("pixgrid").addEventListener("click",e=>{const c=e.target.closest(".cell");if(!c)return;const i=+c.dataset.i;px[i]^=1;c.classList.toggle("on",!!px[i]);});
+$("pixcheck").onclick=()=>{const want=PICS[pic][1].join("").split("").map(Number);let wrong=0;want.forEach((w,i)=>{if(w!==px[i])wrong++;});const m=$("pixmsg");
+  if(!wrong){picsDone.add(PICS[pic][0]);m.className="msg good";m.textContent=`Correct! It is a ${PICS[pic][0].toLowerCase()}. Press Next picture.`;$("bm3").classList.add("done");bres();}
+  else{m.className="msg bad";m.textContent=`${wrong} square${wrong>1?"s are":" is"} wrong. Check each row again.`;}};
+$("pixnext").onclick=()=>{pic=(pic+1)%PICS.length;pixSetup();};
+pixSetup();
+// parity: 5x5 random + parity row/col (6x6)
+let par=[],parStage=0,flipped=-1,parWins=0,parTries=0;
+function parNew(){par=Array(36).fill(0);for(let r=0;r<5;r++)for(let c=0;c<5;c++)par[r*6+c]=Math.random()<.45?1:0;parStage=0;flipped=-1;$("parflip").disabled=true;$("parmsg").textContent="";pardraw();}
+function pardraw(){$("pargrid").innerHTML=par.map((v,i)=>{const r=Math.floor(i/6),c=i%6,edge=r===5||c===5;return `<button class="cell ${v?"on":""}" data-i="${i}" style="${edge&&parStage===0?"border:2px solid var(--amber)":""}" aria-label="Row ${r+1}, column ${c+1}${edge?" (parity square)":""}"></button>`;}).join("");}
+$("pargrid").addEventListener("click",e=>{const c=e.target.closest(".cell");if(!c)return;const i=+c.dataset.i,r=Math.floor(i/6),col=i%6,m=$("parmsg");
+  if(parStage===0){if(r!==5&&col!==5){m.className="msg bad";m.textContent="In Step 1, only change the squares with the orange border (the last row and column).";return;}par[i]^=1;pardraw();return;}
+  if(parStage===2){parTries++;if(i===flipped){parWins++;m.className="msg good";m.textContent="You found it! The row and column with an odd number of black squares meet at the flipped square.";parStage=3;$("bm4").classList.add("done");bres();}
+    else{m.className="msg bad";m.textContent="Not that one. Count each row: which one is odd? Then each column.";}}});
+function parityOK(){for(let r=0;r<6;r++){let s=0;for(let c=0;c<6;c++)s+=par[r*6+c];if(s%2)return false;}for(let c=0;c<6;c++){let s=0;for(let r=0;r<6;r++)s+=par[r*6+c];if(s%2)return false;}return true;}
+$("parready").onclick=()=>{const m=$("parmsg");if(parStage!==0)return;if(parityOK()){parStage=1;$("parflip").disabled=false;pardraw();m.className="msg good";m.textContent="Every row and column is even. Now press Flip one and look away!";}else{m.className="msg bad";m.textContent="Not yet. Count the black squares in each row and column: they must all be even.";}};
+$("parflip").onclick=()=>{if(parStage!==1)return;flipped=Math.floor(Math.random()*36);par[flipped]^=1;parStage=2;$("parflip").disabled=true;pardraw();$("parmsg").className="msg";$("parmsg").textContent="One square has changed. Click the square you think was flipped.";};
+$("parnew").onclick=parNew;parNew();
+function bres(){$("bres").textContent=[`Binary Lab results`,`Binary cards: made ${hit.size} / 4 targets (${[...hit].sort((a,b)=>a-b).join(", ")||"none"})`,
+  `My initials in binary: ${initialsDone?[...initialsDone].map(ch=>ch+" = "+ch.charCodeAt(0).toString(2).padStart(8,"0")).join(", "):"not done"}`,
+  `Hidden pictures found: ${picsDone.size?[...picsDone].join(", "):"none yet"}`,
+  `Parity trick: found the flipped square ${parWins} time${parWins===1?"":"s"}`,(window.SECRET&&SECRET.score!==null?`Challenge: secret message ${SECRET.score} / 3 words`:""),(window.ART&&ART.drawn?"Challenge: pixel artist picture made"+(ART.decoded?", partner's picture decoded":""):""),(typeof PG!=="undefined"&&PG[3]?pline(3):""),
+  `Computers use binary because they are made of switches that are only on (1) or off (0).`].filter(Boolean).join("\n");}
+bdraw();
+
+/* ---------- Phish Spotter ---------- */
+const PH=[
+ {phish:true,from:"Siam Star Bank &lt;security@siamstar-bank-alerts.xyz&gt;",subj:"URGENT: Your account will be closed TODAY",
+  body:`<p>Dear <span class="flag" data-f="Not using your name">Customer</span>,</p><p>We noticed strange activity. <span class="flag" data-f="Rushing you">You must verify your account in 1 hour or it will be closed.</span></p><p><span class="fakebtn flag" data-f="Link goes to a strange website">Verify now</span> <span class="note">(link: http://siamstar-login.xyz/verify)</span></p><p><span class="flag" data-f="Asks for your password">Please reply with your password and PIN.</span></p>`,
+  flags:4,why:"Banks never ask for your password. The sender address and link are not the bank's real website."},
+ {phish:false,from:"Mr Lee (school) &lt;lee.t@wolfpack-school.ac.th&gt;",subj:"Computing homework due Friday",
+  body:`<p>Hi Year 8,</p><p>Remember your portfolio slide for Lesson 4 is due on Friday. It is on Google Classroom as usual.</p><p>Mr Lee</p>`,flags:0,why:"From a school address you know, no link to a strange site, and it doesn't ask for anything private."},
+ {phish:true,from:"BlockWorld Rewards &lt;free-gems@blockworld-prizes.top&gt;",subj:"🎁 You WON 10,000 free gems!!!",
+  body:`<p><span class="flag" data-f="Too good to be true">Congratulations! You won 10,000 FREE gems!</span></p><p>To get your prize, <span class="flag" data-f="Asks for your login">log in with your BlockWorld username and password</span> on our <span class="flag" data-f="Link goes to a strange website">prize page</span>.</p><p><span class="flag" data-f="Spelling and grammar mistakes">Hurry, ofer end soon!!</span></p>`,
+  flags:4,why:"Free prizes that need your password are a trick. Look at the spelling and the strange website address."},
+ {phish:true,from:"+66 9X XXX 4471 (text message)",subj:"Text message",
+  body:`<p><span class="flag" data-f="Unknown sender">Unknown number:</span> Hi it's me, I lost my phone so this is my new number. <span class="flag" data-f="Pretending to be someone you know">Mum here.</span> <span class="flag" data-f="Asks for money or codes">Can you send me the 6-digit code that just came to your phone?</span> <span class="flag" data-f="Rushing you">Quickly please!!</span></p>`,
+  flags:4,why:"Never share a code sent to your phone. It is often a 2FA code that lets someone into your account. Call your real mum to check."},
+ {phish:false,from:"StreamFlix &lt;no-reply@streamflix.com&gt; (an app you use)",subj:"New sign-in on a Chromebook",
+  body:`<p>We noticed a new sign-in to your account on a Chromebook in Bangkok.</p><p>If this was you, you don't need to do anything. If not, open the StreamFlix app yourself and change your password.</p>`,
+  flags:0,why:"It doesn't give a link to click or ask for your password. It tells you to open the app yourself. That is safe advice."}
+];
+const PS=PH.map(()=>({ans:null,found:new Set()}));
+$("phishlist").innerHTML=PH.map((p,i)=>`<article class="mission" id="ph${i}"><div class="mhead"><div class="mnum">${i+1}</div><h3>Message ${i+1}</h3></div>
+  <div class="email"><div class="ehead"><span><b>From:</b> ${p.from}</span><span><b>Subject:</b> ${p.subj}</span></div><div class="ebody" data-m="${i}">${p.body}</div></div>
+  <div class="row"><button class="btn" data-ph="${i}" data-a="phish">Phish</button><button class="btn ghost" data-ph="${i}" data-a="safe">Safe</button><span class="chip" id="phf${i}" hidden></span></div>
+  <p class="msg" id="phm${i}" role="status"></p></article>`).join("");
+document.querySelectorAll(".flag").forEach(f=>{f.setAttribute("tabindex","0");f.setAttribute("role","button");});
+function phClick(e){
+  const f=e.target.closest(".flag");if(f){const i=+f.closest(".ebody").dataset.m,st=PS[i];if(st.ans!=="phish"||!PH[i].phish)return;
+    if(!f.classList.contains("found")){f.classList.add("found");st.found.add(f.dataset.f);}
+    $("phf"+i).hidden=false;$("phf"+i).textContent=`Red flags: ${st.found.size} / ${PH[i].flags}`;
+    $("phm"+i).className="msg good";$("phm"+i).textContent=`🚩 ${f.dataset.f}`+(st.found.size===PH[i].flags?". You found them all! "+PH[i].why:"");
+    if(st.found.size===PH[i].flags)$("ph"+i).classList.add("done");phres();return;}
+  const b=e.target.closest("[data-ph]");if(!b)return;const i=+b.dataset.ph,p=PH[i],st=PS[i],m=$("phm"+i);
+  st.ans=b.dataset.a;const right=(st.ans==="phish")===p.phish;st.right=right;
+  if(right&&p.phish){m.className="msg good";m.textContent=`Yes, it's a phish! Now click on the red flags in the message (${p.flags} to find).`;$("phf"+i).hidden=false;$("phf"+i).textContent=`Red flags: ${st.found.size} / ${p.flags}`;}
+  else if(right){m.className="msg good";m.textContent="Correct, this one is safe. "+p.why;$("ph"+i).classList.add("done");}
+  else{m.className="msg bad";m.textContent=p.phish?"Look again. Something here is trying to trick you.":"Look again. Is anything here asking for private details or rushing you?";}
+  phres();}
+$("phishlist").addEventListener("click",phClick);
+$("phishlist").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList.contains("flag")){e.preventDefault();phClick(e);}});
+function phres(){const right=PS.filter(s=>s.right).length,flags=PS.reduce((a,s)=>a+s.found.size,0),total=PH.reduce((a,p)=>a+p.flags,0);
+  $("phres").textContent=[`Phish Spotter results`,`Correct decisions: ${right} / ${PH.length}`,`Red flags found: ${flags} / ${total}`,
+  ...PH.map((p,i)=>`Message ${i+1}: ${PS[i].ans?(PS[i].right?"correct":"wrong"):"not answered"} (${p.phish?"phish":"safe"})${p.phish?`, flags ${PS[i].found.size}/${p.flags}`:""}`),
+  (typeof DT!=="undefined"&&DT.d5&&DT.d5.score!==null?dline("d5","Challenge: name the malware"):""),qL("sq","Challenge: social engineering"),(typeof PG!=="undefined"&&PG[5]?pline(5):""),`Red flags to remember: rushing you, asking for passwords or codes, strange links, too good to be true, spelling mistakes.`].filter(Boolean).join("\n");}
+phres();
+
+/* ---------- Cipher Lab ---------- */
+const AL="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const shift=(s,k)=>s.toUpperCase().replace(/[A-Z]/g,c=>AL[(AL.indexOf(c)+k+26)%26]);
+let CL={used:false,cracked:false,freq:false,lastKey:3};
+function cdraw(src){const k=+$("ckey").value;$("ckeyv").textContent=k;CL.lastKey=k;
+  $("aplain").innerHTML="Plain:  "+[...AL].join(" ");$("acipher").innerHTML="Cipher: "+[...shift(AL,k)].join(" ");
+  if(src!=="cipher")$("cciph").value=shift($("cplain").value,k);else $("cplain").value=shift($("cciph").value,-k);
+  if($("cplain").value.trim())CL.used=true;cres();}
+$("ckey").addEventListener("input",()=>cdraw());$("cplain").addEventListener("input",()=>cdraw("plain"));$("cciph").addEventListener("input",()=>cdraw("cipher"));
+const SPY_KEY=7,SPY="THE CABLE IS UNDER THE SEA";$("spymsg").textContent=shift(SPY,SPY_KEY);
+$("brute").onclick=()=>{$("brutewrap").hidden=false;$("brutetab").innerHTML="<tr><th>Key</th><th>Message if we shift back by this key</th></tr>"+Array.from({length:25},(_,i)=>`<tr><td>${i+1}</td><td class="mono">${shift($("spymsg").textContent,-(i+1))}</td></tr>`).join("");};
+$("crackcheck").onclick=()=>{const k=+$("crackkey").value,w=$("crackword").value.toUpperCase().replace(/\s+/g," ").trim(),m=$("crackmsg");
+  if(k===SPY_KEY&&w===SPY){CL.cracked=true;m.className="msg good";m.textContent="Cracked! Only 25 keys means a Caesar cipher is easy to break. Real encryption has billions and billions of keys.";$("cm2").classList.add("done");}
+  else if(k===SPY_KEY){m.className="msg bad";m.textContent="The key is right. Check the message spelling.";}else{m.className="msg bad";m.textContent="Not yet. Find the row in the table that makes real words.";}cres();};
+const LONG_KEY=4,LONG="KEEP THESE SECRETS SAFE BECAUSE THE ENEMY READS EVERY MESSAGE WE SEND";const LC=shift(LONG,LONG_KEY);$("longmsg").textContent=LC;
+(function(){const cnt={};for(const c of LC)if(/[A-Z]/.test(c))cnt[c]=(cnt[c]||0)+1;const max=Math.max(...Object.values(cnt));
+  $("freqbars").innerHTML=[...AL].map(c=>`<div class="bar" style="height:${((cnt[c]||0)/max)*100}%;${cnt[c]?"":"background:var(--line);height:3px"}" title="${c}: ${cnt[c]||0}"><span>${c}</span></div>`).join("");})();
+$("freqcheck").onclick=()=>{const l=$("freqlet").value.toUpperCase(),k=+$("freqkey").value,m=$("freqmsg");
+  if(l==="I"&&k===LONG_KEY){CL.freq=true;m.className="msg good";m.textContent="Yes! I is 4 letters after E, so the key is 4. The message says: "+LONG;$("cm3").classList.add("done");}
+  else if(l==="I"){m.className="msg bad";m.textContent="Right letter! Now count from E to I: E→F→G→H→I. How many steps?";}
+  else{m.className="msg bad";m.textContent="Look at the tallest bar. Which letter is it?";}cres();};
+function cres(){$("cres").textContent=[`Cipher Lab results`,`Cipher wheel: ${CL.used?"used, last key "+CL.lastKey:"not used"}`,`My secret message: ${$("cciph").value.slice(0,60)||"-"}`,
+  `Crack the code (brute force): ${CL.cracked?"cracked, key 7":"not cracked yet"}`,`Letter detective: ${CL.freq?"key found (4)":"not done"}`,(window.CHAIN_OK!==undefined&&CHAIN_OK>0?`Challenge: spy chain ${CHAIN_OK} / 3 decrypted`:""),(typeof DT!=="undefined"&&DT.d6&&DT.d6.score!==null?dline("d6","Challenge: brute force race"):""),qL("bq","Challenge: brute force questions"),(typeof PG!=="undefined"&&PG[6]?pline(6):""),
+  `Encryption scrambles data with a key so only someone with the key can read it.`].filter(Boolean).join("\n");}
+cdraw();
+
+/* ---------- Password Lab ---------- */
+const COMMON=["password","123456","qwerty","abc123","letmein","admin","welcome","iloveyou","football","monkey","dragon","111111","bangkok","thailand","wolf"];
+const WORDS=["purple","tiger","toaster","river","pencil","rocket","mango","cloud","teapot","jungle","window","banana","sandal","comet","noodle","violin","penguin","garden","marble","ladder","basket","candle","lemon","planet","dolphin","helmet","pepper","island","ticket","wizard"];
+let best=0,last={};
+function crackSeconds(pw){
+  if(!pw)return{sec:0,why:""};
+  const low=pw.toLowerCase();
+  if(COMMON.some(w=>low===w||low.replace(/[0-9!@#$%]+$/,"")===w))return{sec:0.001,why:"This is one of the most common passwords. Hackers try these first."};
+  let pool=0;if(/[a-z]/.test(pw))pool+=26;if(/[A-Z]/.test(pw))pool+=26;if(/[0-9]/.test(pw))pool+=10;if(/[^A-Za-z0-9]/.test(pw))pool+=33;
+  let len=pw.length,why=[];
+  if(/^(.)\1+$/.test(pw)){len=1;why.push("All the same character is easy to guess.");}
+  if(/(012|123|234|345|456|567|678|789|abc|qwe)/i.test(pw))why.push("Patterns like 123 or abc are guessed early.");
+  const words=COMMON.filter(w=>low.includes(w));if(words.length){len=Math.max(1,len-words.join("").length+2);why.push("Common words make it weaker.");}
+  const guesses=Math.pow(pool,len)/2;return{sec:guesses/1e10,why:why.join(" ")||(len>=15?"Long passwords are much harder to guess. Length is your best friend.":"Try making it longer: length helps most.")};
+}
+function human(sec){
+  if(sec<1)return"instantly";const u=[["years",31557600],["days",86400],["hours",3600],["minutes",60],["seconds",1]];
+  for(const [n,s] of u)if(sec>=s){const v=sec/s;if(n==="years"){if(v>=1e12)return"over a trillion years";if(v>=1e9)return Math.round(v/1e9).toLocaleString()+" billion years";if(v>=1e6)return Math.round(v/1e6).toLocaleString()+" million years";return Math.round(v).toLocaleString()+" years";}return Math.round(v)+" "+n;}
+}
+function describe(pw){const parts=pw.trim().split(/[\s\-_.]+/).filter(Boolean),t=[];if(parts.length>=3&&parts.every(p=>/^[A-Za-z]+$/.test(p.replace(/\d+$/,""))))t.push(parts.length+" words");
+  if(/[A-Z]/.test(pw))t.push("capitals");if(/[0-9]/.test(pw))t.push("numbers");if(/[^A-Za-z0-9\s]/.test(pw))t.push("symbols");return `${pw.length} characters${t.length?", "+t.join(", "):""}`;}
+function pwUpdate(){const pw=$("pw").value,{sec,why}=crackSeconds(pw),yrs=sec/31557600;
+  $("pwtime").textContent=pw?human(sec):"-";$("pwwhy").textContent=why;
+  const pct=pw?Math.min(100,Math.max(4,Math.log10(sec+1)/16*100)):0;$("pwbar").style.width=pct+"%";$("pwbar").style.background=yrs>=1e6?"var(--ok)":yrs>=1?"var(--amber)":"var(--coral)";
+  if(pw&&sec>best){best=sec;last={type:describe(pw),time:human(sec)};}
+  ["ch1","ch2","ch3"].forEach((id,i)=>{const lim=[1,1e3,1e6][i];if(best/31557600>=lim)$(id).classList.add("ok");});
+  if(best/31557600>=1e6)$("wm3").classList.add("done");wres();}
+$("pw").addEventListener("input",pwUpdate);
+$("threew").onclick=()=>{const w=[];while(w.length<3){const x=WORDS[Math.floor(Math.random()*WORDS.length)];if(!w.includes(x))w.push(x);}$("threeout").textContent=w.join("");};
+$("threetest").onclick=()=>{if($("threeout").textContent){$("pw").value=$("threeout").textContent;pwUpdate();$("pw").focus();}};
+function wres(){const lvl=best/31557600;$("wres").textContent=[`Password Lab results`,`My strongest practice password: ${last.type||"none yet"}`,`Time to crack: ${last.time||"-"}`,
+  `Challenges: over 1 year ${lvl>=1?"✓":"✗"} | over 1,000 years ${lvl>=1e3?"✓":"✗"} | over 1 million years ${lvl>=1e6?"✓":"✗"}`,(typeof DT!=="undefined"&&DT.d7?dline("d7","Match the defence"):""),qL("aq","Challenge: help Arun"),(typeof PG!=="undefined"&&PG[7]?pline(7):""),
+  `Tip: three random words, long and not about me. Use a different password for every account, and turn on 2FA.`].filter(Boolean).join("\n");}
+wres();
+/* ---------- drag-and-drop tasks (drag, or click card then click box) ---------- */
+var DT={};
+const DTASKS={
+  d1:["device","router","server","LAN","WAN","packet"],
+  d2:["router","switch","Wi-Fi access point","server","device","undersea cable"],
+  d2b:["Your laptop asks for the website","DNS finds the website's IP address","The school router sends the request out","Packets travel through routers and undersea cables","The server sends the website back in packets"],
+  d4:[["Mai is paid by a bank to try to break into its app. She reports every problem.","white"],["Tom breaks into a game server to steal players' passwords and sell them.","black"],["Lin finds a hole in a school website without permission, does no harm, and tells the school.","grey"],["A company's red team attacks its own network to practise.","white"],["Someone sends ransomware to a hospital and asks for money.","black"],["A teenager reports a bug through a bug bounty and gets paid.","white"],["Ken guesses his sister's password and reads her messages.","black"],["A hacker finds a weakness in a game without permission and posts a warning, but does no damage.","grey"]],
+  d7:["passphrase","backup","update","antivirus","2FA","firewall"],
+  d5:["virus","worm","trojan","ransomware","spyware"],
+  d6:["Caesar cipher (25 keys)","3-digit bike lock (1,000 codes)","4-digit phone PIN (10,000 codes)","8 small letters (about 200 billion)","Three random words (trillions and trillions)"]
+};
+let selChip=null;
+function dtSetup(t){
+  const items=DTASKS[t].map((x,i)=>Array.isArray(x)?{id:t+"_"+i,text:x[0],ans:x[1]}:{id:t+"_"+i,text:x,ans:x});
+  DT[t]={items,score:null,tries:(DT[t]&&DT[t].tries)||0};
+  const pool=$(t+"pool");pool.innerHTML="";
+  items.slice().sort(()=>Math.random()-.5).forEach(it=>{const b=document.createElement("button");b.className="dchip";b.textContent=it.text;b.dataset.id=it.id;b.dataset.ans=it.ans;b.draggable=true;pool.appendChild(b);});
+  document.querySelectorAll(`.dzone[data-task="${t}"]`).forEach(z=>{z.classList.remove("right","wrong");z.querySelectorAll(".dchip").forEach(c=>c.remove());});
+  const m=$(t+"msg");if(m)m.textContent="";
+}
+function place(chip,target){const z=target.closest(".dzone,.dpool");if(!z)return;const t=chip.dataset.id.split("_")[0];
+  if(z.classList.contains("dzone")&&z.dataset.task!==t)return; if(z.classList.contains("dpool")&&z.id!==t+"pool")return;
+  if(z.classList.contains("dzone")&&!z.closest(".cols")){const old=z.querySelector(".dchip");if(old&&old!==chip)$(t+"pool").appendChild(old);}
+  z.appendChild(chip);z.classList.remove("right","wrong");chip.classList.remove("sel");selChip=null;}
+document.addEventListener("dragstart",e=>{const c=e.target.closest&&e.target.closest(".dchip");if(c){e.dataTransfer.setData("text/plain",c.dataset.id);e.dataTransfer.effectAllowed="move";}});
+document.addEventListener("dragover",e=>{const z=e.target.closest&&e.target.closest(".dzone,.dpool");if(z){e.preventDefault();z.classList.add("over");}});
+document.addEventListener("dragleave",e=>{const z=e.target.closest&&e.target.closest(".dzone,.dpool");if(z)z.classList.remove("over");});
+document.addEventListener("drop",e=>{const z=e.target.closest&&e.target.closest(".dzone,.dpool");if(!z)return;e.preventDefault();z.classList.remove("over");const c=document.querySelector(`.dchip[data-id="${e.dataTransfer.getData("text/plain")}"]`);if(c)place(c,z);});
+document.addEventListener("click",e=>{
+  const c=e.target.closest(".dchip");
+  if(c){e.stopPropagation();if(selChip===c){c.classList.remove("sel");selChip=null;}else{if(selChip)selChip.classList.remove("sel");selChip=c;c.classList.add("sel");}return;}
+  const z=e.target.closest(".dzone,.dpool");if(z&&selChip){place(selChip,z);return;}
+  const ck=e.target.closest("[data-check]");if(ck){dtCheck(ck.dataset.check);return;}
+  const rs=e.target.closest("[data-reset]");if(rs){dtSetup(rs.dataset.reset);return;}
+});
+function dtCheck(t){const zones=[...document.querySelectorAll(`.dzone[data-task="${t}"]`)];let right=0,total=DT[t].items.length;
+  zones.forEach(z=>{const chips=[...z.querySelectorAll(".dchip")];if(z.closest(".cols")){chips.forEach(c=>{const ok=c.dataset.ans===z.dataset.ans;c.style.borderColor=ok?"var(--ok)":"var(--coral)";c.style.background=ok?"var(--ok-soft)":"var(--coral-soft)";if(ok)right++;});}
+    else{const c=chips[0];if(!c)return;const ok=c.dataset.ans===z.dataset.ans;z.classList.toggle("right",ok);z.classList.toggle("wrong",!ok);if(ok)right++;}});
+  DT[t].tries++;DT[t].score=right;const m=$(t+"msg"),left=$(t+"pool").querySelectorAll(".dchip").length;
+  m.className=right===total?"msg good":"msg bad";m.textContent=right===total?`All ${total} correct! Screenshot this task for your portfolio.`:`${right} / ${total} correct.`+(left?" Place every card.":"")+" Move the red ones and check again.";
+  if(right===total){const card=$(t+"msg").closest(".mission");if(card)card.classList.add("done");}
+  refreshAll();}
+Object.keys(DTASKS).forEach(dtSetup);
+function dline(t,label){return `${label}: ${DT[t].score===null?"not checked":DT[t].score+" / "+DT[t].items.length}${DT[t].tries?" ("+DT[t].tries+" tries)":""}`;}
+
+/* ---------- plenary fill-the-gaps ---------- */
+var GAPS=[["A big message is split into small ___ that travel separately.", "packet", 1], ["A ___ sends data the right way across networks.", "router", 1], ["A network in one school is a ___.", "LAN", 1], ["The internet is the biggest ___.", "WAN", 1], ["A ___ stores websites and sends them to other computers.", "server", 2], ["A number that identifies a device on a network is an ___.", "IP address", 2], ["___ turns a website name into an IP address.", "DNS", 2], ["Most data between countries travels through an ___.", "undersea cable", 2], ["A number system that only uses 0 and 1 is called ___.", "binary", 3], ["A single 0 or 1 is called a ___.", "bit", 3], ["8 bits make 1 ___.", "byte", 3], ["An extra bit that checks if data changed is a ___.", "parity bit", 3], ["A ___ hacker has permission to find weaknesses.", "white hat", 4], ["A ___ hacker breaks in to steal or cause damage.", "black hat", 4], ["A ___ hacker has no permission but does not cause harm.", "grey hat", 4], ["Hacking without permission breaks the ___.", "Computer Misuse Act", 4], ["Bad software made to harm a computer is called ___.", "malware", 5], ["___ locks your files and asks for money.", "ransomware", 5], ["A trick email that asks for your password is called ___.", "phishing", 5], ["Tricking a person to give away information is ___.", "social engineering", 5], ["Scrambling data so only the right person can read it is ___.", "encryption", 6], ["The secret that locks and unlocks a cipher is the ___.", "key", 6], ["The scrambled message is called the ___.", "ciphertext", 6], ["Trying every possible key until one works is a ___ attack.", "brute force", 6], ["A long password made of random words is a ___.", "passphrase", 7], ["A second check, like a code sent to your phone, is ___.", "2FA", 7], ["A safe copy of your files is a ___.", "backup", 7], ["A ___ blocks dangerous data coming in and out of a network.", "firewall", 7]];var PG={};
+function pgSetup(L){const gs=GAPS.filter(g=>g[2]===L),bank=gs.map(g=>g[1]).sort();PG[L]={score:null,total:gs.length};
+  $("pg"+L).innerHTML=gs.map(([t],i)=>{const [a,b]=t.split("___");return `<div class="g" id="pg${L}_${i}"><span>${esc(a)}</span><select aria-label="Missing keyword ${i+1}"><option value="">…</option>${bank.map(w=>`<option>${esc(w)}</option>`).join("")}</select><span>${esc(b||"")}</span></div>`;}).join("");}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-pcheck]");if(!b)return;const L=+b.dataset.pcheck,gs=GAPS.filter(g=>g[2]===L);let s=0;
+  gs.forEach((g,i)=>{const row=$(`pg${L}_${i}`),v=row.querySelector("select").value,ok=v===g[1];row.classList.toggle("right",ok);row.classList.toggle("wrong",!ok);if(ok)s++;});
+  PG[L].score=s;$("pgs"+L).textContent=`${s} / ${gs.length}`;const m=$("pgm"+L);m.className=s===gs.length?"msg good":"msg bad";m.textContent=s===gs.length?"All correct! Screenshot your score.":"Red ones need another look. Check the keywords slide.";
+  if(s===gs.length)$("plen"+L).classList.add("done");refreshAll();});
+[1,2,3,4,5,6,7].forEach(pgSetup);
+function pline(L){return `Plenary fill-the-gaps: ${PG[L].score===null?"not checked":PG[L].score+" / "+PG[L].total}`;}
+
+/* ---------- Hacker Hats: myth/real + legal/illegal ---------- */
+const MYTHS=[["Hackers can break into anything in 10 seconds.","Myth"],["Most attacks start by tricking a person, not a computer.","Real"],["Real hacking needs patience and lots of testing.","Real"],["Hackers always wear hoodies in dark rooms.","Myth"],["Companies pay hackers to find problems.","Real"],["If you don't steal anything, hacking is legal.","Myth"]];
+const LEGAL=[["Using a friend's login because they told you their password.","Illegal"],["Testing the strength of your OWN Wi-Fi password.","Legal"],["Logging in to a teacher's account using a password on a sticky note.","Illegal"],["A company pays you to test its website, and you report the problems.","Legal"]];
+const HH={myth:null,legal:null};
+function radioList(id,list,opts,name){$(id).innerHTML=list.map(([t],i)=>`<div class="mr" id="${name}${i}"><span>${t}</span><span class="row">${opts.map(o=>`<label><input type="radio" name="${name}${i}" value="${o}"> ${o}</label>`).join("")}</span></div>`).join("");}
+radioList("mythlist",MYTHS,["Myth","Real"],"my");radioList("legallist",LEGAL,["Legal","Illegal"],"lg");
+function radioCheck(list,name,msgId,key,doneId){let s=0;list.forEach(([t,a],i)=>{const v=(document.querySelector(`input[name=${name}${i}]:checked`)||{}).value,el=$(name+i);el.classList.toggle("right",v===a);el.classList.toggle("wrong",!!v&&v!==a);if(v===a)s++;});
+  HH[key]=s;const m=$(msgId);m.className=s===list.length?"msg good":"msg bad";m.textContent=s===list.length?`All ${list.length} correct! Screenshot this task.`:`${s} / ${list.length} correct. Red ones are wrong: try again.`;if(s===list.length)$(doneId).classList.add("done");refreshAll();}
+$("mythcheck").onclick=()=>radioCheck(MYTHS,"my","mythmsg","myth","hm1");
+$("legalcheck").onclick=()=>radioCheck(LEGAL,"lg","legalmsg","legal","hm3");
+
+/* ---------- Challenge zone: question cards ---------- */
+var QS={};
+function qline(id,l){return `${l}: ${QS[id].score===null?"not checked":QS[id].score+" / "+QS[id].total}`;}
+function qL(id,l){return (window.QS&&QS[id]&&QS[id].score!==null)?qline(id,l):"";}
+function qSetup(id,items){QS[id]={items,score:null,total:items.reduce((a,it)=>a+it.q.length,0)};
+  $(id+"list").innerHTML=items.map((it,i)=>`<div class="qcard">${it.t?`<p>${it.t}</p>`:""}${it.q.map(([p,a,o],j)=>`<label class="qrow" id="${id}_${i}_${j}"><span>${p}</span><select><option value="">Choose…</option>${o.slice().sort((x,y)=>String(x).localeCompare(String(y),undefined,{numeric:true})).map(x=>`<option>${esc(x)}</option>`).join("")}</select></label>`).join("")}</div>`).join("");}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-qcheck]");if(!b)return;const id=b.dataset.qcheck,Q=QS[id];let s=0,blank=0;
+  Q.items.forEach((it,i)=>it.q.forEach(([p,a],j)=>{const row=$(`${id}_${i}_${j}`),v=row.querySelector("select").value,ok=v===String(a);if(!v)blank++;row.classList.toggle("right",ok);row.classList.toggle("wrong",!!v&&!ok);if(ok)s++;}));
+  Q.score=s;const m=$(id+"msg");m.className=s===Q.total?"msg good":"msg bad";m.textContent=s===Q.total?`All ${Q.total} correct! Challenge complete.`:`${s} / ${Q.total} correct.`+(blank?" Answer every question.":"")+" Red ones are wrong: try again.";
+  if(s===Q.total)b.closest(".mission").classList.add("done");refreshAll();});
+const one=(t,a,o)=>({t:"",q:[[t,a,o]]});
+qSetup("pq",[
+  one("A message has 24 letters. Each packet holds 4 letters. How many packets?","6",["4","6","8","24"]),
+  one("A message was split into 8 packets. These arrived: 1, 2, 3, 5, 6, 8. Which packets must be sent again?","4 and 7",["4 and 7","4 and 8","3 and 7","7 only"]),
+  one("A photo is split into 50 packets. All arrive except packets 17 and 42. How many packets are sent again?","2",["2","17","48","50"]),
+  one("Packet 1 arrives after 12 ms. Packet 2 takes a slower route and arrives after 20 ms. When can the message be rebuilt?","20 ms",["12 ms","20 ms","32 ms","8 ms"]),
+  one("Why do packets have a number on them?","So the computer can put them back in order",["So the computer can put them back in order","So they travel faster","So hackers cannot read them","To show the price"])]);
+qSetup("tq",[
+  one("How many hops did it take to reach bbc.co.uk?","7",["3","5","7","199"]),
+  one("Hop 1 is 192.168.1.1. What is it?","The school router (default gateway)",["The school router (default gateway)","The BBC server","An undersea cable","DNS"]),
+  one("Between which two hops is the biggest jump in time?","Hop 4 → hop 5",["Hop 1 → hop 2","Hop 3 → hop 4","Hop 4 → hop 5","Hop 6 → hop 7"]),
+  one("Why is that jump so big?","The data travels from Singapore to Europe in an undersea cable",["The data travels from Singapore to Europe in an undersea cable","The router is broken","DNS is slow","The laptop is old"]),
+  one("What is the IP address of the BBC website?","151.101.0.81",["192.168.1.1","10.20.0.1","151.101.0.81","bbc.co.uk"])]);
+const HW=["router","switch","Wi-Fi access point","DNS","server","undersea cable"];
+qSetup("iq",[
+  one("No one in the school can open any website, but computers in school can still share files with each other.","router",HW),
+  one("The wired computers in one classroom stopped working, but the Wi-Fi works.","switch",HW),
+  one("Laptops in the library cannot connect, but the wired computers work.","Wi-Fi access point",HW),
+  one("Typing bbc.co.uk does not work, but typing its IP address works.","DNS",HW),
+  one("One website is down for everyone in the world. Other websites work.","server",HW),
+  one("A ship drops its anchor. Suddenly the internet to Europe is very slow for the whole of Thailand.","undersea cable",HW)]);
+const HAT=["White hat","Grey hat","Black hat"],LG=["Legal","Illegal"],FIX=["A strong passphrase","2FA","Install updates","Backups","Check visitors' ID"];
+const cf=(t,h,l,f)=>({t,q:[["Which hat?",h,HAT],["Legal or illegal?",l,LG],["Best fix for the weakness:",f,FIX]]});
+qSetup("hq",[
+  cf("<b>Case 1:</b> Agent Nok works for a security company. A hotel pays her to try to get into its booking system. She finds the admin password is <i>admin123</i> and writes a report.","White hat","Legal","A strong passphrase"),
+  cf("<b>Case 2:</b> Max sends fake “free gems” emails to gamers. When they log in on his fake page, he takes over their accounts and sells them.","Black hat","Illegal","2FA"),
+  cf("<b>Case 3:</b> Ploy finds an old bug on a library website that shows other people's book loans. She has no permission, but she doesn't look at anyone's details and tells the library straight away.","Grey hat","Illegal","Install updates"),
+  cf("<b>Case 4:</b> A criminal gang locks all the computers in a city hospital and asks for money to unlock them.","Black hat","Illegal","Backups"),
+  cf("<b>Case 5:</b> A school pays a “red team” to test its security. A tester pretends to be a printer repair worker, and the receptionist lets him into the server room.","White hat","Legal","Check visitors' ID")]);
+qSetup("sq",[
+  one("<b>Phone call:</b> “Hi, I'm from the school IT team. Your account has a problem. Tell me your password so I can fix it.”","Hang up and tell a teacher: IT never needs your password",["Hang up and tell a teacher: IT never needs your password","Tell them the password: they are from IT","Tell them half the password","Ask them to call back tomorrow, then tell them"]),
+  one("<b>Car park:</b> you find a USB stick labelled “EXAM ANSWERS”.","Give it to a teacher and don't plug it in",["Give it to a teacher and don't plug it in","Plug it in at home to look","Plug it in at school to look","Share it with friends"]),
+  one("<b>Game chat:</b> a friend sends “Vote for me in a competition!” with a link. The page asks you to log in.","Check with your friend another way, like in person",["Check with your friend another way, like in person","Log in quickly: it's your friend","Send the link to everyone","Log in with a friend's account"]),
+  one("<b>Door:</b> someone you don't know is carrying boxes and asks you to hold open the door to the staff-only computer room.","Politely say no and tell a member of staff",["Politely say no and tell a member of staff","Hold the door: they look busy","Give them your ID card","Show them where the computers are"]),
+  one("<b>Social media quiz:</b> “Your superhero name = your first pet's name + the street you grew up on!”","Don't answer: these are common security questions",["Don't answer: these are common security questions","Answer: it's just for fun","Answer, but only with friends watching","Share it so friends can play"])]);
+qSetup("bq",[
+  one("A computer can try 10 billion keys every second. How long to try every 4-digit PIN?","Less than a second",["Less than a second","About 1 hour","About 1 week","About 1 year"]),
+  one("Why is real encryption (like HTTPS) safe from brute force?","It has so many keys that trying them all would take millions of years",["It has so many keys that trying them all would take millions of years","It only uses capital letters","It is written in binary","Hackers are not allowed to try"])]);
+const AF=["Use three random words","Use a different password for every account","Install updates","Make a backup","Turn on 2FA","Keep passwords private (use a password manager)"];
+qSetup("aq",[
+  one("Arun's password is <i>arun2012</i>.","Use three random words",AF),
+  one("He uses the same password for games, email and school.","Use a different password for every account",AF),
+  one("He never installs updates because they take too long.","Install updates",AF),
+  one("All his homework is saved only on his laptop.","Make a backup",AF),
+  one("Anyone who finds out his password can log in to his email.","Turn on 2FA",AF),
+  one("He writes his passwords on a sticky note on his screen.","Keep passwords private (use a password manager)",AF)]);
+
+/* secret binary message */
+var SECRET={score:null};const SW=["WOLF","CODE","SAFE"];
+$("asciitab").innerHTML=[...AL].map(c=>`<span>${c}=${c.charCodeAt(0)}</span>`).join("");
+$("secretlist").innerHTML=SW.map((w,i)=>`<div class="qcard"><p class="word">${[...w].map(c=>c.charCodeAt(0).toString(2).padStart(8,"0")).join(" ")}</p><label class="qrow" id="sw${i}"><span>Word ${i+1}:</span><input maxlength="8" style="width:160px;text-transform:uppercase" autocomplete="off"></label></div>`).join("");
+$("secretcheck").onclick=()=>{let s=0;SW.forEach((w,i)=>{const r=$("sw"+i),v=r.querySelector("input").value.toUpperCase().trim(),ok=v===w;r.querySelector("input").style.borderColor=ok?"var(--ok)":v?"var(--coral)":"";if(ok)s++;});
+  SECRET.score=s;const m=$("secretmsg");m.className=s===3?"msg good":"msg bad";m.textContent=s===3?"All 3 words decoded! Message: WOLF CODE SAFE.":`${s} / 3 words correct. Tip: 01010111 = 64 + 16 + 4 + 2 + 1 = 87 = W.`;if(s===3)$("bmc1").classList.add("done");refreshAll();};
+/* pixel artist */
+var ART={px:Array(64).fill(0),drawn:false,decoded:false};
+function artDraw(){$("artgrid").innerHTML=ART.px.map((v,i)=>`<button class="cell ${v?"on":""}" data-i="${i}" aria-label="Row ${Math.floor(i/8)+1}, square ${i%8+1}"></button>`).join("");
+  $("artcode").textContent=Array.from({length:8},(_,r)=>ART.px.slice(r*8,r*8+8).join("")).join("\n");}
+$("artgrid").addEventListener("click",e=>{const c=e.target.closest(".cell");if(!c)return;ART.px[+c.dataset.i]^=1;ART.drawn=ART.px.some(Boolean);if(ART.drawn)$("bmc2").classList.add("done");artDraw();refreshAll();});
+$("artclear").onclick=()=>{ART.px.fill(0);artDraw();};
+$("artdraw").onclick=()=>{const rows=($("artin").value.match(/[01]{8}/g)||[]),m=$("artmsg");
+  if(rows.length<8){m.className="msg bad";m.textContent=`I found ${rows.length} rows. You need 8 rows of 8 bits (only 0 and 1).`;return;}
+  $("artout").innerHTML=rows.slice(0,8).join("").split("").map(b=>`<span class="cell ro ${b==="1"?"on":""}"></span>`).join("");ART.decoded=true;m.className="msg good";m.textContent="Decoded! What is your partner's picture?";refreshAll();};
+artDraw();
+/* spy chain */
+var CHAIN_OK=0;const CHAIN=[[3,"THE NEXT KEY IS FIVE"],[5,"NEXT KEY IS TEN MEET AT THE PIER"],[10,"THE CODE WORD IS WOLF"]];
+function chainDraw(){$("chainlist").innerHTML=CHAIN.slice(0,Math.min(CHAIN_OK+1,3)).map(([k,t],i)=>`<div class="qcard"><p><b>Message ${i+1}</b> · Key: ${i===0?"<b>3</b>":"look in message "+i}</p><p class="word">${shift(t,k)}</p>
+  ${i<CHAIN_OK?`<p class="msg good">✓ ${t}</p>`:`<div class="row"><input id="chin" style="flex:1 1 240px;text-transform:uppercase" aria-label="Decrypted message ${i+1}" autocomplete="off"><button class="btn" id="chbtn">Check</button></div>`}</div>`).join("");
+  const b=$("chbtn");if(b)b.onclick=()=>{const v=$("chin").value.toUpperCase().replace(/[^A-Z ]/g,"").replace(/\s+/g," ").trim(),m=$("chainmsg");
+    if(v===CHAIN[CHAIN_OK][1]){CHAIN_OK++;m.className="msg good";m.textContent=CHAIN_OK===3?"Mission complete! The code word is WOLF.":"Decrypted! Use the key in this message for the next one.";if(CHAIN_OK===3)$("cmc1").classList.add("done");chainDraw();refreshAll();}
+    else{m.className="msg bad";m.textContent="Not yet. Set the cipher wheel to the key and type the ciphertext into the ciphertext box.";}};}
+chainDraw();
+function nres(){$("nres").textContent=[`Network Builder results`,dline("d2","Who does what"),dline("d2b","Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),pline(2)].filter(Boolean).join("\n");}
+function hres(){$("hres").textContent=[`Hacker Hats results`,`Myth or real: ${HH.myth===null?"not checked":HH.myth+" / 6"}`,dline("d4","Which hat"),`Legal or illegal: ${HH.legal===null?"not checked":HH.legal+" / 4"}`,qL("hq","Challenge: case files"),pline(4),`Key idea: hacking without permission is illegal (Computer Misuse Act).`].filter(Boolean).join("\n");}
+function refreshAll(){pres();nres();bres();hres();phres();cres();wres();}
+refreshAll();
+route();
+</script>
+
+</body></html>

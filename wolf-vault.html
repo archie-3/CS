@@ -1,0 +1,310 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>The Wolf Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one vault console — status strip, three Level 1 locks, Door 1, then three Level 2 locks and the vault door */
+:root{
+  --bg:#eef2ef; --panel:#ffffff; --ink:#18302d; --muted:#4f6662; --line:#c9d6d2;
+  --timber:#8b5a2b; --brass:#c9922e; --river:#0e6f73; --open:#2e8b57; --warn:#b4462f;
+  --steel:#dfe7e5;
+  --display:"Bungee","Arial Black",Impact,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1c1b; --panel:#172a28; --ink:#e7f1ee; --muted:#a3bab5; --line:#2c4643;
+  --timber:#c88b52; --brass:#e4b04f; --river:#4fc0c2; --open:#5cc98a; --warn:#ef8a72; --steel:#203a37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1c1b; --panel:#172a28; --ink:#e7f1ee; --muted:#a3bab5; --line:#2c4643;
+  --timber:#c88b52; --brass:#e4b04f; --river:#4fc0c2; --open:#5cc98a; --warn:#ef8a72; --steel:#203a37; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+.l2wrap{display:grid;gap:18px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45}
+.wrap{max-width:1100px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.02em}
+h1{font-size:clamp(28px,5vw,46px);color:var(--river)}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.lo{margin:4px 0 0;font-size:15px;font-style:italic;color:var(--muted);max-width:60ch}
+.tag{font-size:14px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+.status{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.chip{background:var(--panel);border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-variant-numeric:tabular-nums;display:flex;gap:8px;align-items:center}
+.chip b{color:var(--river)}
+select,input,button{font:inherit;color:inherit}
+select,input{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+.intro{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+.intro p{margin:0;max-width:62ch}
+.locks{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.lock{background:var(--panel);border:3px solid var(--line);border-radius:16px;padding:18px;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start;min-width:0;transition:border-color .3s}
+.lock select{width:100%}
+.lock.done{border-color:var(--open)}
+.lock header{display:flex;gap:12px;align-items:center}
+.dial{width:58px;height:58px;flex:none;border-radius:50%;background:var(--steel);border:4px solid var(--brass);display:grid;place-items:center;font-family:var(--display);font-size:22px;color:var(--timber);transition:transform .8s}
+.lock.done .dial{transform:rotate(270deg);border-color:var(--open);color:var(--open)}
+.lock h2{font-size:20px;line-height:1.15}
+.lock .station{font-size:15px;color:var(--muted);font-weight:700}
+label{font-weight:700;font-size:16px;display:block;margin-bottom:4px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row input{flex:1 1 120px;width:120px;font-size:22px;letter-spacing:.1em;text-transform:uppercase}
+.btn{border:0;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer}
+.btn.go{background:var(--river);color:var(--bg)}
+.btn.hint{background:transparent;border:2px dashed var(--timber);color:var(--timber)}
+.btn:disabled{opacity:.5;cursor:default}
+.msg{min-height:1.4em;font-weight:700;margin:0}
+.msg.bad{color:var(--warn)} .msg.good{color:var(--open)}
+.hintbox{border-left:5px solid var(--timber);background:var(--steel);padding:10px 12px;border-radius:0 10px 10px 0;margin:0}
+.hsteps{margin:6px 0 0;padding-left:22px;display:grid;gap:4px}
+.door{background:var(--panel);border:3px solid var(--brass);border-radius:18px;padding:20px;display:grid;gap:14px}
+.door.locked{border-style:dashed;border-color:var(--line);color:var(--muted)}
+.door ol{margin:0;padding-left:24px;display:grid;gap:6px}
+.big{font-family:var(--display);font-size:clamp(40px,9vw,80px);font-variant-numeric:tabular-nums;color:var(--river);line-height:1}
+.final{display:grid;gap:12px;justify-items:start}
+.celebrate{background:var(--open);color:var(--bg);border-radius:18px;padding:22px;display:grid;gap:8px}
+.celebrate h2{font-size:clamp(26px,5vw,40px)}
+.stems{display:grid;gap:6px;margin:0;padding-left:22px}
+.conf{border:2px solid color-mix(in srgb,var(--bg) 60%,transparent);border-radius:12px;padding:12px 16px;margin:0;display:grid;gap:8px}
+.conf legend{padding:0 6px}
+.conf label{font-size:18px;font-weight:400;margin:0;display:flex;gap:10px;align-items:center;cursor:pointer}
+.conf input{width:22px;height:22px;accent-color:var(--brass)}
+.nexttask{display:grid;gap:10px}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.choice{border:2px solid color-mix(in srgb,var(--bg) 60%,transparent);border-radius:12px;padding:12px 16px;display:grid;gap:10px;justify-items:start;align-content:space-between}
+.golink{background:var(--bg);color:var(--open);text-decoration:none;display:inline-block}
+.results{background:var(--panel);border:3px solid var(--river);border-radius:18px;padding:20px;display:grid;gap:12px}
+.results h2{font-size:clamp(22px,4vw,30px);color:var(--river)}
+.rconf{border-color:var(--line)}
+.rcard{display:grid;gap:10px;margin-top:12px}
+.rsum{display:flex;flex-wrap:wrap;gap:8px}
+.rsum span{background:var(--steel);border-radius:999px;padding:5px 12px;font-weight:700;font-variant-numeric:tabular-nums}
+.rtab{border-collapse:collapse;width:100%;font-size:16px}
+.rtab th,.rtab td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+.rtab th{background:var(--steel)}
+.rtab td.n{text-align:center;font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+#restext{width:100%;min-height:200px;font:14px/1.4 ui-monospace,Menlo,Consolas,monospace}
+@media (prefers-reduced-motion:reduce){.dial{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="tag">UK Bebras Challenge · Year 9 mission</div>
+      <h1>The Wolf Vault</h1>
+      <p class="lo">We are learning: to combine algorithms, patterns and logic to solve Bebras-style puzzles.</p>
+    </div>
+    <div class="status">
+      <label for="team" style="margin:0">Pack</label>
+      <select id="team">
+        <option>Grey Pack</option><option>Silver Pack</option><option>Moon Pack</option><option>Shadow Pack</option><option>Storm Pack</option><option>Frost Pack</option>
+      </select>
+      <span class="chip">Time <b id="clock">00:00</b></span>
+      <span class="chip">Penalty time <b id="pen">+0:00</b></span>
+      <span class="chip">Locks open <b id="count">0 / 6</b></span>
+    </div>
+  </div>
+
+  <div class="intro">
+    <p><strong>Your mission:</strong> solve the puzzles in order, A to F. Before you type a code, choose the skill the puzzle needed most and tell your partner why: the lock only opens with the right skill. When a lock opens, one of you is the <strong>runner</strong>: collect the next puzzle from the back of the room. Stuck? A hint costs 1 minute. A wrong skill or a wrong code costs 30 seconds, so check your thinking before you type.</p>
+    <button class="btn go" id="start">Start the clock</button>
+  </div>
+
+  <section class="locks" id="locks"></section>
+
+  <section class="door locked" id="door1">
+    <h2>Door 1 · Into Level 2</h2>
+    <p id="d1lock" style="margin:0">Open Locks 1, 2 and 3 to find the door.</p>
+    <div class="final" id="d1" hidden>
+      <label for="dcode">Door code: type your Lock 1, Lock 2 and Lock 3 codes in order</label>
+      <div class="row" style="width:100%;max-width:420px"><input id="dcode" inputmode="numeric" autocomplete="off" aria-describedby="dmsg"><button class="btn go" id="dbtn">Open the door</button></div>
+      <p class="msg" id="dmsg" role="status"></p>
+    </div>
+  </section>
+
+  <section id="level2" class="l2wrap" hidden>
+    <div class="intro"><p><strong>Level 2:</strong> three harder puzzles, D, E and F. Same rules: choose the right skill, then type the code. Runner: collect Puzzle D.</p></div>
+    <section class="locks" id="locks2"></section>
+    <section class="door locked" id="vault">
+      <h2>The vault door</h2>
+      <p id="vlock" style="margin:0">Open Locks 4, 5 and 6 to reach the vault.</p>
+      <div class="final" id="vf" hidden>
+        <label for="fcode">Vault code: type your Lock 4, Lock 5 and Lock 6 codes in order</label>
+        <div class="row" style="width:100%;max-width:420px"><input id="fcode" inputmode="numeric" autocomplete="off" aria-describedby="fmsg"><button class="btn go" id="fbtn">Open the vault</button></div>
+        <p class="msg" id="fmsg" role="status"></p>
+      </div>
+    </section>
+  </section>
+
+  <section class="celebrate" id="win" hidden>
+    <h2>The vault is open!</h2>
+    <p style="margin:0" id="wintext"></p>
+    <p style="margin:0"><strong>1. Fill in your results card</strong> (below) and copy it into Google Classroom.</p>
+    <div class="nexttask">
+      <p style="margin:0"><strong>2. Your next task:</strong> choose one way to keep practising.</p>
+      <div class="choices">
+        <div class="choice">
+          <p style="margin:0"><strong>Choice 1:</strong> Practise algorithms and patterns with Blockly code.</p>
+          <a class="btn go golink" href="https://blockly.games/maze" target="_blank" rel="noopener">Start Blockly Games Maze</a>
+        </div>
+        <div class="choice">
+          <p style="margin:0"><strong>Choice 2:</strong> Practise past Bebras challenges.</p>
+          <a class="btn go golink" href="https://www.bebras.uk/index.php?action=user_competitions" target="_blank" rel="noopener">Start Bebras practice</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="results" id="results">
+    <h2>Our results card</h2>
+    <p style="margin:0" id="resintro">Finished, or out of time? Show your results, answer the question, then copy the card into Google Classroom.</p>
+    <div><button class="btn go" id="showres">Show our results</button></div>
+    <div id="resbody" hidden>
+      <fieldset class="conf rconf">
+        <legend><strong>How confident do you feel about problem solving these types of puzzles?</strong></legend>
+        <label><input type="radio" name="conf" value="a. I am lost. I need more help."> a. I am lost. I need more help.</label>
+        <label><input type="radio" name="conf" value="b. I feel OK."> b. I feel OK.</label>
+        <label><input type="radio" name="conf" value="c. I feel confident and ready for next week's challenge!"> c. I feel confident and ready for next week's challenge!</label>
+      </fieldset>
+      <div class="rcard" id="rcard"></div>
+      <div class="row" style="align-items:center;margin-top:12px"><button class="btn go" id="copyres">Copy results</button><p class="msg" id="copymsg" role="status"></p></div>
+      <textarea id="restext" readonly aria-label="Results as text" hidden></textarea>
+    </div>
+  </section>
+</div>
+
+<script>
+const SKILLS=["Algorithms","Patterns","Logic"];
+const SKILL_LABEL={Algorithms:"Algorithms: steps in order",Patterns:"Patterns: find the rule",Logic:"Logic: use the clues"};
+// codes are stored as simple checksums so the answers are not readable in the page source
+const h=s=>{let x=7;for(const c of s.trim().toUpperCase())x=(x*31+c.charCodeAt(0))%1000003;return x};
+const LOCKS=[
+  {n:1,name:"The Wolf Circle",station:"Puzzle A",skill:"Algorithms",codes:[h("5"),h("FIVE")],
+   hint:"Use the 10 wolf cards on the circle. Wolf 1 stays, wolf 2 leaves, wolf 3 stays, wolf 4 leaves… Do not stop at wolf 10: keep going round the circle and skip wolves that have already left."},
+  {n:2,name:"The River Code",station:"Puzzle B",skill:"Patterns",codes:[h("7"),h("SEVEN")],
+   hint:"Compare CAT and DCW letter by letter. How many places does the 1st letter move? The 2nd? The 3rd? Now go BACKWARDS to decode."},
+  {n:3,name:"Den Street",station:"Puzzle C",skill:"Logic",codes:[h("4")],
+   hint:"Start with the strongest clues. Zoe must be in den 1 or 3. Max cannot be at either end. Try each case and rule one out."},
+  {n:4,name:"The Wolf Drone",station:"Puzzle D",skill:"Algorithms",codes:[h("10")],
+   hint:"Move and turn the drone token. When a tree or the edge is in front, the drone turns RIGHT and stays in the same square. That uses up one instruction. Ask your teacher for the hint sheet."},
+  {n:5,name:"The Howl Song",station:"Puzzle E",skill:"Patterns",codes:[h("15"),h("FIFTEEN")],
+   hint:"Count only the <b>LONG</b> howls. Each new song = last night's song + <b>1 LONG</b> + last night's song.<p style='margin:6px 0 0'><b>Example:</b> Night 3 = Night 2 + LONG + Night 2. Night 2 has 1 long howl, so Night 3 has <b>1 + 1 + 1 = 3</b> long howls.</p><ol class='hsteps'><li><b>Night 4</b> = Night 3 + LONG + Night 3. Long howls = <b>3 + 1 + 3 = ?</b></li><li><b>Night 5</b> = Night 4 + LONG + Night 4. Long howls = <b>? + 1 + ? = ?</b></li></ol>"},
+  {n:6,name:"The Heavy Bear",station:"Puzzle F",skill:"Logic",codes:[h("8"),h("EIGHT")],
+   hint:"Work through these steps (use the tokens on the balance):<ol class='hsteps'><li>Look at <b>Scale 2</b>. 2 wolves = 6 foxes. So <b>1 wolf = ? foxes</b>.</li><li>Look at <b>Scale 1</b>. Swap each wolf for foxes. <b>3 wolves = ? foxes</b>.</li><li>So Scale 1 now says: <b>bear + 1 fox = ? foxes</b>.</li><li>Take 1 fox off <b>both</b> sides. <b>Bear = ? foxes</b>.</li></ol>"}
+];
+const DOOR=h("574"), FINAL=h("10158");
+let started=null,penalty=0,opened=new Set(),tick=null,vaultOpen=false;
+// per-lock record for the results card
+const stats={};LOCKS.forEach(L=>stats[L.n]={ws:0,wc:0,hint:false,at:""});
+const $=id=>document.getElementById(id);
+const fmt=s=>{s=Math.max(0,Math.round(s));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")};
+
+const card=L=>`
+  <article class="lock" id="lock${L.n}">
+    <header><div class="dial" aria-hidden="true">${L.n}</div>
+      <div><div class="station">${L.station} · Lock ${L.n}</div><h2>${L.name}</h2></div></header>
+    <div><label for="sk${L.n}">Which skill did this puzzle need most?</label>
+      <select id="sk${L.n}"><option value="">Choose a skill…</option>${SKILLS.map(s=>`<option value="${s}">${SKILL_LABEL[s]}</option>`).join("")}</select></div>
+    <div><label for="c${L.n}">Code</label>
+      <div class="row"><input id="c${L.n}" autocomplete="off" aria-describedby="m${L.n}"><button class="btn go" data-open="${L.n}">Unlock</button></div></div>
+    <p class="msg" id="m${L.n}" role="status"></p>
+    <div><button class="btn hint" data-hint="${L.n}">Show a hint (+1 minute)</button></div>
+    <div class="hintbox" id="h${L.n}" hidden>${L.hint}</div>
+  </article>`;
+function build(){
+  $("locks").innerHTML=LOCKS.filter(L=>L.n<=3).map(card).join("");
+  $("locks2").innerHTML=LOCKS.filter(L=>L.n>3).map(card).join("");
+}
+let doorOpen=false;
+function render(){
+  $("count").textContent=opened.size+" / 6";
+  $("pen").textContent="+"+fmt(penalty);
+  const l1=[1,2,3].every(n=>opened.has(n)), l2=[4,5,6].every(n=>opened.has(n));
+  $("door1").classList.toggle("locked",!l1); $("d1").hidden=!l1||doorOpen; $("d1lock").hidden=l1;
+  if(doorOpen){$("d1lock").hidden=false;$("d1lock").textContent="Door 1 is open. Go to Level 2.";}
+  $("level2").hidden=!doorOpen;
+  $("vault").classList.toggle("locked",!l2); $("vf").hidden=!l2; $("vlock").hidden=l2;
+}
+let stoppedAt=null; // clock freezes when the vault opens
+function clock(){ if(started) $("clock").textContent=fmt(((stoppedAt||Date.now())-started)/1000+penalty); }
+function stopClock(){ if(started&&!stoppedAt){ stoppedAt=Date.now(); clearInterval(tick); clock(); $("start").textContent="Clock stopped"; } }
+$("start").onclick=()=>{ if(!started){started=Date.now();tick=setInterval(clock,500);$("start").textContent="Clock running";$("start").disabled=true;} };
+
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"), hb=e.target.closest("[data-hint]");
+  if(o){
+    const L=LOCKS[o.dataset.open-1], m=$("m"+L.n), sk=$("sk"+L.n).value, val=$("c"+L.n).value;
+    if(!started) $("start").click();
+    if(!sk){m.className="msg bad";m.textContent="First choose the skill you used.";return;}
+    if(sk!==L.skill){stats[L.n].ws++;penalty+=30;render();clock();m.className="msg bad";m.textContent="Think again: which skill did this puzzle need most? +30 seconds. Talk to your partner: what did you actually do to solve it?";return;}
+    if(!L.codes.includes(h(val))){stats[L.n].wc++;penalty+=30;render();clock();m.className="msg bad";m.textContent="Not yet. +30 seconds. Show your working to your partner before you try again.";return;}
+    opened.add(L.n); $("lock"+L.n).classList.add("done"); clock(); stats[L.n].at=$("clock").textContent;
+    o.disabled=true; $("c"+L.n).disabled=true; $("sk"+L.n).disabled=true;
+    m.className="msg good";
+    const next = L.n===3 ? "When all 3 locks are open, type the door code." : L.n===6 ? "When all 3 locks are open, type the vault code." : "Runner: collect the next puzzle.";
+    m.textContent = `Unlocked! ${sk} is right. Tell your partner why. ` + next;
+    render();
+    const sm={behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"};
+    if(L.n<=3&&[1,2,3].every(n=>opened.has(n))) $("door1").scrollIntoView(sm);
+    if(L.n>3&&[4,5,6].every(n=>opened.has(n))) $("vault").scrollIntoView(sm);
+  }
+  if(hb){
+    const n=hb.dataset.hint; if($("h"+n).hidden){$("h"+n).hidden=false;stats[n].hint=true;penalty+=60;hb.disabled=true;render();clock();}
+  }
+});
+$("dbtn").onclick=()=>{
+  const v=$("dcode").value.replace(/\D/g,"");
+  if(h(v)!==DOOR){$("dmsg").className="msg bad";$("dmsg").textContent="The door stays shut. Put the codes in lock order: Lock 1, then 2, then 3.";return;}
+  doorOpen=true; render(); $("level2").scrollIntoView({behavior:"smooth"});
+};
+$("fbtn").onclick=()=>{
+  const v=$("fcode").value.replace(/\D/g,"");
+  if(h(v)!==FINAL){$("fmsg").className="msg bad";$("fmsg").textContent="The vault stays shut. Put the codes in lock order: Lock 4, then 5, then 6.";return;}
+  stopClock();
+  $("win").hidden=false;
+  $("wintext").textContent=`${$("team").value} opened the Wolf Vault in ${$("clock").textContent} (including ${$("pen").textContent} of penalty time). You cracked all six locks and explained your thinking.`;
+  vaultOpen=true; showResults();
+  $("win").scrollIntoView({behavior:"smooth"});
+};
+
+// ---- results card ----
+function results(){
+  clock();
+  const rows=LOCKS.map(L=>({L,s:stats[L.n]}));
+  const tot=k=>rows.reduce((a,r)=>a+(k==="hint"?(r.s.hint?1:0):r.s[k]),0);
+  const conf=(document.querySelector('input[name="conf"]:checked')||{}).value||"(not answered yet)";
+  let hard=null;
+  rows.forEach(r=>{const score=r.s.ws+r.s.wc+(r.s.hint?2:0);if(score>0&&(!hard||score>hard.score))hard={r,score};});
+  const status=vaultOpen?"Vault OPEN":`Vault not open yet (${opened.size} / 6 locks)`;
+  const sum={pack:$("team").value,status,time:started?$("clock").textContent:"00:00",pen:$("pen").textContent,
+    hints:tot("hint"),ws:tot("ws"),wc:tot("wc"),hard:hard?`Lock ${hard.r.L.n} ${hard.r.L.name}`:"none",conf};
+  const lines=[`Wolf Vault results: ${sum.pack}`,status,
+    `Total time: ${sum.time} (penalty time ${sum.pen})`,
+    `Hints used: ${sum.hints} | Wrong skills: ${sum.ws} | Wrong codes: ${sum.wc}`,
+    ...rows.map(({L,s})=>`Lock ${L.n} ${L.name}: ${s.at?"opened at "+s.at:"not opened"}; wrong skills ${s.ws}; wrong codes ${s.wc}; hint ${s.hint?"yes":"no"}`),
+    `Hardest lock: ${sum.hard}`,`Confidence: ${conf}`];
+  return {sum,rows,text:lines.join("\n")};
+}
+function showResults(){
+  const {sum,rows,text}=results();
+  $("resbody").hidden=false; $("showres").textContent="Update our results";
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  $("rcard").innerHTML=`<p style="margin:0"><strong>${esc(sum.pack)}</strong> · ${esc(sum.status)}</p>
+    <div class="rsum"><span>Time ${esc(sum.time)}</span><span>Penalty ${esc(sum.pen)}</span><span>Hints ${sum.hints}</span><span>Wrong skills ${sum.ws}</span><span>Wrong codes ${sum.wc}</span></div>
+    <div class="tablewrap"><table class="rtab"><tr><th>Lock</th><th>Opened at</th><th>Wrong skills</th><th>Wrong codes</th><th>Hint</th></tr>
+    ${rows.map(({L,s})=>`<tr><td>${L.n} ${esc(L.name)}</td><td class="n">${s.at||"–"}</td><td class="n">${s.ws}</td><td class="n">${s.wc}</td><td class="n">${s.hint?"yes":"no"}</td></tr>`).join("")}</table></div>
+    <p style="margin:0"><strong>Hardest lock:</strong> ${esc(sum.hard)}<br><strong>Confidence:</strong> ${esc(sum.conf)}</p>`;
+  $("restext").value=text; $("copymsg").textContent="";
+}
+$("showres").onclick=()=>{showResults();$("results").scrollIntoView({behavior:"smooth"});};
+document.querySelectorAll('input[name="conf"]').forEach(r=>r.addEventListener("change",showResults));
+$("copyres").onclick=async()=>{
+  showResults(); const text=$("restext").value, m=$("copymsg");
+  try{await navigator.clipboard.writeText(text);m.className="msg good";m.textContent="Copied! Paste it into Google Classroom.";}
+  catch(e){const t=$("restext");t.hidden=false;t.focus();t.select();
+    try{document.execCommand("copy");m.className="msg good";m.textContent="Copied! Paste it into Google Classroom.";}
+    catch(e2){m.className="msg bad";m.textContent="Copy did not work. Select the text in the box and copy it (Ctrl+C).";}}
+};
+build(); render();
+</script>
+
+</body></html>

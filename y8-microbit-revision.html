@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Year 8 micro:bit – quiz and flashcards</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --ink:#1E2433; --muted:#566074; --paper:#F4F6FA; --card:#FCFDFE; --line:#D9DEE8;
+  --accent:#0E7C7B; --tint:#DDF2F1; --on-accent:#FCFDFE;
+  --good:#1F6FB2; --good-bg:#E3EFFA; --bad:#B4530B; --bad-bg:#FCEBDC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+    --accent:#5CC9C7; --tint:#252D3E; --on-accent:#141925;
+    --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+  --accent:#5CC9C7; --tint:#252D3E; --on-accent:#141925;
+  --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",Verdana,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 56px}
+header{border-left:6px solid var(--accent);padding:4px 0 4px 16px;margin-bottom:24px}
+h1{font:700 clamp(28px,6vw,40px)/1.1 Rubik,Arial,sans-serif;margin:0 0 6px}
+header p{margin:0;color:var(--muted)}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;font:600 17px Rubik,Arial,sans-serif;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.progress{height:8px;background:var(--tint);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qnum{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q{font:600 22px/1.35 Rubik,Arial,sans-serif;margin:0 0 16px}
+pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;font:16px/1.5 "Courier New",monospace;margin:0 0 16px;white-space:pre}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--good-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin-top:16px;padding:14px 16px;border-radius:12px;display:none}
+.fb.show{display:block}
+.fb.right{background:var(--good-bg);border-left:5px solid var(--good)}
+.fb.wrong{background:var(--bad-bg);border-left:5px solid var(--bad)}
+.fb b{display:block;margin-bottom:4px}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.btn{font:600 17px Rubik,Arial,sans-serif;padding:12px 20px;border-radius:12px;border:none;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn[hidden]{display:none}
+.score{font:700 64px/1 Rubik,Arial,sans-serif;color:var(--accent);margin:8px 0}
+.list{padding-left:20px}
+.card{min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px;border-radius:16px;background:var(--tint);cursor:pointer;border:2px solid transparent;width:100%;font:inherit;color:var(--ink)}
+.card .term{font:700 clamp(28px,7vw,40px)/1.15 Rubik,Arial,sans-serif}
+.card .hint{color:var(--muted);font-size:15px;margin-top:14px}
+.card .def{font-size:20px}
+.card .ex{margin-top:14px;color:var(--muted)}
+.count{text-align:center;color:var(--muted);margin-top:12px}
+.tabs{flex-wrap:wrap}
+.tab{min-width:120px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:14px;background:var(--tint);border-radius:12px}
+.bank span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-weight:700}
+.sents{padding-left:24px;margin:0;display:grid;gap:14px}
+.sents li{line-height:2.1}
+.sents select{font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:2px 6px;max-width:100%}
+.sents select.right{border-color:var(--good);background:var(--good-bg)}
+.sents select.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.say{font:inherit;background:none;border:none;cursor:pointer;padding:0 4px;color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.progress span{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Year 8 micro:bit revision</h1>
+    <p>Answer each question. You will see if you are right straight away.</p>
+  </header>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tQuiz" aria-selected="true">Quiz</button>
+    <button class="tab" role="tab" id="tCards" aria-selected="false">Flashcards</button>
+    <button class="tab" role="tab" id="tGaps" aria-selected="false">Fill the gaps</button>
+  </div>
+
+  <section class="panel" id="quiz"></section>
+
+  <section class="panel" id="cards" hidden>
+    <button class="card" id="card" aria-live="polite"></button>
+    <p class="count" id="cardCount"></p>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn ghost" id="prev">Back</button>
+      <button class="btn ghost" id="shuf">Shuffle</button>
+      <button class="btn" id="next">Next card</button>
+    </div>
+  </section>
+
+  <section class="panel" id="gaps" hidden>
+    <p class="qnum">Word bank</p>
+    <div class="bank" id="bank"></div>
+    <ol class="sents" id="sents"></ol>
+    <div class="fb" id="gapFb" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn ghost" id="gapReset">Start again</button>
+      <button class="btn ghost" id="gapShow">Show answers</button>
+      <button class="btn" id="gapCheck">Check my answers</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const DATA = {"questions": [{"topic": "Input", "q": "Which of these is an input?", "options": ["Button A", "The LED display", "A sound", "radio send"], "why": "An input senses information from outside. Pressing button A is an input."}, {"topic": "Output", "q": "Which of these is an output?", "options": ["The LED display", "The accelerometer", "The touch logo", "Pin P0"], "why": "An output shows or sends information. The LEDs show information."}, {"topic": "Sensor", "q": "A step counter needs to detect movement. Which sensor does it use?", "options": ["Accelerometer", "Touch logo", "LED display", "Radio group"], "why": "The accelerometer detects motion, like shaking or steps."}, {"topic": "Sensor", "q": "Which sensor detects when you touch the gold logo on the front?", "options": ["Touch logo", "Accelerometer", "Radio", "Speaker"], "why": "The touch logo is a built-in sensor that detects touch."}, {"topic": "Variable", "q": "What is a variable?", "options": ["Storage for information that can change", "A light on the micro:bit", "A radio message", "A loop that never stops"], "why": "A variable stores information that can change, like steps or lives."}, {"topic": "Set vs Change", "q": "steps is 5. The program runs: change steps by 1. What is steps now?", "options": ["6", "1", "5", "51"], "why": "'Change' adds to the number already there: 5 + 1 = 6."}, {"topic": "Set vs Change", "q": "steps is 5. The program runs: set steps to 0. What is steps now?", "options": ["0", "5", "4", "-5"], "why": "'Set' fixes the number. The old value is replaced, so steps is 0."}, {"topic": "Random", "q": "The code says: pick random 0 to 2. Which numbers can it choose?", "options": ["0, 1 or 2", "Only 1 or 2", "Only 0 or 2", "Any number"], "why": "The range includes both ends, so 0, 1 and 2 are all possible."}, {"topic": "If / else", "q": "Look at the code. tool is 2. What does the micro:bit show?", "code": "if tool = 0 then\n    show rock\nelse if tool = 1 then\n    show paper\nelse\n    show scissors", "options": ["Scissors", "Rock", "Paper", "Nothing"], "why": "tool is not 0 and not 1, so the final 'else' runs and shows scissors."}, {"topic": "Forever loop", "q": "Why can putting 'if pin P0 is touched' inside a forever loop cause a bug?", "options": ["The loop runs many times per second, so one touch can be counted many times", "The forever loop only runs once", "Pins cannot be used in a loop", "It turns off the LEDs"], "why": "Forever repeats many times per second. One long touch can trigger the code again and again."}, {"topic": "Radio group", "q": "What does a radio group do?", "options": ["Only micro:bits in the same group can send and receive with each other", "It makes the radio louder", "It chooses a random number", "It counts the steps"], "why": "The group number filters which micro:bits can hear each other."}, {"topic": "Radio group", "q": "micro:bit A is in radio group 5. micro:bit B is in radio group 7. A sends “Hello”. What happens?", "options": ["B does not receive the message", "B shows “Hello”", "B changes to group 5", "Both micro:bits turn off"], "why": "They are in different groups, so B does not hear A."}, {"topic": "Digital pin input", "q": "'if pin P0 is touched then…' uses which kind of input?", "options": ["Digital pin input", "Accelerometer", "LED output", "Radio received"], "why": "A digital pin input detects when a circuit is completed by touching a pin."}], "cards": [{"term": "Input", "meaning": "Something the micro:bit uses to sense information from outside.", "example": "Button, touch logo, accelerometer, pin."}, {"term": "Output", "meaning": "Something the micro:bit uses to show or send information.", "example": "LEDs, sound, radio message."}, {"term": "Sensor", "meaning": "A built-in input that detects something in the real world.", "example": "Accelerometer (motion), touch logo (touch)."}, {"term": "Variable", "meaning": "Storage for information that can change.", "example": "steps, tool, lives, timer."}, {"term": "Random", "meaning": "A number chosen unpredictably from a range you set.", "example": "pick random 0 to 2."}, {"term": "If / else", "meaning": "Chooses one action or another, based on a condition.", "example": "if tool = 0 then show rock, else check next."}, {"term": "Digital pin input", "meaning": "Detects when a circuit is completed by touching a pin.", "example": "if pin P0 is touched then …"}, {"term": "Forever loop", "meaning": "Repeats the code inside continuously, many times per second.", "example": "Watch out: this can re-trigger the same touch many times!"}, {"term": "Radio group", "meaning": "A number that filters which micro:bits can send and receive together.", "example": "Only micro:bits in group 5 will hear each other."}, {"term": "radio send / on radio received", "meaning": "Sends a message out, or runs code when a message arrives.", "example": "radio send string “Hello”."}, {"term": "Set vs Change", "meaning": "“Set” fixes a number. “Change” adds to the number already there.", "example": "set steps to 0, then change steps by 1."}, {"term": "Debugging", "meaning": "Finding why code doesn't do what you expect.", "example": "Lives drop too fast — the if is inside a forever loop."}], "gaps": [{"s": "An ___ is something the micro:bit uses to sense information from outside.", "a": ["input"]}, {"s": "An ___ is something the micro:bit uses to show or send information.", "a": ["output"]}, {"s": "A ___ is a built-in input that detects something in the real world.", "a": ["sensor"]}, {"s": "The ___ detects motion, so it can count your steps.", "a": ["accelerometer"]}, {"s": "The ___ detects when you touch the gold logo on the front.", "a": ["touch logo"]}, {"s": "A ___ is storage for information that can change, like lives.", "a": ["variable"]}, {"s": "The block “pick ___ 0 to 2” chooses a number unpredictably.", "a": ["random"]}, {"s": "An ___ / else block chooses one action or another, based on a condition.", "a": ["if"]}, {"s": "A ___ loop repeats the code inside many times per second.", "a": ["forever"]}, {"s": "Only micro:bits in the same radio ___ can hear each other.", "a": ["group"]}, {"s": "“___ steps to 0” fixes the number. “___ steps by 1” adds to it.", "a": ["set", "change"]}, {"s": "Finding why code doesn't do what you expect is called ___.", "a": ["debugging"]}]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+// Tabs
+const TIPS = {
+  quiz: 'Answer each question. You will see if you are right straight away.',
+  cards: 'Say the meaning out loud first. Then tap the card to check.',
+  gaps: 'Choose a word from the word bank for each gap. Tap 🔊 to hear the sentence.'
+};
+function showTab(which){
+  ['quiz', 'cards', 'gaps'].forEach(t => {
+    $('#t' + t[0].toUpperCase() + t.slice(1)).setAttribute('aria-selected', which === t);
+    $('#' + t).hidden = which !== t;
+  });
+  $('header p').textContent = TIPS[which];
+}
+$('#tQuiz').onclick = () => showTab('quiz');
+$('#tCards').onclick = () => showTab('cards');
+$('#tGaps').onclick = () => showTab('gaps');
+
+// Quiz
+let order, qi, score, missed, answered;
+function startQuiz(){
+  order = shuffle(DATA.questions.map((q, i) => i));
+  qi = 0; score = 0; missed = []; renderQ();
+}
+function renderQ(){
+  const q = DATA.questions[order[qi]];
+  answered = false;
+  const opts = shuffle(q.options.map((t, i) => ({ t, i })));
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:${(qi / order.length) * 100}%"></span></div>
+    <p class="qnum">Question ${qi + 1} of ${order.length}</p>
+    <p class="q">${esc(q.q)}</p>
+    ${q.code ? `<pre>${esc(q.code)}</pre>` : ''}
+    <div class="opts">${opts.map(o => `<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="nextQ" hidden>${qi + 1 === order.length ? 'See my score' : 'Next question'}</button></div>`;
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(b, q));
+  $('#nextQ').onclick = () => { qi++; qi < order.length ? renderQ() : renderEnd(); };
+}
+function choose(btn, q){
+  if (answered) return;
+  answered = true;
+  const pick = +btn.dataset.i, ok = pick === 0;
+  if (ok) score++; else missed.push(q.topic);
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (+b.dataset.i === 0) b.classList.add('right');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = $('#fb');
+  fb.className = 'fb show ' + (ok ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${ok ? 'Correct!' : 'Not quite. The answer is: ' + esc(q.options[0])}</b>${esc(q.why)}`;
+  const n = $('#nextQ'); n.hidden = false; n.focus();
+}
+function renderEnd(){
+  const pct = Math.round(score / order.length * 100);
+  const msg = pct >= 80 ? 'Great work. You know this well.' : pct >= 50 ? 'Good start. Revise the keywords below.' : 'Keep going. Use the flashcards, then try again.';
+  const topics = [...new Set(missed)];
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:100%"></span></div>
+    <p class="qnum">Your score</p>
+    <p class="score">${score} / ${order.length}</p>
+    <p>${msg}</p>
+    ${topics.length ? `<p><b>Revise these keywords:</b></p><ul class="list">${topics.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '<p>You got every question right!</p>'}
+    <p><b>Write your score on your exit ticket in Google Classroom.</b></p>
+    <div class="row"><button class="btn ghost" id="toCards">Practise with flashcards</button><button class="btn" id="again">Try again</button></div>`;
+  $('#again').onclick = startQuiz;
+  $('#toCards').onclick = () => showTab('cards');
+}
+
+// Flashcards
+let deck = DATA.cards.slice(), ci = 0, flipped = false;
+function renderCard(){
+  const c = deck[ci];
+  $('#card').innerHTML = flipped
+    ? `<div class="def">${esc(c.meaning)}</div>${c.example ? `<div class="ex">Example: ${esc(c.example)}</div>` : ''}`
+    : `<div class="term">${esc(c.term)}</div><div class="hint">Tap to see the meaning</div>`;
+  $('#cardCount').textContent = `Card ${ci + 1} of ${deck.length}`;
+}
+$('#card').onclick = () => { flipped = !flipped; renderCard(); };
+$('#next').onclick = () => { ci = (ci + 1) % deck.length; flipped = false; renderCard(); };
+$('#prev').onclick = () => { ci = (ci - 1 + deck.length) % deck.length; flipped = false; renderCard(); };
+$('#shuf').onclick = () => { deck = shuffle(deck); ci = 0; flipped = false; renderCard(); };
+
+startQuiz(); renderCard();
+
+// Fill the gaps
+const BANK = shuffle([...new Set(DATA.gaps.flatMap(g => g.a))]);
+function renderGaps(){
+  $('#bank').innerHTML = BANK.map(w => `<span>${esc(w)}</span>`).join('');
+  const opts = '<option value="">choose…</option>' + BANK.map(w => `<option>${esc(w)}</option>`).join('');
+  $('#sents').innerHTML = DATA.gaps.map((g, i) => {
+    const parts = g.s.split('___');
+    let h = esc(parts[0]);
+    for (let k = 1; k < parts.length; k++) h += `<select data-g="${i}" data-k="${k - 1}" aria-label="Gap ${k} in sentence ${i + 1}">${opts}</select>` + esc(parts[k]);
+    return `<li>${h} <button class="say" data-g="${i}" aria-label="Listen to sentence ${i + 1}">🔊</button></li>`;
+  }).join('');
+  document.querySelectorAll('.say').forEach(b => b.onclick = () => speak(+b.dataset.g));
+  document.querySelectorAll('#sents select').forEach(s => s.onchange = () => s.classList.remove('right', 'wrong'));
+  const fb = $('#gapFb'); fb.className = 'fb'; fb.innerHTML = '';
+}
+function speak(i){
+  if (!('speechSynthesis' in window)) return;
+  const g = DATA.gaps[i], parts = g.s.split('___');
+  const sels = [...document.querySelectorAll(`#sents select[data-g="${i}"]`)];
+  let t = parts[0];
+  for (let k = 1; k < parts.length; k++) t += ' ' + (sels[k - 1].value || 'blank') + ' ' + parts[k];
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t.replace(/[“”"]/g, ''));
+  u.lang = 'en-GB'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+$('#gapCheck').onclick = () => {
+  let right = 0, total = 0, empty = 0;
+  document.querySelectorAll('#sents select').forEach(s => {
+    const ans = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    total++;
+    s.classList.remove('right', 'wrong');
+    if (!s.value) { empty++; return; }
+    if (s.value === ans) { right++; s.classList.add('right'); } else s.classList.add('wrong');
+  });
+  const fb = $('#gapFb');
+  fb.className = 'fb show ' + (right === total ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${right} out of ${total} correct.</b>` +
+    (right === total ? 'Brilliant! Every gap is right.' :
+     empty ? `You still have ${empty} empty gap${empty > 1 ? 's' : ''}. Orange gaps are wrong: try another word.` :
+     'Orange gaps are wrong. Try another word, then check again.');
+};
+$('#gapShow').onclick = () => {
+  document.querySelectorAll('#sents select').forEach(s => {
+    s.value = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    s.classList.remove('wrong'); s.classList.add('right');
+  });
+  const fb = $('#gapFb'); fb.className = 'fb show right';
+  fb.innerHTML = '<b>Answers shown.</b>Read each sentence out loud. Then press Start again and try without looking.';
+};
+$('#gapReset').onclick = renderGaps;
+renderGaps();
+</script>
+</body>
+</html>

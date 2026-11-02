@@ -1,0 +1,131 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Hardware Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: revision desk (Y9 hardware) with three tools (flashcards, practice quiz, fill the gaps), filtered by lesson. */
+:root{
+  --paper:#f3f6f8; --panel:#ffffff; --ink:#0f2233; --muted:#4d6273; --line:#cbd7e0;
+  --fibre:#17805a; --fibre-soft:#ddf1e7; --amber:#c98a0b; --amber-soft:#fbf0d6; --coral:#c2412d; --coral-soft:#fbe3de; --ok:#1f8a4c; --ok-soft:#dcf2e4;
+  --display:"Chakra Petch","Segoe UI",Arial,sans-serif; --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif; --mono:"JetBrains Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b1824; --panel:#122536; --ink:#e4eef4; --muted:#9db3c2; --line:#284257;
+  --fibre:#5fd3a2; --fibre-soft:#123d2f; --amber:#f0b84a; --amber-soft:#3b2f12; --coral:#f08470; --coral-soft:#40201b; --ok:#5fd08e; --ok-soft:#143826; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0b1824; --panel:#122536; --ink:#e4eef4; --muted:#9db3c2; --line:#284257;
+  --fibre:#5fd3a2; --fibre-soft:#123d2f; --amber:#f0b84a; --amber-soft:#3b2f12; --coral:#f08470; --coral-soft:#40201b; --ok:#5fd08e; --ok-soft:#143826; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45}
+.wrap{max-width:960px;margin:0 auto;padding-block:16px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,5vw,44px)} h2{font-size:26px}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:inherit;font-family:var(--display);font-weight:700;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select{font:inherit;color:inherit;background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:8px 10px}
+.panel{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px;min-width:0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--fibre);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn:focus-visible,.tab:focus-visible,.card:focus-visible,select:focus-visible,.opt:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.card{min-height:220px;border-radius:16px;border:3px solid var(--fibre);background:var(--fibre-soft);display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;font:inherit;color:var(--ink);width:100%}
+.card .word{font-family:var(--display);font-size:clamp(30px,6vw,46px);font-weight:700}
+.card .mean{font-size:22px;max-width:36ch}
+.card.flip{background:var(--panel);border-color:var(--amber)}
+.small{font-size:15px;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)} .opt.wrong{background:var(--coral-soft);border-color:var(--coral)}
+.msg{font-weight:700;min-height:1.4em} .msg.good{color:var(--ok)} .msg.bad{color:var(--coral)}
+.score{font-family:var(--display);font-size:28px;font-weight:700}
+.gap{display:grid;gap:6px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.gap select{min-width:120px}
+.gap.right select{border-color:var(--ok);background:var(--ok-soft)} .gap.wrong select{border-color:var(--coral);background:var(--coral-soft)}
+.prog{height:10px;border-radius:999px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;background:var(--fibre)}
+a{color:var(--fibre)}
+</style>
+<div class="wrap">
+  <div><div class="eyebrow">Year 9 · What's inside a computer?</div><h1>Hardware Revision</h1>
+    <p>Get ready for the end of unit test. Learn the keywords with the flashcards, then test yourself. Cards marked <b>stretch</b> are extra words for high flyers.</p></div>
+  <div class="bar">
+    <div class="tabs" role="tablist"><button class="tab" role="tab" id="t-cards" aria-selected="true">Flashcards</button><button class="tab" role="tab" id="t-quiz" aria-selected="false">Practice quiz</button><button class="tab" role="tab" id="t-gaps" aria-selected="false">Fill the gaps</button></div>
+    <label for="lesson">Lesson:</label><select id="lesson"></select>
+  </div>
+
+  <section class="panel" id="p-cards">
+    <div class="bar"><span id="cardpos" class="small"></span><div class="prog" style="flex:1"><i id="cardprog"></i></div></div>
+    <button class="card" id="card" aria-live="polite"></button>
+    <p class="small">Click the card to turn it over. Say the meaning out loud before you turn it!</p>
+    <div class="bar"><button class="btn ghost" id="prev">Previous</button><button class="btn" id="next">Next</button><button class="btn ghost" id="shuffle">Shuffle</button></div>
+  </section>
+
+  <section class="panel" id="p-quiz" hidden>
+    <div class="bar"><span id="qpos" class="small"></span><span class="score" id="qscore" style="margin-left:auto"></span></div>
+    <h2 id="qtext"></h2>
+    <div class="opts" id="qopts"></div>
+    <p class="msg" id="qmsg" role="status"></p>
+    <div class="bar"><button class="btn" id="qnext" hidden>Next question</button><button class="btn ghost" id="qrestart">Start again</button></div>
+  </section>
+
+  <section class="panel" id="p-gaps" hidden>
+    <p>Choose the missing word for each sentence, then press <b>Check</b>.</p>
+    <div id="gaplist" style="display:grid;gap:10px"></div>
+    <div class="bar"><button class="btn" id="gapcheck">Check</button><span class="score" id="gapscore"></span></div>
+    <p class="msg" id="gapmsg" role="status"></p>
+  </section>
+
+  <p class="small">Want more practice? Go back to the activities in the <a id="lablink" target="_blank" rel="noopener">Hardware Lab</a>.</p>
+</div>
+<script>
+const D={"kw": {"1": [["hardware", "The physical parts of a computer that you can touch.", 0], ["motherboard", "The main circuit board. It connects all the parts of the computer together.", 0], ["input device", "A device that sends data into a computer, like a keyboard or microphone.", 0], ["output device", "A device that gives out results from a computer, like a monitor or speaker.", 0], ["peripheral", "A device connected to a computer from the outside, like a printer or webcam.", 1], ["embedded system", "A small computer built inside another device to do one job, like in a washing machine.", 1]], "2": [["CPU", "Central Processing Unit: the part that processes instructions and data.", 0], ["fetch-decode-execute", "The cycle the CPU repeats: get an instruction, work out what it means, then do it.", 0], ["clock speed", "How many cycles the CPU does each second, measured in GHz (billions per second).", 0], ["core", "One processing unit inside the CPU. More cores can do more jobs at the same time.", 0], ["ALU", "Arithmetic Logic Unit: the part of the CPU that does maths and logic (like comparing numbers).", 1], ["control unit", "The part of the CPU that decodes instructions and controls the other parts.", 1]], "3": [["RAM", "Random Access Memory: holds the programs and data being used right now.", 0], ["ROM", "Read Only Memory: holds the start-up instructions. It cannot easily be changed.", 0], ["volatile", "Loses its data when the power is turned off. RAM is volatile.", 0], ["cache", "Very small, very fast memory inside the CPU for data it uses often.", 0], ["virtual memory", "Part of the storage drive used as extra RAM when RAM is full. It is much slower.", 1], ["firmware", "Software stored in ROM that controls the hardware, like the BIOS that starts the computer.", 1]], "4": [["secondary storage", "Keeps data for a long time, even when the power is off (non-volatile).", 0], ["magnetic", "Storage that uses magnets on spinning disks, like a hard disk drive (HDD).", 0], ["solid state", "Storage with no moving parts that uses flash memory, like an SSD or USB stick.", 0], ["optical", "Storage that uses a laser to read discs, like a DVD or Blu-ray.", 0], ["capacity", "How much data a storage device can hold, for example 1 TB.", 1], ["read/write speed", "How fast data can be read from, or saved to, a storage device.", 1]], "5": [["cloud", "Storing files and running programs on servers that you reach over the internet.", 0], ["server", "A powerful computer that stores data and provides services to other computers.", 0], ["local storage", "Storage inside or connected to your own device, like your laptop's SSD.", 0], ["backup", "A copy of your files kept somewhere safe in case the original is lost.", 0], ["bandwidth", "How much data can travel through a connection each second, for example 100 Mbps.", 1], ["data security", "Keeping data safe from people who should not see it or change it.", 1]], "6": [["data centre", "A building full of servers that store data and run online services.", 0], ["GPU", "Graphics Processing Unit: does thousands of simple calculations at the same time.", 0], ["artificial intelligence", "Computer programs that learn from data to do tasks like recognising pictures or writing text.", 0], ["energy use", "How much electricity something needs. Data centres need lots for servers and cooling.", 0], ["machine learning", "A type of AI where a computer finds patterns in lots of data to learn a task.", 1], ["carbon footprint", "The amount of carbon dioxide (CO2) released because of an activity, like making electricity.", 1]], "7": [["specification", "A list of the parts and features a computer has.", 0], ["budget", "The amount of money you can spend.", 0], ["performance", "How fast and how well a computer can do a task.", 0], ["trade-off", "Giving up something (like speed) to get something else (like a lower price).", 0], ["bottleneck", "One slow part that holds back the whole computer.", 1], ["compatibility", "Whether parts can work together, for example the right type of RAM for the motherboard.", 1]]}, "titles": {"1": "What's inside the box?", "2": "The CPU: the brain", "3": "Memory", "4": "Storage", "5": "The cloud", "6": "Data centres and AI", "7": "Spec a computer"}, "practice": [["Which is an output device?", ["Speaker", "Microphone", "Keyboard", "Webcam"], 0, "Outputs give results out of the computer: speakers, monitors, printers.", 1], ["Which part turns mains electricity into power for the other parts?", ["Power supply (PSU)", "CPU", "RAM", "Motherboard"], 0, "The power supply unit (PSU) powers every part.", 1], ["Which is an embedded system?", ["The computer inside a microwave", "A gaming laptop", "A desktop PC", "A tablet"], 0, "An embedded system is a small computer inside another device, doing one job.", 1], ["What does the GPU mainly do in a normal computer?", ["Draws images on the screen", "Stores files", "Starts the computer", "Connects to Wi-Fi"], 0, "GPU = Graphics Processing Unit.", 1], ["What happens in the DECODE stage?", ["The CPU works out what the instruction means", "The instruction is brought from memory", "The instruction is carried out", "The computer turns off"], 0, "Fetch = get it, decode = understand it, execute = do it.", 2], ["Which CPU is likely to be fastest (same type)?", ["8 cores, 4.5 GHz", "4 cores, 4.5 GHz", "4 cores, 3.0 GHz", "2 cores, 3.0 GHz"], 0, "More cores and a higher clock speed usually mean better performance.", 2], ["Which part of the CPU does the maths? (stretch)", ["ALU", "Control unit", "Cache", "Clock"], 0, "ALU = Arithmetic Logic Unit.", 2], ["Why are 4 cores not always 4 times faster?", ["Some jobs can't be split up between cores", "Cores turn each other off", "Cores only work at night", "Each core needs its own monitor"], 0, "Like chefs in a kitchen: some steps must happen one after another.", 2], ["Your laptop has 30 apps open and is very slow. What would help most?", ["More RAM", "A bigger screen", "A new keyboard", "More ROM"], 0, "Open apps are held in RAM. When RAM is full, the computer slows down.", 3], ["What is the first thing that runs when you press the power button?", ["The BIOS in ROM", "Your web browser", "A game", "The screensaver"], 0, "The start-up instructions (BIOS) are stored in ROM.", 3], ["You are typing an essay and the power goes off. You did not save. What happens?", ["The essay is lost because RAM is volatile", "The essay is saved in ROM", "The essay is saved in cache", "Nothing: RAM keeps it"], 0, "RAM loses its data when the power goes off. Save your work to storage!", 3], ["When RAM is full, the computer uses part of the storage drive as extra RAM. What is this called? (stretch)", ["Virtual memory", "Cache", "ROM", "Firmware"], 0, "Virtual memory is much slower than real RAM.", 3], ["Which storage uses a laser?", ["Blu-ray disc", "SSD", "USB stick", "Hard disk drive"], 0, "Optical storage = a laser reads the disc.", 4], ["How many GB are in 1 TB?", ["1,000", "100", "10", "1,000,000"], 0, "KB → MB → GB → TB: each is 1,000 times bigger.", 4], ["A photo is 4 MB. About how many photos fit on a 64 GB phone?", ["16,000", "1,600", "160", "16"], 0, "64 GB = 64,000 MB. 64,000 ÷ 4 = 16,000.", 4], ["Which storage is cheapest for keeping lots of data (per GB)?", ["Hard disk drive", "SSD", "USB stick", "SD card"], 0, "Hard disks are slower but cheap for large amounts of data.", 4], ["You watch a film on a streaming app. Where does the film come from?", ["A server in a data centre", "Your laptop's hard disk", "Your router", "Your keyboard"], 0, "Streaming sends the film from a server to you in packets.", 5], ["Which is an advantage of cloud storage?", ["You can open your files on any device", "You never need the internet", "It is always free", "Nobody else holds your data"], 0, "Cloud files can be reached from anywhere with an internet connection.", 5], ["Which is a disadvantage of cloud storage?", ["Another company holds your data", "Files are backed up", "Easy to share", "Works on many devices"], 0, "Your data is on someone else's computer, so you must trust them.", 5], ["What does bandwidth measure? (stretch)", ["How much data travels through a connection each second", "How big a hard disk is", "How fast a CPU is", "How many apps are open"], 0, "Bandwidth is measured in Mbps (megabits per second).", 5], ["Why do data centres need cooling systems?", ["Thousands of servers get very hot", "Workers like cold rooms", "Cold makes the internet faster", "To keep food fresh"], 0, "Servers produce lots of heat, and too much heat damages them.", 6], ["Why does AI training need so much electricity?", ["Billions of calculations run on thousands of GPUs", "AI needs bright lights", "AI only runs on old computers", "AI uses lots of paper"], 0, "Training AI means huge numbers of calculations, which use energy and create heat.", 6], ["Which is a benefit of building data centres in Thailand?", ["Investment, jobs and faster local services", "They need a lot of water", "They use electricity from gas", "They compete with farmers for water"], 0, "There are benefits and costs: a balanced answer gives both.", 6], ["Data centre electricity is predicted to rise from 415 TWh (2024) to 945 TWh (2030). That is about…", ["Double", "The same", "Half", "Ten times"], 0, "945 is a bit more than 2 × 415 (830).", 6], ["A grandparent only uses email and video calls. Which spec is best value?", ["4-core CPU, 8 GB RAM, 500 GB SSD", "16-core CPU, 64 GB RAM, top GPU", "2-core CPU, 2 GB RAM, HDD", "A computer with no storage"], 0, "Meet the needs without paying for power they will never use.", 7], ["A gamer has a fast CPU and GPU but only 8 GB RAM. What is the bottleneck? (stretch)", ["The RAM", "The CPU", "The GPU", "The monitor"], 0, "One slow part holds back the whole computer.", 7], ["Why is RAM very expensive in 2026?", ["AI data centres are buying huge amounts of memory", "RAM is made of gold", "Nobody wants RAM", "Factories have closed for holidays"], 0, "AI data centres need lots of memory, so there is less for PCs and phones.", 7], ["What should you do first when choosing a computer for a client?", ["Find out what they will use it for and their budget", "Choose the most expensive parts", "Choose your favourite colour", "Buy the biggest monitor"], 0, "Needs and budget come first. Then choose parts and explain the trade-offs.", 7]], "gaps": [["The physical parts of a computer are called ___.", "hardware", 1], ["The ___ connects all the parts of a computer together.", "motherboard", 1], ["A keyboard is an ___.", "input device", 1], ["A monitor is an ___.", "output device", 1], ["A printer plugged into the outside of a computer is a ___.", "peripheral", 1], ["The small computer inside a washing machine is an ___.", "embedded system", 1], ["The ___ processes instructions and data.", "CPU", 2], ["The CPU repeats the ___ cycle billions of times every second.", "fetch-decode-execute", 2], ["___ is measured in GHz.", "clock speed", 2], ["Each ___ in the CPU can work on a different job at the same time.", "core", 2], ["The ___ does the maths and logic in the CPU.", "ALU", 2], ["The ___ decodes each instruction and controls the other parts.", "control unit", 2], ["The programs you are using right now are held in ___.", "RAM", 3], ["The start-up instructions are stored in ___.", "ROM", 3], ["RAM is ___: it loses its data when the power goes off.", "volatile", 3], ["___ is tiny, very fast memory inside the CPU.", "cache", 3], ["When RAM is full, the computer uses slow ___ on the storage drive.", "virtual memory", 3], ["The BIOS is ___ stored in ROM.", "firmware", 3], ["___ keeps your files even when the power is off.", "secondary storage", 4], ["A hard disk drive (HDD) is ___ storage.", "magnetic", 4], ["An SSD is ___ storage with no moving parts.", "solid state", 4], ["A Blu-ray disc is ___ storage, read by a laser.", "optical", 4], ["A 2 TB drive has a bigger ___ than a 1 TB drive.", "capacity", 4], ["An SSD has a faster ___ than a hard disk.", "read/write speed", 4], ["Saving files on servers over the internet is using the ___.", "cloud", 5], ["Your cloud files are stored on a ___ in a data centre.", "server", 5], ["Files saved on your own laptop's SSD are in ___.", "local storage", 5], ["A ___ is a copy of your files in case the original is lost.", "backup", 5], ["___ is how much data can travel through a connection each second.", "bandwidth", 5], ["Using 2FA and encryption helps with ___.", "data security", 5], ["A ___ is a building full of servers.", "data centre", 6], ["A ___ does thousands of simple calculations at the same time.", "GPU", 6], ["Programs that learn from data to do tasks are called ___.", "artificial intelligence", 6], ["Servers and cooling mean data centres have high ___.", "energy use", 6], ["In ___, a computer finds patterns in data to learn a task.", "machine learning", 6], ["Making electricity from gas adds to our ___.", "carbon footprint", 6], ["A list of a computer's parts is its ___.", "specification", 7], ["The money a client can spend is their ___.", "budget", 7], ["A faster CPU gives better ___.", "performance", 7], ["Choosing a smaller SSD to save money is a ___.", "trade-off", 7], ["One slow part that holds back the whole computer is a ___.", "bottleneck", 7], ["Checking that the RAM fits the motherboard is checking ___.", "compatibility", 7]], "lab": "hardware-lab.html"};
+const $=id=>document.getElementById(id);
+$("lablink").href=D.lab;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("lesson").innerHTML='<option value="all">All lessons</option>'+Object.entries(D.titles).map(([k,t])=>`<option value="${k}">Lesson ${k}: ${esc(t)}</option>`).join("");
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let L="all";
+// tabs
+const TABS=["cards","quiz","gaps"];
+TABS.forEach(t=>$("t-"+t).onclick=()=>{TABS.forEach(x=>{$("t-"+x).setAttribute("aria-selected",x===t);$("p-"+x).hidden=x!==t;});});
+$("lesson").onchange=()=>{L=$("lesson").value;cardsInit();quizInit();gapsInit();};
+// flashcards
+let cards=[],ci=0,flipped=false;
+function cardsInit(){cards=[];Object.entries(D.kw).forEach(([k,v])=>{if(L==="all"||L===k)v.forEach(([w,m,s])=>cards.push({w,m,k,s}));});ci=0;flipped=false;cardDraw();}
+function cardDraw(){const c=cards[ci];$("card").classList.toggle("flip",flipped);
+  $("card").innerHTML=flipped?`<span class="mean">${esc(c.m)}</span>`:`<span><span class="word">${esc(c.w)}</span><br><span class="small">Lesson ${c.k}${c.s?" · stretch":""}</span></span>`;
+  $("card").setAttribute("aria-label",flipped?"Meaning: "+c.m:"Keyword: "+c.w+". Click to see the meaning.");
+  $("cardpos").textContent=`Card ${ci+1} of ${cards.length}`;$("cardprog").style.width=((ci+1)/cards.length*100)+"%";}
+$("card").onclick=()=>{flipped=!flipped;cardDraw();};
+$("next").onclick=()=>{ci=(ci+1)%cards.length;flipped=false;cardDraw();};
+$("prev").onclick=()=>{ci=(ci-1+cards.length)%cards.length;flipped=false;cardDraw();};
+$("shuffle").onclick=()=>{cards=shuffle(cards);ci=0;flipped=false;cardDraw();};
+// quiz
+let qs=[],qi=0,score=0,answered=false;
+function quizInit(){qs=shuffle(D.practice.filter(q=>L==="all"||String(q[4])===L));qi=0;score=0;quizDraw();}
+function quizDraw(){$("qmsg").textContent="";$("qnext").hidden=true;answered=false;
+  if(qi>=qs.length){$("qtext").textContent=`Finished! You scored ${score} out of ${qs.length}.`;$("qopts").innerHTML="";$("qpos").textContent="";$("qscore").textContent=`${score} / ${qs.length}`;
+    $("qmsg").className="msg good";$("qmsg").textContent=score===qs.length?"Perfect score! You are ready.":"Press Start again to try the questions in a new order.";return;}
+  const [q,opts,ans]=qs[qi];const order=shuffle(opts.map((o,i)=>i));
+  $("qpos").textContent=`Question ${qi+1} of ${qs.length}`;$("qscore").textContent=`Score ${score}`;$("qtext").textContent=q;
+  $("qopts").innerHTML=order.map(i=>`<button class="opt" data-i="${i}">${esc(opts[i])}</button>`).join("");}
+$("qopts").onclick=e=>{const b=e.target.closest(".opt");if(!b||answered)return;answered=true;const [,,ans,why]=qs[qi],i=+b.dataset.i;
+  document.querySelectorAll(".opt").forEach(o=>{if(+o.dataset.i===ans)o.classList.add("right");});
+  if(i===ans){score++;$("qmsg").className="msg good";$("qmsg").textContent="Correct! "+why;}else{b.classList.add("wrong");$("qmsg").className="msg bad";$("qmsg").textContent="Not quite. "+why;}
+  $("qscore").textContent=`Score ${score}`;$("qnext").hidden=false;$("qnext").focus();};
+$("qnext").onclick=()=>{qi++;quizDraw();};$("qrestart").onclick=quizInit;
+// gaps
+let gaps=[];
+function gapsInit(){gaps=D.gaps.filter(g=>L==="all"||String(g[2])===L);const bank=[...new Set(D.gaps.flatMap(g=>g[1].split("|")))].sort((a,b)=>a.localeCompare(b));
+  $("gaplist").innerHTML=gaps.map(([s,a],gi)=>{const parts=s.split("___");return `<div class="gap" id="g${gi}"><p>${parts.map((p,pi)=>esc(p)+(pi<parts.length-1?`<select aria-label="Missing word ${pi+1}" data-g="${gi}" data-p="${pi}"><option value="">…</option>${bank.map(w=>`<option>${esc(w)}</option>`).join("")}</select>`:"")).join("")}</p></div>`;}).join("");
+  $("gapscore").textContent="";$("gapmsg").textContent="";}
+$("gapcheck").onclick=()=>{let s=0;gaps.forEach(([t,a],gi)=>{const want=a.split("|"),got=[...document.querySelectorAll(`select[data-g="${gi}"]`)].map(x=>x.value);
+  const ok=want.every((w,i)=>w===got[i]);$("g"+gi).classList.toggle("right",ok);$("g"+gi).classList.toggle("wrong",!ok);if(ok)s++;});
+  $("gapscore").textContent=`${s} / ${gaps.length}`;$("gapmsg").className=s===gaps.length?"msg good":"msg bad";$("gapmsg").textContent=s===gaps.length?"All correct!":"Red sentences need another look. Use the flashcards to help.";};
+cardsInit();quizInit();gapsInit();
+</script>
+
+</body></html>

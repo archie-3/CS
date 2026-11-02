@@ -60,26 +60,26 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
   <p class="foot">Can't open a page? Tell your teacher.</p>
 </div>
 <script>
-const A=id=>id.startsWith("http")||id.endsWith(".html")?id:"https://claude.ai/artifact/"+id;
+const A=id=>id;
 const YEARS=[["y7","Year 7","--y7"],["y8","Year 8","--y8"],["y9","Year 9","--y9"],["y10","Year 10","--y10"],["py","Python activities","--py"]];
 const DATA=[
- {y:"y7",name:"Scratch",meta:"Revision",res:[["Scratch quiz and flashcards","Revision","2vcntUxfUQyHVu9MjESrLD"],["Scratch 40-minute revision task","Revision","Nnheqb2o4P4siHLj71MJT9"]]},
- {y:"y8",name:"micro:bit",meta:"Revision",res:[["micro:bit quiz and flashcards","Revision","TJ19fRJo5LyzSZ1vCu4C4t"],["micro:bit 40-minute revision task","Revision","3FmgAbo6XatSSZeRAHrvpR"]]},
+ {y:"y7",name:"Scratch",meta:"Revision",res:[["Scratch quiz and flashcards","Revision","y7-scratch-revision.html"]]},
+ {y:"y8",name:"micro:bit",meta:"Revision",res:[["micro:bit quiz and flashcards","Revision","y8-microbit-revision.html"]]},
  {y:"y8",name:"Networks & Cyber Security",meta:"Lesson labs and revision",res:[
-   ["Cyber Lab","Lab","MtnfWd6EwTtpJkANUDpUfm",[["1 Packet Journey","packets"],["2 Network Builder","builder"],["3 Binary Lab","binary"],["4 Hacker Hats","hats"],["5 Phish Spotter","phish"],["6 Cipher Lab","cipher"],["7 Password Lab","password"]]],
-   ["Cyber Agent Mission","Lab","6hiMzKz7bjnCbtT7eJiQ6D"],["Cyber Revision","Revision","NtKnc46RjeUZdd1nyVSf5g"]]},
- {y:"y9",name:"Bebras: The Wolf Vault",meta:"Escape-room puzzles",res:[["The Wolf Vault","Lesson","S82jhu4N8RC7YCyD9Uz6Se"]]},
- {y:"y9",name:"Python Turtle",meta:"Activities and revision",res:[["Python Turtle activities (flags, Mondrian…)","Activities","turtle.html"],["Python Turtle quiz and flashcards","Revision","Ns4pN8bNT56udRfsRvcegW"],["Python Turtle 40-minute revision task","Revision","ErqqiZmnaH6ucDM12QyVSo"]]},
+   ["Cyber Lab","Lab","cyber-lab.html",[["1 Packet Journey","packets"],["2 Network Builder","builder"],["3 Binary Lab","binary"],["4 Hacker Hats","hats"],["5 Phish Spotter","phish"],["6 Cipher Lab","cipher"],["7 Password Lab","password"]]],
+   ["Cyber Agent Mission","Lab","cyber-agent.html"],["Cyber Revision","Revision","cyber-revision.html"]]},
+ {y:"y9",name:"Bebras: The Wolf Vault",meta:"Escape-room puzzles",res:[["The Wolf Vault","Lesson","wolf-vault.html"]]},
+ {y:"y9",name:"Python Turtle",meta:"Activities and revision",res:[["Python Turtle activities (flags, Mondrian…)","Activities","turtle.html"],["Python Turtle quiz and flashcards","Revision","y9-turtle-revision.html"]]},
  {y:"y9",name:"What's inside a computer?",meta:"Lesson labs and revision",res:[
-   ["Hardware Lab","Lab","VgSjoDPSQyqrKTgVw2D3if",[["1 Inside the Box","box"],["2 Wolf CPU","cpu"],["3 Memory Lab","memory"],["4 Storage Lab","storage"],["5 Cloud Lab","cloud"],["6 Data Centre Lab","dc"],["7 PC Builder","builder"]]],
-   ["Hardware Revision","Revision","PLG5btk4AM8e62eCVogChY"]]},
- {y:"y10",name:"Key terms",meta:"Revision",res:[["Key Terms quiz and flashcards","Revision","EQtnCiYSxTMwZdJTyKuQEa"],["Key Terms 40-minute revision task","Revision","DurGJR8FTS5zJ5NAomni6P"]]},
+   ["Hardware Lab","Lab","hardware-lab.html",[["1 Inside the Box","box"],["2 Wolf CPU","cpu"],["3 Memory Lab","memory"],["4 Storage Lab","storage"],["5 Cloud Lab","cloud"],["6 Data Centre Lab","dc"],["7 PC Builder","builder"]]],
+   ["Hardware Revision","Revision","hardware-revision.html"]]},
+ {y:"y10",name:"Key terms",meta:"Revision",res:[["Key Terms quiz and flashcards","Revision","y10-key-terms-revision.html"]]},
  {y:"py",name:"Python debug activities",meta:"Find the bug, fix it, then extend it",res:[["Debug activities","Activities","debug.html"]]},
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let YF="all";try{YF=localStorage.getItem("hub-year")||"all";}catch(e){}
-const ext=u=>u.startsWith("http")?' target="_blank" rel="noopener"':"";
+const ext=u=>"";
 function render(){
   $("filters").innerHTML=[["all","All",""]].concat(YEARS).map(([k,n,c])=>`<button class="chip" data-y="${k}" aria-pressed="${YF===k}">${c?`<span class="dot" style="--c:var(${c})"></span>`:""}${n}</button>`).join("");
   $("list").innerHTML=YEARS.filter(([k])=>YF==="all"||YF===k).map(([k,name,c])=>`<section class="year"><h2><span class="dot" style="--c:var(${c})"></span>${name}</h2><div class="units">${

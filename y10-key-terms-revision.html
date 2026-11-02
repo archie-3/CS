@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Year 10 Key Terms – quiz and flashcards</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --ink:#1E2433; --muted:#566074; --paper:#F4F6FA; --card:#FCFDFE; --line:#D9DEE8;
+  --accent:#4338CA; --tint:#E6E4FA; --on-accent:#FCFDFE;
+  --good:#1F6FB2; --good-bg:#E3EFFA; --bad:#B4530B; --bad-bg:#FCEBDC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+    --accent:#A5A0F5; --tint:#252D3E; --on-accent:#141925;
+    --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+  --accent:#A5A0F5; --tint:#252D3E; --on-accent:#141925;
+  --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",Verdana,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 56px}
+header{border-left:6px solid var(--accent);padding:4px 0 4px 16px;margin-bottom:24px}
+h1{font:700 clamp(28px,6vw,40px)/1.1 Rubik,Arial,sans-serif;margin:0 0 6px}
+header p{margin:0;color:var(--muted)}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;font:600 17px Rubik,Arial,sans-serif;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.progress{height:8px;background:var(--tint);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qnum{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q{font:600 22px/1.35 Rubik,Arial,sans-serif;margin:0 0 16px}
+pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;font:16px/1.5 "Courier New",monospace;margin:0 0 16px;white-space:pre}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--good-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin-top:16px;padding:14px 16px;border-radius:12px;display:none}
+.fb.show{display:block}
+.fb.right{background:var(--good-bg);border-left:5px solid var(--good)}
+.fb.wrong{background:var(--bad-bg);border-left:5px solid var(--bad)}
+.fb b{display:block;margin-bottom:4px}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.btn{font:600 17px Rubik,Arial,sans-serif;padding:12px 20px;border-radius:12px;border:none;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn[hidden]{display:none}
+.score{font:700 64px/1 Rubik,Arial,sans-serif;color:var(--accent);margin:8px 0}
+.list{padding-left:20px}
+.card{min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px;border-radius:16px;background:var(--tint);cursor:pointer;border:2px solid transparent;width:100%;font:inherit;color:var(--ink)}
+.card .term{font:700 clamp(28px,7vw,40px)/1.15 Rubik,Arial,sans-serif}
+.card .hint{color:var(--muted);font-size:15px;margin-top:14px}
+.card .def{font-size:20px}
+.card .ex{margin-top:14px;color:var(--muted)}
+.count{text-align:center;color:var(--muted);margin-top:12px}
+.tabs{flex-wrap:wrap}
+.tab{min-width:120px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:14px;background:var(--tint);border-radius:12px}
+.bank span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-weight:700}
+.sents{padding-left:24px;margin:0;display:grid;gap:14px}
+.sents li{line-height:2.1}
+.sents select{font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:2px 6px;max-width:100%}
+.sents select.right{border-color:var(--good);background:var(--good-bg)}
+.sents select.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.say{font:inherit;background:none;border:none;cursor:pointer;padding:0 4px;color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.progress span{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Year 10 key terms revision</h1>
+    <p>Answer each question. You will see if you are right straight away.</p>
+  </header>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tQuiz" aria-selected="true">Quiz</button>
+    <button class="tab" role="tab" id="tCards" aria-selected="false">Flashcards</button>
+    <button class="tab" role="tab" id="tGaps" aria-selected="false">Fill the gaps</button>
+  </div>
+
+  <section class="panel" id="quiz"></section>
+
+  <section class="panel" id="cards" hidden>
+    <button class="card" id="card" aria-live="polite"></button>
+    <p class="count" id="cardCount"></p>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn ghost" id="prev">Back</button>
+      <button class="btn ghost" id="shuf">Shuffle</button>
+      <button class="btn" id="next">Next card</button>
+    </div>
+  </section>
+
+  <section class="panel" id="gaps" hidden>
+    <p class="qnum">Word bank</p>
+    <div class="bank" id="bank"></div>
+    <ol class="sents" id="sents"></ol>
+    <div class="fb" id="gapFb" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn ghost" id="gapReset">Start again</button>
+      <button class="btn ghost" id="gapShow">Show answers</button>
+      <button class="btn" id="gapCheck">Check my answers</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const DATA = {"questions": [{"topic": "Algorithm", "q": "What is an algorithm?", "options": ["A sequence of specific instructions that solve a problem or complete a task", "A programming language", "A diagram with boxes and arrows", "A type of data"], "why": "An algorithm is a sequence of steps that solves a problem. It can be written in pseudocode, a flowchart or code."}, {"topic": "Decomposition", "q": "Breaking a big problem into smaller sub-problems is called…", "options": ["Decomposition", "Abstraction", "Iteration", "Concatenation"], "why": "Decomposition breaks a problem into smaller parts that are easier to solve."}, {"topic": "Abstraction", "q": "Removing details that are not needed, so you can focus on what is important, is called…", "options": ["Abstraction", "Decomposition", "Selection", "Assignment"], "why": "Abstraction removes unnecessary detail. Decomposition breaks the problem up."}, {"topic": "Pseudocode", "q": "What is pseudocode?", "options": ["A way of writing an algorithm using simple English-like instructions", "Code written in binary", "A diagram with shapes and arrows", "A table used to follow a program"], "why": "Pseudocode uses English-like instructions instead of a real programming language."}, {"topic": "Flowchart", "q": "In a flowchart, what does a diamond shape show?", "options": ["A decision (a yes/no question)", "The start or end", "An input or output", "A process"], "why": "A diamond is a decision: the flowchart branches on yes or no."}, {"topic": "Trace table", "q": "What is a trace table used for?", "options": ["Following a program step by step to check what it does", "Storing data in a database", "Sorting a list", "Drawing a flowchart"], "why": "A trace table records variable values line by line as the program runs."}, {"topic": "Efficiency (of an algorithm)", "q": "Algorithm A needs 50 steps. Algorithm B needs 8 steps for the same task. Which is more efficient?", "options": ["Algorithm B", "Algorithm A", "They are the same", "You cannot tell"], "why": "A more efficient algorithm needs fewer steps to finish."}, {"topic": "Binary search", "q": "What must be true about a list before you can use a binary search?", "options": ["It must be sorted", "It must contain only strings", "It must have fewer than 10 items", "It must contain no duplicates"], "why": "Binary search checks the middle item and ignores half the list, so the list must be in order."}, {"topic": "Linear search", "q": "A linear search looks for 40 in this list. How many items does it check?", "code": "[3, 8, 12, 20, 25, 31, 40]", "options": ["7", "1", "3", "4"], "why": "Linear search checks every item from the start. 40 is the 7th item."}, {"topic": "Data type", "q": "What data type is 3.14?", "options": ["Real / float", "Integer", "Boolean", "Character"], "why": "Numbers with a decimal point are real numbers, called float in Python."}, {"topic": "Integer", "q": "Which value is an integer?", "options": ["-3", "3.5", "\"3\"", "3.0"], "why": "An integer is a whole number with no decimal point. \"3\" in quotes is a string."}, {"topic": "Boolean", "q": "Which value is a Boolean?", "options": ["True", "\"True\"", "1.0", "'T'"], "why": "A Boolean can only be True or False. \"True\" in quotes is a string."}, {"topic": "Character", "q": "Which value is a character?", "options": ["'A'", "\"Hello\"", "7.5", "False"], "why": "A character is a single letter, digit or symbol."}, {"topic": "String", "q": "What data type is \"Hello\"?", "options": ["String", "Character", "Integer", "Boolean"], "why": "A string is a sequence of characters, i.e. text."}, {"topic": "Variable", "q": "What is a variable?", "options": ["A named place in memory that stores a value which can change", "A value that stays the same for the whole program", "A loop", "A type of search"], "why": "A variable's value can change while the program runs. A constant cannot."}, {"topic": "Assignment", "q": "score = 0 is an example of…", "options": ["Assignment", "Selection", "Concatenation", "Iteration"], "why": "Assignment gives a variable a value using an equals sign."}, {"topic": "Sequence", "q": "Instructions that run one after another, in the order they are written, are called…", "options": ["Sequence", "Selection", "Iteration", "Decomposition"], "why": "Sequence means running instructions in order."}, {"topic": "Selection", "q": "Which line uses selection?", "options": ["IF age >= 13 THEN", "total ← total + 1", "OUTPUT \"Hello\"", "FOR i ← 1 TO 10"], "why": "Selection chooses what happens next based on a condition, using IF."}, {"topic": "Relational operator", "q": "Which of these is a relational operator?", "options": ["≠", "AND", "+", "NOT"], "why": "Relational operators compare two values: =, ≠, \u003c, >, ≤, ≥."}, {"topic": "Boolean operator", "q": "Which of these is a Boolean operator?", "options": ["OR", "\u003c", "←", "+"], "why": "The Boolean operators are NOT, AND and OR."}, {"topic": "Concatenation", "q": "What is the result of \"Hi\" + \"there\"?", "options": ["\"Hithere\"", "\"Hi there\"", "An error", "\"Hi\" \"there\""], "why": "Concatenation joins strings exactly. No space is added unless you include one."}], "cards": [{"term": "Algorithm", "meaning": "A sequence of specific instructions that solve a problem or complete a task."}, {"term": "Decomposition", "meaning": "Breaking a big problem into smaller parts (sub-problems), so each part is easier to solve on its own."}, {"term": "Abstraction", "meaning": "Removing details that are not needed, so you can focus on the important parts of a problem."}, {"term": "Pseudocode", "meaning": "A way of writing an algorithm using simple English-like instructions, instead of a real programming language."}, {"term": "Flowchart", "meaning": "A diagram that shows the steps of an algorithm using boxes and arrows.", "example": "A diamond shape means a decision (yes/no question)."}, {"term": "Trace table", "meaning": "A table used to follow a program step by step, to check what it does or find a value it produces."}, {"term": "Efficiency (of an algorithm)", "meaning": "How many steps an algorithm needs to finish. A more efficient algorithm needs fewer steps."}, {"term": "Linear search", "meaning": "Checks every item in a list, one at a time from the start, until it finds the target or reaches the end."}, {"term": "Binary search", "meaning": "Finds an item in a SORTED list quickly, by checking the middle item and ignoring half the list each time."}, {"term": "Data type", "meaning": "A category that tells the computer what kind of value is being stored.", "example": "A whole number or a piece of text."}, {"term": "Integer", "meaning": "A data type for whole numbers, with no decimal point.", "example": "7, -3, 100"}, {"term": "Real number / float", "meaning": "A data type for numbers that can have a decimal point. Called 'float' in Python.", "example": "3.14"}, {"term": "Boolean", "meaning": "A data type that can only be one of two values: True or False."}, {"term": "Character", "meaning": "A data type for a single letter, digit, or symbol.", "example": "'A', '7', '!'"}, {"term": "String", "meaning": "A data type for a sequence of characters, i.e. text.", "example": "\"Hello\""}, {"term": "Variable", "meaning": "A named place in memory that stores a value which CAN change while the program runs."}, {"term": "Assignment", "meaning": "Giving a variable a value, using an equals sign.", "example": "score = 0"}, {"term": "Sequence", "meaning": "Instructions that run one after another, in the order they are written."}, {"term": "Selection", "meaning": "Choosing what happens next based on a condition, using if / else."}, {"term": "Relational operator", "meaning": "A symbol used to compare two values.", "example": "= (equal to), ≠ (not equal to), \u003c (less than), > (greater than)"}, {"term": "Boolean operator", "meaning": "A word used to combine or change True/False conditions.", "example": "NOT, AND, OR"}, {"term": "Concatenation", "meaning": "Joining two or more strings together to make one longer string, using a + sign.", "example": "\"Hi\" + \"there\" → \"Hithere\""}], "gaps": [{"s": "An ___ is a sequence of specific instructions that solve a problem.", "a": ["algorithm"]}, {"s": "Breaking a big problem into smaller sub-problems is called ___.", "a": ["decomposition"]}, {"s": "Removing details that are not needed is called ___.", "a": ["abstraction"]}, {"s": "Writing an algorithm in simple English-like instructions is called ___.", "a": ["pseudocode"]}, {"s": "In a ___, a diamond shape means a decision.", "a": ["flowchart"]}, {"s": "A ___ table is used to follow a program step by step.", "a": ["trace"]}, {"s": "A more ___ algorithm needs fewer steps to finish.", "a": ["efficient"]}, {"s": "A ___ search checks every item, one at a time, from the start.", "a": ["linear"]}, {"s": "A ___ search only works on a sorted list.", "a": ["binary"]}, {"s": "7 is an ___, 3.14 is a ___ and \"Hello\" is a ___.", "a": ["integer", "real / float", "string"]}, {"s": "A ___ can only be True or False, and 'A' is a single ___.", "a": ["Boolean", "character"]}, {"s": "A ___ is a named place in memory that stores a value which can change.", "a": ["variable"]}, {"s": "score = 0 is an example of ___.", "a": ["assignment"]}, {"s": "Running instructions in order is called ___. Choosing what happens next with IF is called ___.", "a": ["sequence", "selection"]}, {"s": "\u003c and ≠ are ___ operators. AND, OR and NOT are ___ operators.", "a": ["relational", "Boolean"]}, {"s": "Joining two strings together with + is called ___.", "a": ["concatenation"]}]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+// Tabs
+const TIPS = {
+  quiz: 'Answer each question. You will see if you are right straight away.',
+  cards: 'Say the meaning out loud first. Then tap the card to check.',
+  gaps: 'Choose a word from the word bank for each gap. Tap 🔊 to hear the sentence.'
+};
+function showTab(which){
+  ['quiz', 'cards', 'gaps'].forEach(t => {
+    $('#t' + t[0].toUpperCase() + t.slice(1)).setAttribute('aria-selected', which === t);
+    $('#' + t).hidden = which !== t;
+  });
+  $('header p').textContent = TIPS[which];
+}
+$('#tQuiz').onclick = () => showTab('quiz');
+$('#tCards').onclick = () => showTab('cards');
+$('#tGaps').onclick = () => showTab('gaps');
+
+// Quiz
+let order, qi, score, missed, answered;
+function startQuiz(){
+  order = shuffle(DATA.questions.map((q, i) => i));
+  qi = 0; score = 0; missed = []; renderQ();
+}
+function renderQ(){
+  const q = DATA.questions[order[qi]];
+  answered = false;
+  const opts = shuffle(q.options.map((t, i) => ({ t, i })));
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:${(qi / order.length) * 100}%"></span></div>
+    <p class="qnum">Question ${qi + 1} of ${order.length}</p>
+    <p class="q">${esc(q.q)}</p>
+    ${q.code ? `<pre>${esc(q.code)}</pre>` : ''}
+    <div class="opts">${opts.map(o => `<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="nextQ" hidden>${qi + 1 === order.length ? 'See my score' : 'Next question'}</button></div>`;
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(b, q));
+  $('#nextQ').onclick = () => { qi++; qi < order.length ? renderQ() : renderEnd(); };
+}
+function choose(btn, q){
+  if (answered) return;
+  answered = true;
+  const pick = +btn.dataset.i, ok = pick === 0;
+  if (ok) score++; else missed.push(q.topic);
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (+b.dataset.i === 0) b.classList.add('right');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = $('#fb');
+  fb.className = 'fb show ' + (ok ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${ok ? 'Correct!' : 'Not quite. The answer is: ' + esc(q.options[0])}</b>${esc(q.why)}`;
+  const n = $('#nextQ'); n.hidden = false; n.focus();
+}
+function renderEnd(){
+  const pct = Math.round(score / order.length * 100);
+  const msg = pct >= 80 ? 'Great work. You know this well.' : pct >= 50 ? 'Good start. Revise the keywords below.' : 'Keep going. Use the flashcards, then try again.';
+  const topics = [...new Set(missed)];
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:100%"></span></div>
+    <p class="qnum">Your score</p>
+    <p class="score">${score} / ${order.length}</p>
+    <p>${msg}</p>
+    ${topics.length ? `<p><b>Revise these keywords:</b></p><ul class="list">${topics.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '<p>You got every question right!</p>'}
+    <p><b>Write your score on your exit ticket in Google Classroom.</b></p>
+    <div class="row"><button class="btn ghost" id="toCards">Practise with flashcards</button><button class="btn" id="again">Try again</button></div>`;
+  $('#again').onclick = startQuiz;
+  $('#toCards').onclick = () => showTab('cards');
+}
+
+// Flashcards
+let deck = DATA.cards.slice(), ci = 0, flipped = false;
+function renderCard(){
+  const c = deck[ci];
+  $('#card').innerHTML = flipped
+    ? `<div class="def">${esc(c.meaning)}</div>${c.example ? `<div class="ex">Example: ${esc(c.example)}</div>` : ''}`
+    : `<div class="term">${esc(c.term)}</div><div class="hint">Tap to see the meaning</div>`;
+  $('#cardCount').textContent = `Card ${ci + 1} of ${deck.length}`;
+}
+$('#card').onclick = () => { flipped = !flipped; renderCard(); };
+$('#next').onclick = () => { ci = (ci + 1) % deck.length; flipped = false; renderCard(); };
+$('#prev').onclick = () => { ci = (ci - 1 + deck.length) % deck.length; flipped = false; renderCard(); };
+$('#shuf').onclick = () => { deck = shuffle(deck); ci = 0; flipped = false; renderCard(); };
+
+startQuiz(); renderCard();
+
+// Fill the gaps
+const BANK = shuffle([...new Set(DATA.gaps.flatMap(g => g.a))]);
+function renderGaps(){
+  $('#bank').innerHTML = BANK.map(w => `<span>${esc(w)}</span>`).join('');
+  const opts = '<option value="">choose…</option>' + BANK.map(w => `<option>${esc(w)}</option>`).join('');
+  $('#sents').innerHTML = DATA.gaps.map((g, i) => {
+    const parts = g.s.split('___');
+    let h = esc(parts[0]);
+    for (let k = 1; k < parts.length; k++) h += `<select data-g="${i}" data-k="${k - 1}" aria-label="Gap ${k} in sentence ${i + 1}">${opts}</select>` + esc(parts[k]);
+    return `<li>${h} <button class="say" data-g="${i}" aria-label="Listen to sentence ${i + 1}">🔊</button></li>`;
+  }).join('');
+  document.querySelectorAll('.say').forEach(b => b.onclick = () => speak(+b.dataset.g));
+  document.querySelectorAll('#sents select').forEach(s => s.onchange = () => s.classList.remove('right', 'wrong'));
+  const fb = $('#gapFb'); fb.className = 'fb'; fb.innerHTML = '';
+}
+function speak(i){
+  if (!('speechSynthesis' in window)) return;
+  const g = DATA.gaps[i], parts = g.s.split('___');
+  const sels = [...document.querySelectorAll(`#sents select[data-g="${i}"]`)];
+  let t = parts[0];
+  for (let k = 1; k < parts.length; k++) t += ' ' + (sels[k - 1].value || 'blank') + ' ' + parts[k];
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t.replace(/[“”"]/g, ''));
+  u.lang = 'en-GB'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+$('#gapCheck').onclick = () => {
+  let right = 0, total = 0, empty = 0;
+  document.querySelectorAll('#sents select').forEach(s => {
+    const ans = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    total++;
+    s.classList.remove('right', 'wrong');
+    if (!s.value) { empty++; return; }
+    if (s.value === ans) { right++; s.classList.add('right'); } else s.classList.add('wrong');
+  });
+  const fb = $('#gapFb');
+  fb.className = 'fb show ' + (right === total ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${right} out of ${total} correct.</b>` +
+    (right === total ? 'Brilliant! Every gap is right.' :
+     empty ? `You still have ${empty} empty gap${empty > 1 ? 's' : ''}. Orange gaps are wrong: try another word.` :
+     'Orange gaps are wrong. Try another word, then check again.');
+};
+$('#gapShow').onclick = () => {
+  document.querySelectorAll('#sents select').forEach(s => {
+    s.value = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    s.classList.remove('wrong'); s.classList.add('right');
+  });
+  const fb = $('#gapFb'); fb.className = 'fb show right';
+  fb.innerHTML = '<b>Answers shown.</b>Read each sentence out loud. Then press Start again and try without looking.';
+};
+$('#gapReset').onclick = renderGaps;
+renderGaps();
+</script>
+</body>
+</html>
