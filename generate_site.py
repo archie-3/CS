@@ -103,7 +103,7 @@ def crumb_for(cat_slug, root):
 
 def shell(title, root, body, body_class, extra_head=""):
     return f"""<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -307,6 +307,9 @@ def add_frame(fname, crumb_text, crumb_href, extra_head):
                  f'&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">'
                  f'<link rel="stylesheet" href="site.css">{extra_head}{MARK_B}')
     s = s.replace("</head>", head_bits + "</head>", 1)
+    # always light: these pages switch to dark only when <html> has no data-theme="light"
+    if 'data-theme="light"' not in s.split("<head>")[0]:
+        s = re.sub(r"<html([^>]*)>", lambda m: "<html" + m.group(1) + ' data-theme="light">', s, count=1)
     s = re.sub(r"(<body[^>]*>)", lambda m: m.group(1) + "\n" + MARK_A + bar("", crumb_text, crumb_href) + MARK_B, s, count=1)
     open(path, "w", encoding="utf-8").write(s)
     return True

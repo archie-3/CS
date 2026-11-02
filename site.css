@@ -1,11 +1,12 @@
-/* Computing Lab: shared frame (Home bar, home page, topic pages) and topic looks.
+/* Always light: school computers and projectors.
+   Computing Lab: shared frame (Home bar, home page, topic pages) and topic looks.
    Every page links this file. Change the frame here once and every page follows. */
 :root{
+  color-scheme:light;
   --cl-bg:#f6f7f9; --cl-panel:#ffffff; --cl-ink:#1f2a37; --cl-muted:#5a6676; --cl-line:#d9dee6; --cl-accent:#4a4fd1;
   --cl-display:"Lexend","Segoe UI",Arial,sans-serif; --cl-body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif; --cl-mono:"JetBrains Mono",Consolas,monospace;
 }
-@media (prefers-color-scheme: dark){:root{
-  --cl-bg:#141a22; --cl-panel:#1b232d; --cl-ink:#e8edf3; --cl-muted:#a3afbd; --cl-line:#2e3a48; --cl-accent:#8e92ff;}}
+
 
 /* ---------- Home bar (on every page) ---------- */
 .cl-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:var(--cl-panel);border-bottom:1px solid var(--cl-line);
@@ -30,7 +31,7 @@ body.cl{margin:0;background:var(--cl-bg);color:var(--cl-ink);font-family:var(--c
 .cl-yr:first-child{border-top:0}
 .cl-yr>b{font-family:var(--cl-display);font-size:18px}
 .cl-yr.cl-bebras{border-top:1px dashed var(--cl-line);margin-top:8px;padding-left:12px;border-radius:12px;background:linear-gradient(90deg,var(--cl-bebras-tint,#e9f1ec),transparent)}
-@media (prefers-color-scheme: dark){.cl-yr.cl-bebras{--cl-bebras-tint:#1d2e25}}
+
 .cl-topics{display:flex;flex-wrap:wrap;gap:10px}
 .cl-topic{display:inline-flex;align-items:center;gap:10px;font-family:var(--cl-display);font-weight:500;font-size:17px;color:var(--cl-ink);text-decoration:none;
   background:var(--cl-panel);border:1px solid var(--cl-line);border-radius:12px;padding:10px 16px 10px 10px}
@@ -67,28 +68,28 @@ body.topic{background:var(--t-bg);color:var(--t-ink)}
 .t-turtle .t-blocks i{border-left:6px solid #1c1c1c;border-bottom:6px solid #1c1c1c}
 .t-turtle .t-row{border-width:2px}
 @media (max-width:560px){.t-turtle .t-band{padding-right:110px}.t-turtle .t-blocks{width:96px}}
-@media (prefers-color-scheme: dark){.t-turtle{--t-bg:#15171a;--t-ink:#f1f1ee;--t-muted:#b9b9b4;--t-panel:#1e2125;--t-line:#f1f1ee;--t-grid:#23272d;--t-soft:#5a4a12}}
+
 /* Python debug: teal */
 .t-debug{--t-bg:#f2f9f8;--t-ink:#12302d;--t-muted:#4a6461;--t-panel:#ffffff;--t-line:#c9e4e1;--t-accent:#0b7a74;--t-on:#fff;--t-soft:#dff4f2}
 .t-debug .t-band{background:#dff4f2;background-image:repeating-linear-gradient(0deg,transparent 0 23px,rgba(11,122,116,.10) 23px 24px)}
-@media (prefers-color-scheme: dark){.t-debug{--t-bg:#101c1b;--t-ink:#e3f2f0;--t-muted:#9fbab6;--t-panel:#172725;--t-line:#28423f;--t-accent:#37c2bc;--t-on:#0b1a19;--t-soft:#1c3634}.t-debug .t-band{background-color:#16302d}}
+
 /* Networks & Cyber: Spy HQ */
 .t-cyber{--t-bg:#f2f8fb;--t-ink:#10263a;--t-muted:#4b6378;--t-panel:#ffffff;--t-line:#c7dbe8;--t-accent:#0b6f9a;--t-on:#fff;--t-soft:#fff1cf;--t-chip-ink:#6b4103}
 .t-cyber .t-band{background:#e2f0f7;background-image:repeating-radial-gradient(circle at 92% 30%,transparent 0 18px,rgba(11,111,154,.12) 18px 19px)}
 .t-cyber h1{font-family:"Chakra Petch","Segoe UI",sans-serif;letter-spacing:.02em}
 .t-stamp{display:inline-block;font-family:var(--cl-mono);font-size:11px;letter-spacing:.14em;color:#b5650a;border:2px solid #e0a43a;border-radius:4px;padding:1px 6px;width:max-content}
-@media (prefers-color-scheme: dark){.t-cyber{--t-bg:#0d1a24;--t-ink:#e4eef4;--t-muted:#9db3c2;--t-panel:#132533;--t-line:#284257;--t-accent:#4cc3de;--t-on:#08202b;--t-soft:#3b2f12;--t-chip-ink:#f0d79a}.t-cyber .t-band{background-color:#122c3b}}
+
 /* What's inside a computer: circuit board */
 .t-hw{--t-bg:#f3f8f4;--t-ink:#14261d;--t-muted:#4e6457;--t-panel:#ffffff;--t-line:#cfe3d7;--t-accent:#1b7a52;--t-on:#fff;--t-soft:#f6e3d3;--t-chip-ink:#7a3f14}
 .t-hw .t-band{background:#e2f1e8}
 .t-hw .t-band::after{content:"";position:absolute;top:0;bottom:0;right:0;width:40%;background-image:linear-gradient(90deg,transparent 0 60%,rgba(184,105,47,.35) 60% calc(60% + 3px),transparent 0),linear-gradient(transparent 0 40%,rgba(184,105,47,.35) 40% calc(40% + 3px),transparent 0),radial-gradient(circle,rgba(184,105,47,.55) 0 5px,transparent 6px);background-size:140px 70px,140px 70px,70px 70px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%);mask-image:linear-gradient(90deg,transparent,#000 40%)}
 @media (max-width:560px){.t-hw .t-band::after{width:30%}}
 .t-hw h1{font-family:"Oxanium","Segoe UI",sans-serif}
-@media (prefers-color-scheme: dark){.t-hw{--t-bg:#0f1913;--t-ink:#e3f1e8;--t-muted:#a1b9aa;--t-panel:#16241b;--t-line:#2a4334;--t-accent:#5fd3a2;--t-on:#0b1a12;--t-soft:#3c2817;--t-chip-ink:#f2c9a6}.t-hw .t-band{background-color:#173022}}
+
 /* Bebras: forest den */
 .t-bebras{--t-bg:#f5f7f2;--t-ink:#1d2a22;--t-muted:#56655b;--t-panel:#ffffff;--t-line:#d8e2da;--t-accent:#e0a43a;--t-on:#1d2a22;--t-soft:#f7e6c4}
 .t-bebras .t-band{background:#2f5d46;color:#f5f7f2;padding-bottom:46px}
 .t-bebras .t-band p{color:#dfe9e2}
 .t-bebras h1{font-family:"Bricolage Grotesque","Segoe UI",sans-serif}
 .t-bebras .t-trees{position:absolute;left:0;right:0;bottom:0;height:26px;background:linear-gradient(135deg,transparent 50%,#24493a 50%) 0 0/26px 26px,linear-gradient(225deg,transparent 50%,#24493a 50%) 0 0/26px 26px}
-@media (prefers-color-scheme: dark){.t-bebras{--t-bg:#111a14;--t-ink:#e6efe8;--t-muted:#a5b8aa;--t-panel:#18241c;--t-line:#2c3d31}}
+
