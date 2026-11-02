@@ -145,3 +145,7 @@ footer{ border-top:1px solid var(--line); padding:24px 0; text-align:center; col
 .tier-gold .tier-badge{ background: var(--amber-soft); color: #8A6A1E; }
 
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
+
+/* Target picture for drawing activities (e.g. Mondrian) */
+.targetimg { margin: 0 0 22px; }
+.targetimg img { display:block; width:100%; max-width:340px; height:auto; border:1px solid rgba(0,0,0,.15); border-radius:10px; background:#fff; margin-top:8px; }

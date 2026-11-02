@@ -179,6 +179,13 @@ def build_activity(a):
   This activity uses a background image. <a href="../assets/{a['asset_filename']}" download>Download {a['asset_filename']}</a> and save it in the <strong>same folder</strong> as your {filename} file &mdash; the code loads it by filename, so they need to sit side by side.
 </div>"""
 
+    target_block = ""
+    if a.get("target_image"):
+        target_block = f"""<figure class="targetimg">
+  <div class="eyebrow">Your target picture</div>
+  <img src="../assets/{a['target_image']}" alt="Target picture for {html.escape(a['title'])}">
+</figure>"""
+
     body = f"""<a class="backlink" href="../{a['category']}.html">&larr; Back to {html.escape(cat['label'])}</a>
 <div class="tags" style="margin-bottom:10px;">
   <span class="tag {a['kind']}">{a['kind']}</span>
@@ -190,6 +197,8 @@ def build_activity(a):
 <div class="instructions"><div class="eyebrow">Instructions</div>{html.escape(a['instructions'])}</div>
 
 {asset_block}
+
+{target_block}
 
 <div class="codepanel">
   <div class="codebar">
