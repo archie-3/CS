@@ -60,9 +60,9 @@ body.topic{background:var(--t-bg);color:var(--t-ink)}
 
 /* ---------- Topic looks ---------- */
 /* Python Turtle: Mondrian on grid paper */
-.t-turtle{--t-bg:#fbfbf8;--t-ink:#1c1c1c;--t-muted:#555;--t-panel:#ffffff;--t-line:#1c1c1c;--t-accent:#d62828;--t-on:#fff;--t-soft:#fbe7a1;
-  --t-grid:#e4e8ef;--t-display:"Lexend","Segoe UI",sans-serif}
-.t-turtle{background-color:var(--t-bg);background-image:linear-gradient(var(--t-grid) 1px,transparent 1px),linear-gradient(90deg,var(--t-grid) 1px,transparent 1px);background-size:24px 24px}
+.t-turtle{--t-bg:#EEF2EF;--t-ink:#1c1c1c;--t-muted:#555;--t-panel:#ffffff;--t-line:#1c1c1c;--t-accent:#d62828;--t-on:#fff;--t-soft:#fbe7a1;
+  --t-grid:#DEE5E0;--t-display:"Lexend","Segoe UI",sans-serif}
+.t-turtle{background-color:var(--t-bg);background-image:linear-gradient(var(--t-grid) 1px,transparent 1px),linear-gradient(90deg,var(--t-grid) 1px,transparent 1px);background-size:32px 32px}
 .t-turtle .t-band{border-bottom:6px solid #1c1c1c;padding-right:180px}
 .t-turtle .t-blocks{position:absolute;right:0;top:0;bottom:0;width:170px;display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}
 .t-turtle .t-blocks i{border-left:6px solid #1c1c1c;border-bottom:6px solid #1c1c1c}
