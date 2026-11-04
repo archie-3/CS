@@ -78,6 +78,44 @@ pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;
 .say{font:inherit;background:none;border:none;cursor:pointer;padding:0 4px;color:var(--accent)}
 @media (prefers-reduced-motion:reduce){.progress span{transition:none}}
 .sets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.tabhead{margin:0 0 8px;font:600 14px Rubik,Arial,sans-serif;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.tabs.code .tab{flex:1 1 30%;min-width:140px;font-size:15px;padding:10px}
+.chips,.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:2px dashed var(--line);border-radius:12px;margin-bottom:14px}
+.chip{font:700 16px "Atkinson Hyperlegible",Verdana,sans-serif;color:var(--ink);background:var(--tint);border:2px solid var(--accent);border-radius:10px;padding:6px 12px;cursor:grab;touch-action:manipulation}
+.chip.sel{outline:3px solid var(--accent);outline-offset:2px}
+.chip.right{border-color:var(--good);background:var(--good-bg)} .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.mzone{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center;margin-bottom:10px}
+.mcode{margin:0;font-size:15px}
+.drop{min-height:52px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;align-items:center;cursor:pointer}
+.drop .ph{color:var(--muted);font-size:14px;padding:0 6px}
+.drop.right{border-style:solid;border-color:var(--good);background:var(--good-bg)} .drop.wrong{border-style:solid;border-color:var(--bad);background:var(--bad-bg)}
+@media (max-width:520px){.mzone{grid-template-columns:minmax(0,1fr)}}
+.rounds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.rounds .btn{font-size:15px;padding:8px 14px}
+.lines{display:grid;gap:4px;margin-bottom:8px;background:#1e1e2a;border-radius:12px;padding:10px;overflow-x:auto}
+.line{display:flex;gap:12px;align-items:center;text-align:left;background:transparent;border:2px solid transparent;border-radius:8px;padding:6px 8px;color:#e8e8f0;cursor:pointer;font:16px/1.4 "JetBrains Mono","Courier New",monospace;white-space:pre}
+.line:hover:not(:disabled){border-color:#a5a0f5}
+.line .ln{color:#8c8ca6;min-width:1.5em;text-align:right}
+.line code{font:inherit}
+.line.right{border-color:#5fd08e;background:#173b2a} .line.wrong{border-color:#f2a767;background:#3a2a1c}
+.codebox{position:relative}
+.codebox pre{background:#1e1e2a;color:#e8e8f0;padding-top:14px}
+.codebox .copy{position:absolute;top:8px;right:8px;font-size:13px;padding:5px 10px;background:#2c2c3c;color:#e8e8f0;border-color:#44445a}
+.tablewrap{overflow-x:auto}
+.tt{border-collapse:collapse;margin:6px 0 10px}
+.tt th,.tt td{border:2px solid var(--line);padding:6px 10px;text-align:center}
+.tt th{background:var(--tint);font-family:"JetBrains Mono","Courier New",monospace}
+.tt input{width:80px;font:inherit;text-align:center;border:2px solid var(--line);border-radius:8px;padding:4px;background:var(--paper);color:var(--ink)}
+.tt input.right{border-color:var(--good);background:var(--good-bg)} .tt input.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.hint2{color:var(--muted);font-size:15px}
+.scols{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.scol{min-height:150px;border:2px dashed var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px;cursor:pointer}
+.scol h3{margin:0 0 4px;font:700 16px Rubik,Arial,sans-serif}
+.task{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;display:grid;gap:8px}
+.task .q{margin:0}
+.task details summary{cursor:pointer;font-weight:700;color:var(--accent)}
+.done{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--muted)}
+
 .card .ex{white-space:pre-wrap;font-family:"JetBrains Mono",Consolas,monospace;font-size:15px;text-align:left}
 </style>
 <!--cl-frame--><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap"><link rel="stylesheet" href="site.css"><!--/cl-frame--></head>
@@ -97,6 +135,15 @@ pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;
     <button class="tab" role="tab" id="tCards" aria-selected="false">Flashcards</button>
     <button class="tab" role="tab" id="tGaps" aria-selected="false">Fill the gaps</button>
   </div>
+    <p class="tabhead">Code practice</p>
+    <div class="tabs code" role="tablist">
+      <button class="tab" role="tab" id="tMatch" aria-selected="false">Match the code</button>
+      <button class="tab" role="tab" id="tSpot" aria-selected="false">Spot it</button>
+      <button class="tab" role="tab" id="tPredict" aria-selected="false">Predict the output</button>
+      <button class="tab" role="tab" id="tTrace" aria-selected="false">Trace tables</button>
+      <button class="tab" role="tab" id="tSort" aria-selected="false">Sort it</button>
+      <button class="tab" role="tab" id="tCode" aria-selected="false">Code it yourself</button>
+    </div>
 
   <section class="panel" id="quiz"></section>
 
@@ -122,6 +169,24 @@ pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;
       <button class="btn" id="gapCheck">Check my answers</button>
     </div>
   </section>
+    <section class="panel" id="match" hidden>
+      <div class="rounds" id="matchRounds"></div>
+      <div class="pool" id="matchPool"></div>
+      <div id="matchZones"></div>
+      <div class="row"><button class="btn ghost" id="matchReset">Start again</button><button class="btn" id="matchCheck">Check</button></div>
+      <div id="matchFb"></div>
+    </section>
+    <section class="panel" id="spot" hidden><div class="rounds" id="spotRounds"></div><div id="spotBody"></div></section>
+    <section class="panel" id="predict" hidden><div class="body"></div></section>
+    <section class="panel" id="trace" hidden><div class="rounds" id="traceRounds"></div><div id="traceBody"></div></section>
+    <section class="panel" id="sort" hidden>
+      <div class="pool" id="sortPool"></div>
+      <div class="scols" id="sortCols"></div>
+      <div class="row"><button class="btn ghost" id="sortReset">Start again</button><button class="btn" id="sortCheck">Check</button></div>
+      <div id="sortFb"></div>
+    </section>
+    <section class="panel" id="code" hidden><div id="codeList"></div></section>
+
 </div>
 
 <script>
@@ -136,16 +201,20 @@ const TIPS = {
   cards: 'Say the meaning out loud first. Then tap the card to check.',
   gaps: 'Choose a word from the word bank for each gap. Tap 🔊 to hear the sentence.'
 };
+const TABS = ['quiz', 'cards', 'gaps', 'match', 'spot', 'predict', 'trace', 'sort', 'code'];
+Object.assign(TIPS, {
+ match: 'Drag each keyword to the code that shows it. (Or tap a keyword, then tap a box.)',
+ spot: 'Read the program. Click the line that shows the keyword.',
+ predict: 'Read the code. What will it print? Then check it in Thonny.',
+ trace: 'Follow the code one line at a time. Write each value in the table.',
+ sort: 'Drag each keyword into the right group. (Or tap a keyword, then tap a group.)',
+ code: 'Write each program in Thonny. Use the hint if you are stuck, then check the model answer.'
+});
 function showTab(which){
-  ['quiz', 'cards', 'gaps'].forEach(t => {
-    $('#t' + t[0].toUpperCase() + t.slice(1)).setAttribute('aria-selected', which === t);
-    $('#' + t).hidden = which !== t;
-  });
-  $('header p').textContent = TIPS[which];
+ TABS.forEach(t => { $('#t' + t[0].toUpperCase() + t.slice(1)).setAttribute('aria-selected', which === t); $('#' + t).hidden = which !== t; });
+ $('header p').textContent = TIPS[which];
 }
-$('#tQuiz').onclick = () => showTab('quiz');
-$('#tCards').onclick = () => showTab('cards');
-$('#tGaps').onclick = () => showTab('gaps');
+TABS.forEach(t => $('#t' + t[0].toUpperCase() + t.slice(1)).onclick = () => showTab(t));
 
 // Quiz
 let order, qi, score, missed, answered;
@@ -272,6 +341,128 @@ $('#gapShow').onclick = () => {
 };
 $('#gapReset').onclick = renderGaps;
 renderGaps();
+
+// ---------- Code practice tabs ----------
+const X = {"match": [{"name": "Round 1: Loops, choices and operators", "pairs": [["for i in range(5):", "definite iteration"], ["while lives > 0:", "indefinite iteration"], ["if score >= 50:", "selection"], ["for i in range(10):\n    if i % 2 == 0:", "nested selection"], ["age >= 13", "relational operator"], ["age > 12 and age < 20", "Boolean operator"]]}, {"name": "Round 2: Data and strings", "pairs": [["score = 0", "assignment"], ["VAT_RATE = 0.07", "constant"], ["\"Bang\" + \"kok\"", "concatenation"], ["name[0:4]", "substring"], ["17 // 5", "integer division (DIV)"], ["17 % 5", "remainder (MOD)"]]}, {"name": "Round 3: Data types", "pairs": [["age = 15", "integer"], ["price = 9.99", "float"], ["is_raining = True", "Boolean"], ["grade = \"A\"", "character"], ["name = \"Ploy\"", "string"]]}], "spot": [{"title": "Program 1: Pass or fail", "code": "PASS_MARK = 50\nname = input(\"Name: \")\nscore = int(input(\"Score: \"))\nif score >= PASS_MARK:\n    print(name + \" passed!\")\nelse:\n    print(\"Try again, \" + name)", "qs": [["a constant", [1], "PASS_MARK is in capital letters and never changes."], ["selection", [4], "if chooses what happens next."], ["a relational operator", [4], ">= compares two values."], ["concatenation", [5, 7], "+ joins two strings together."], ["an input that is changed into an integer", [3], "int() changes the input string into a whole number."]]}, {"title": "Program 2: Adding up", "code": "total = 0\nfor i in range(1, 6):\n    total = total + i\nprint(total)\nanswer = \"\"\nwhile answer != \"yes\":\n    answer = input(\"Finished? \")", "qs": [["definite iteration", [2], "A for loop with range repeats a fixed number of times."], ["indefinite iteration", [6], "A while loop keeps going until the answer is \"yes\"."], ["the assignment that sets total to 0 at the start", [1], "= gives the variable total a value."], ["a relational operator", [6], "!= means \"not equal to\"."]]}, {"title": "Program 3: Even numbers", "code": "for n in range(1, 11):\n    if n % 2 == 0:\n        print(n, \"is even\")", "qs": [["nested selection (an if inside a loop)", [2], "The if is indented inside the for loop."], ["MOD (the remainder)", [2], "% gives the remainder. Even numbers have remainder 0."], ["definite iteration", [1], "range(1, 11) repeats exactly 10 times."]]}], "predict": [["x = 10\nx = x - 3\nprint(x * 2)", ["14", "7", "20", "x * 2"], "x becomes 7, then 7 × 2 = 14."], ["word = \"Python\"\nprint(word[0:2])", ["Py", "Pyt", "P", "on"], "[0:2] takes positions 0 and 1."], ["print(20 // 6, 20 % 6)", ["3 2", "3.33 2", "2 3", "3 0"], "20 ÷ 6 = 3 remainder 2."], ["a = 5\nb = 8\nif a > b:\n    print(\"A\")\nelse:\n    print(\"B\")", ["B", "A", "A and B", "Nothing"], "5 > 8 is False, so the else part runs."], ["for i in range(3):\n    print(i)", ["0, 1, 2 (on separate lines)", "1, 2, 3 (on separate lines)", "0, 1, 2, 3 (on separate lines)", "3"], "range(3) starts at 0 and stops BEFORE 3."], ["count = 0\nwhile count < 3:\n    count = count + 1\nprint(count)", ["3", "2", "4", "0"], "The loop stops when count is no longer less than 3."], ["n = 4\nprint(n > 3 and n < 10)", ["True", "False", "4", "Error"], "Both conditions are True, so and gives True."], ["print(\"Score: \" + str(5))", ["Score: 5", "Score: + 5", "Error", "5"], "str(5) turns 5 into text, so it can be joined with +."]], "trace": [{"title": "Trace 1: Adding up", "code": "total = 0\nfor i in range(1, 4):\n    total = total + i", "cols": ["i", "total"], "rows": [["1", "1"], ["2", "3"], ["3", "6"]], "tip": "Each time round the loop, add i to total."}, {"title": "Trace 2: Counting down", "code": "x = 10\nwhile x > 4:\n    x = x - 3\n    print(x)", "cols": ["x", "output"], "rows": [["7", "7"], ["4", "4"]], "tip": "Check the condition x > 4 before each loop. When x is 4, the loop stops."}, {"title": "Trace 3: DIV and MOD", "code": "minutes = 135\nhours = minutes // 60\nleft = minutes % 60", "cols": ["hours", "left"], "rows": [["2", "15"]], "tip": "135 ÷ 60 = 2 remainder 15."}], "sort": {"cols": [["Data types", "dt"], ["Program control", "pc"], ["Operators", "op"], ["Algorithm words", "al"]], "items": [["integer", "dt"], ["float", "dt"], ["Boolean", "dt"], ["character", "dt"], ["string", "dt"], ["sequence", "pc"], ["selection", "pc"], ["definite iteration", "pc"], ["indefinite iteration", "pc"], ["relational operator", "op"], ["Boolean operator", "op"], ["integer division (DIV)", "op"], ["remainder (MOD)", "op"], ["linear search", "al"], ["binary search", "al"], ["flowchart", "al"], ["pseudocode", "al"]]}, "code": [["Make a constant", "Make a constant called MAX_LIVES that holds 3. Print it.", "constant", "Use CAPITAL letters for the name.", "MAX_LIVES = 3\nprint(MAX_LIVES)"], ["Say hello", "Ask for the user's name. Print Hello, then their name.", "input, concatenation", "Use input() and join the strings with +.", "name = input(\"What is your name? \")\nprint(\"Hello, \" + name)"], ["Even or odd?", "Ask for a number. Print even or odd.", "selection, MOD", "Use int(input()) and % 2. If the remainder is 0, it is even.", "number = int(input(\"Type a number: \"))\nif number % 2 == 0:\n    print(\"even\")\nelse:\n    print(\"odd\")"], ["5 times table", "Print the 5 times table, from 5 to 50.", "definite iteration", "Use for i in range(1, 11): and print i * 5.", "for i in range(1, 11):\n    print(i * 5)"], ["Password check", "Keep asking for the password until the user types wolf. Then print Welcome!", "indefinite iteration", "Use a while loop with !=.", "password = \"\"\nwhile password != \"wolf\":\n    password = input(\"Password: \")\nprint(\"Welcome!\")"], ["First 3 letters", "Ask for a word. Print its first 3 letters.", "substring", "word[0:3] takes positions 0, 1 and 2.", "word = input(\"Type a word: \")\nprint(word[0:3])"], ["Hours and minutes", "Change 135 minutes into hours and minutes. It should print 2 hours 15 minutes.", "DIV, MOD", "// gives the hours, % gives the minutes left over.", "minutes = 135\nhours = minutes // 60\nleft = minutes % 60\nprint(hours, \"hours\", left, \"minutes\")"]]};
+function copyText(text, btn){
+  const done = () => { const o = btn.textContent; btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = o, 1400); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done)); else fallbackCopy(text, done);
+}
+function fallbackCopy(text, done){ const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} t.remove(); }
+function fbHTML(ok, title, msg){ return `<div class="fb show ${ok ? 'right' : 'wrong'}"><b>${esc(title)}</b>${esc(msg || '')}</div>`; }
+function roundBtns(id, names, cur, fn){
+  $(id).innerHTML = names.map((n, i) => `<button class="btn ${i === cur ? '' : 'ghost'}" data-r="${i}" aria-pressed="${i === cur}">${esc(n)}</button>`).join('');
+  $(id).querySelectorAll('[data-r]').forEach(b => b.onclick = () => fn(+b.dataset.r));
+}
+
+/* 1. Match the code (drag, or tap a word then tap a box) */
+let mRound = 0, mSel = null;
+function renderMatch(){
+  roundBtns('#matchRounds', X.match.map(r => r.name), mRound, r => { mRound = r; renderMatch(); });
+  const pairs = X.match[mRound].pairs;
+  $('#matchPool').innerHTML = shuffle(pairs.map(p => p[1])).map(w => `<button class="chip" draggable="true" data-w="${esc(w)}">${esc(w)}</button>`).join('');
+  $('#matchZones').innerHTML = pairs.map((p, i) => `<div class="mzone"><pre class="mcode">${esc(p[0])}</pre><div class="drop" data-ans="${esc(p[1])}" data-i="${i}"><span class="ph">drop the keyword here</span></div></div>`).join('');
+  $('#matchFb').innerHTML = ''; mSel = null;
+}
+function placeChip(chip, target){
+  if (target.classList.contains('drop')) { const old = target.querySelector('.chip'); if (old && old !== chip) $('#matchPool').appendChild(old); target.querySelector('.ph')?.remove(); }
+  target.appendChild(chip); chip.classList.remove('sel'); mSel = null;
+  target.classList.remove('right', 'wrong');
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('#match .chip');
+  if (c) { if (mSel === c) { c.classList.remove('sel'); mSel = null; } else { mSel?.classList.remove('sel'); mSel = c; c.classList.add('sel'); } return; }
+  const z = e.target.closest('#match .drop, #matchPool'); if (z && mSel) placeChip(mSel, z);
+});
+document.addEventListener('dragstart', e => { const c = e.target.closest && e.target.closest('.chip[draggable]'); if (c) { e.dataTransfer.setData('text/plain', c.dataset.w); mSel = c; } });
+document.addEventListener('dragover', e => { if (e.target.closest && e.target.closest('.drop, #matchPool, .scol, #sortPool')) e.preventDefault(); });
+document.addEventListener('drop', e => { const z = e.target.closest && e.target.closest('.drop, #matchPool, .scol, #sortPool'); if (!z || !mSel) return; e.preventDefault();
+  if (z.classList.contains('scol') || z.id === 'sortPool') sPlace(mSel, z); else placeChip(mSel, z); });
+$('#matchCheck').onclick = () => { let r = 0; const zs = [...document.querySelectorAll('#matchZones .drop')];
+  zs.forEach(z => { const c = z.querySelector('.chip'); z.classList.remove('right', 'wrong'); if (!c) return; const ok = c.dataset.w === z.dataset.ans; z.classList.add(ok ? 'right' : 'wrong'); if (ok) r++; });
+  $('#matchFb').innerHTML = fbHTML(r === zs.length, `${r} out of ${zs.length} correct.`, r === zs.length ? (mRound < X.match.length - 1 ? 'Brilliant! Try the next round.' : 'Brilliant! You matched every round.') : 'Move the orange ones and check again.'); };
+$('#matchReset').onclick = renderMatch;
+
+/* 2. Spot it in the code */
+let spP = 0, spQ = 0, spScore = 0;
+function renderSpot(){
+  roundBtns('#spotRounds', X.spot.map(p => p.title.split(':')[0]), spP, p => { spP = p; spQ = 0; spScore = 0; renderSpot(); });
+  const p = X.spot[spP];
+  if (spQ >= p.qs.length) { $('#spotBody').innerHTML = `<p class="q">${esc(p.title)}</p><p class="score">${spScore} / ${p.qs.length}</p><p>${spP < X.spot.length - 1 ? 'Now try the next program.' : 'You have done all 3 programs!'}</p><div class="row"><button class="btn ghost" id="spotAgain">Try again</button>${spP < X.spot.length - 1 ? '<button class="btn" id="spotNext">Next program</button>' : ''}</div>`;
+    $('#spotAgain').onclick = () => { spQ = 0; spScore = 0; renderSpot(); }; if ($('#spotNext')) $('#spotNext').onclick = () => { spP++; spQ = 0; spScore = 0; renderSpot(); }; return; }
+  const q = p.qs[spQ];
+  $('#spotBody').innerHTML = `<p class="qnum">${esc(p.title)} · question ${spQ + 1} of ${p.qs.length}</p><p class="q">Click the line that shows <u>${esc(q[0])}</u>.</p>
+    <div class="lines">${p.code.split('\n').map((l, i) => `<button class="line" data-n="${i + 1}"><span class="ln">${i + 1}</span><code>${esc(l)}</code></button>`).join('')}</div><div id="spotFb"></div>`;
+  let tries = 0;
+  document.querySelectorAll('#spotBody .line').forEach(b => b.onclick = () => {
+    const n = +b.dataset.n; tries++;
+    if (q[1].includes(n)) { if (tries === 1) spScore++; document.querySelectorAll('#spotBody .line').forEach(x => { x.disabled = true; if (q[1].includes(+x.dataset.n)) x.classList.add('right'); });
+      $('#spotFb').innerHTML = fbHTML(true, 'Yes! Line ' + q[1].join(' or ') + '.', q[2]) + '<div class="row"><button class="btn" id="spotGo">Next</button></div>'; $('#spotGo').onclick = () => { spQ++; renderSpot(); }; $('#spotGo').focus(); }
+    else { b.classList.add('wrong'); $('#spotFb').innerHTML = fbHTML(false, 'Not that line. Try again.', 'Look for the keyword in the question.'); }
+  });
+}
+
+/* 3. Predict the output */
+let prI = 0, prScore = 0, prOrder = [];
+function startPredict(){ prOrder = shuffle(X.predict.map((p, i) => i)); prI = 0; prScore = 0; renderPredict(); }
+function renderPredict(){
+  if (prI >= prOrder.length) { $('#predict .body').innerHTML = `<p class="qnum">Your score</p><p class="score">${prScore} / ${prOrder.length}</p><p>Check any you got wrong by copying the code into Thonny and pressing F5.</p><div class="row"><button class="btn" id="prAgain">Try again</button></div>`; $('#prAgain').onclick = startPredict; return; }
+  const [code, opts, why] = X.predict[prOrder[prI]];
+  $('#predict .body').innerHTML = `<div class="progress"><span style="width:${prI / prOrder.length * 100}%"></span></div><p class="qnum">Code ${prI + 1} of ${prOrder.length}</p><p class="q">What will this program print?</p>
+    <div class="codebox"><pre>${esc(code)}</pre><button class="btn ghost copy">Copy for Thonny</button></div>
+    <div class="opts">${shuffle(opts.map((t, i) => ({ t, i }))).map(o => `<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div><div id="prFb"></div>`;
+  $('#predict .copy').onclick = e => copyText(code, e.target);
+  document.querySelectorAll('#predict .opt').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.i === 0; if (ok) prScore++;
+    document.querySelectorAll('#predict .opt').forEach(x => { x.disabled = true; if (+x.dataset.i === 0) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    $('#prFb').innerHTML = fbHTML(ok, ok ? 'Correct!' : 'Not quite. It prints: ' + opts[0], why + ' Try it in Thonny to check.') + `<div class="row"><button class="btn" id="prNext">${prI + 1 === prOrder.length ? 'See my score' : 'Next code'}</button></div>`;
+    $('#prNext').onclick = () => { prI++; renderPredict(); }; $('#prNext').focus();
+  });
+}
+
+/* 4. Mini trace tables */
+let trI = 0;
+function renderTrace(){
+  roundBtns('#traceRounds', X.trace.map(t => t.title.split(':')[0]), trI, t => { trI = t; renderTrace(); });
+  const t = X.trace[trI];
+  $('#traceBody').innerHTML = `<p class="q">${esc(t.title.split(': ')[1])}</p><div class="codebox"><pre>${esc(t.code)}</pre><button class="btn ghost copy">Copy for Thonny</button></div>
+    <p>Fill in the trace table. Write the value after each step.</p>
+    <div class="tablewrap"><table class="tt"><tr>${t.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${t.rows.map((r, ri) => `<tr>${r.map((v, ci) => `<td><input inputmode="numeric" autocomplete="off" aria-label="${esc(t.cols[ci])}, row ${ri + 1}" data-a="${esc(v)}"></td>`).join('')}</tr>`).join('')}</table></div>
+    <p class="hint2">Tip: ${esc(t.tip)}</p><div class="row"><button class="btn ghost" id="trShow">Show answers</button><button class="btn" id="trCheck">Check</button></div><div id="trFb"></div>`;
+  $('#trace .copy').onclick = e => copyText(t.code, e.target);
+  $('#trCheck').onclick = () => { let r = 0; const ins = [...document.querySelectorAll('#traceBody input')];
+    ins.forEach(i => { const ok = i.value.trim() === i.dataset.a; i.classList.toggle('right', ok); i.classList.toggle('wrong', !ok && i.value.trim() !== ''); if (ok) r++; });
+    $('#trFb').innerHTML = fbHTML(r === ins.length, `${r} out of ${ins.length} correct.`, r === ins.length ? (trI < X.trace.length - 1 ? 'Great tracing! Try the next one.' : 'Great tracing!') : 'Orange boxes are wrong. Go through the code one line at a time.'); };
+  $('#trShow').onclick = () => { document.querySelectorAll('#traceBody input').forEach(i => { i.value = i.dataset.a; i.classList.add('right'); i.classList.remove('wrong'); }); $('#trFb').innerHTML = fbHTML(true, 'Answers shown.', 'Copy the code into Thonny and add print() lines to watch the values change.'); };
+}
+
+/* 5. Sort it */
+function sPlace(chip, z){ z.appendChild(chip); chip.classList.remove('sel', 'right', 'wrong'); mSel = null; }
+function renderSort(){
+  $('#sortPool').innerHTML = shuffle(X.sort.items).map(([w, k]) => `<button class="chip" draggable="true" data-w="${esc(w)}" data-k="${k}">${esc(w)}</button>`).join('');
+  $('#sortCols').innerHTML = X.sort.cols.map(([n, k]) => `<div class="scol" data-k="${k}"><h3>${esc(n)}</h3></div>`).join('');
+  $('#sortFb').innerHTML = ''; mSel = null;
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('#sort .chip');
+  if (c) { if (mSel === c) { c.classList.remove('sel'); mSel = null; } else { mSel?.classList.remove('sel'); mSel = c; c.classList.add('sel'); } return; }
+  const z = e.target.closest('#sort .scol, #sortPool'); if (z && mSel) sPlace(mSel, z);
+});
+$('#sortCheck').onclick = () => { let r = 0; const all = X.sort.items.length; const left = $('#sortPool').querySelectorAll('.chip').length;
+  document.querySelectorAll('#sortCols .scol').forEach(col => col.querySelectorAll('.chip').forEach(c => { const ok = c.dataset.k === col.dataset.k; c.classList.toggle('right', ok); c.classList.toggle('wrong', !ok); if (ok) r++; }));
+  $('#sortFb').innerHTML = fbHTML(r === all, `${r} out of ${all} correct.`, r === all ? 'Brilliant sorting!' : (left ? `Put all the words in a group (${left} left). ` : '') + 'Move the orange ones and check again.'); };
+$('#sortReset').onclick = renderSort;
+
+/* 6. Code it yourself */
+function renderCode(){
+  $('#codeList').innerHTML = X.code.map(([t, task, kw, hint, ans], i) => `<article class="task"><p class="qnum">Task ${i + 1} · keywords: ${esc(kw)}</p><p class="q">${esc(t)}</p><p>${esc(task)}</p>
+    <details><summary>Hint</summary><p>${esc(hint)}</p></details>
+    <details><summary>Show a model answer</summary><div class="codebox"><pre>${esc(ans)}</pre><button class="btn ghost copy" data-i="${i}">Copy for Thonny</button></div></details>
+    <label class="done"><input type="checkbox"> I wrote it in Thonny and it works</label></article>`).join('');
+  document.querySelectorAll('#codeList .copy').forEach(b => b.onclick = () => copyText(X.code[+b.dataset.i][4], b));
+}
+renderMatch(); renderSpot(); startPredict(); renderTrace(); renderSort(); renderCode();
+
 </script>
 </body>
 </html>
