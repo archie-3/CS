@@ -310,7 +310,7 @@ def add_frame(fname, crumb_text, crumb_href, extra_head):
     # always light: these pages switch to dark only when <html> has no data-theme="light"
     if 'data-theme="light"' not in s.split("<head>")[0]:
         s = re.sub(r"<html([^>]*)>", lambda m: "<html" + m.group(1) + ' data-theme="light">', s, count=1)
-    s = re.sub(r"(<body[^>]*>)", lambda m: m.group(1) + "\n" + MARK_A + bar("", crumb_text, crumb_href) + MARK_B, s, count=1)
+    s = re.sub(r"(<body[^>]*>)\n?", lambda m: m.group(1) + "\n" + MARK_A + bar("", crumb_text, crumb_href) + MARK_B, s, count=1)
     open(path, "w", encoding="utf-8").write(s)
     return True
 
