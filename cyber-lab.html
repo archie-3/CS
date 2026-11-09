@@ -142,6 +142,10 @@ td.mono{font-family:var(--mono)}
 .mr{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 .mr.right{background:var(--ok-soft);border-color:var(--ok)} .mr.wrong{background:var(--coral-soft);border-color:var(--coral)}
 .czone{border:3px dashed var(--coral);border-radius:14px;padding:14px 18px;display:grid;gap:6px;background:var(--coral-soft)}
+.xzone{border:3px dashed var(--fibre);border-radius:14px;padding:14px 18px;display:grid;gap:6px;background:var(--fibre-soft)}
+.xpl{border-color:var(--fibre)} .xpl .mnum{font-size:16px}
+.xin{font:inherit;width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)}
+.xtip{background:var(--amber-soft);border-radius:8px;padding:8px 12px}
 .chal{border-color:var(--coral)} .chal .mnum{background:var(--coral);font-size:16px}
 .qlist{display:grid;gap:10px}
 .qcard{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:8px}
@@ -538,6 +542,8 @@ Trace complete.</pre>
       <div class="row"><button class="btn" data-qcheck="iq">Check</button></div>
       <p class="msg" id="iqmsg" role="status"></p>
     </article>
+    <div class="xzone"><h2>Explore zone: Command Prompt</h2><p>Finished? Be a network detective. Copy each command into Command Prompt, press Enter, and find out. These commands only <b>look</b> at the network. They change nothing.</p></div>
+    <div id="xlist" style="display:grid;gap:18px"></div>
     <article class="mission plen" id="plen2"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
       <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
       <div class="pgap" id="pg2"></div>
@@ -930,7 +936,7 @@ function qSetup(id,items){QS[id]={items,score:null,total:items.reduce((a,it)=>a+
   $(id+"list").innerHTML=items.map((it,i)=>`<div class="qcard">${it.t?`<p>${it.t}</p>`:""}${it.q.map(([p,a,o],j)=>`<label class="qrow" id="${id}_${i}_${j}"><span>${p}</span><select><option value="">Choose…</option>${o.slice().sort((x,y)=>String(x).localeCompare(String(y),undefined,{numeric:true})).map(x=>`<option>${esc(x)}</option>`).join("")}</select></label>`).join("")}</div>`).join("");}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-qcheck]");if(!b)return;const id=b.dataset.qcheck,Q=QS[id];let s=0,blank=0;
   Q.items.forEach((it,i)=>it.q.forEach(([p,a],j)=>{const row=$(`${id}_${i}_${j}`),v=row.querySelector("select").value,ok=v===String(a);if(!v)blank++;row.classList.toggle("right",ok);row.classList.toggle("wrong",!!v&&!ok);if(ok)s++;}));
-  Q.score=s;const m=$(id+"msg");m.className=s===Q.total?"msg good":"msg bad";m.textContent=s===Q.total?`All ${Q.total} correct! Challenge complete.`:`${s} / ${Q.total} correct.`+(blank?" Answer every question.":"")+" Red ones are wrong: try again.";
+  Q.score=s;const m=$(id+"msg");m.className=s===Q.total?"msg good":"msg bad";m.textContent=s===Q.total?(id[0]==="x"?"Correct! Well done, detective.":`All ${Q.total} correct! Challenge complete.`):`${s} / ${Q.total} correct.`+(blank?" Answer every question.":"")+" Red ones are wrong: try again.";
   if(s===Q.total)b.closest(".mission").classList.add("done");refreshAll();});
 const one=(t,a,o)=>({t:"",q:[[t,a,o]]});
 qSetup("pq",[
@@ -953,6 +959,21 @@ qSetup("iq",[
   one("Typing bbc.co.uk does not work, but typing its IP address works.","DNS",HW),
   one("One website is down for everyone in the world. Other websites work.","server",HW),
   one("A ship drops its anchor. Suddenly the internet to Europe is very slow for the whole of Thailand.","undersea cable",HW)]);
+/* ---------- Explore zone: Command Prompt ---------- */
+const XP=[
+ {n:"E1",t:"Who am I?",c:["hostname"],f:"What is your computer's name?"},
+ {n:"E2",t:"Ping yourself",c:["ping 127.0.0.1"],q:["The time is under 1 ms. Why is it so fast?","The message never leaves my computer",["The message never leaves my computer","The internet is fast today","Google answered","The router is very close"]]},
+ {n:"E3",t:"Ping 10 times",c:["ping -n 10 google.com"],f:"What was the fastest time? The slowest? Are they all the same?"},
+ {n:"E4",t:"Website race",c:["ping bbc.co.uk","ping www.gov.au","ping www.thairath.co.th"],f:"Which website was fastest? Which was slowest?",tip:"Surprised? Big websites keep copies on servers in many countries, so a website from far away can still be fast."},
+ {n:"E5",t:"The ghost website",c:["ping ghost-website.invalid"],q:["This website does not exist. Which part could not find its IP address?","DNS",["DNS","router","switch","undersea cable"]]},
+ {n:"E6",t:"One website, many addresses",c:["nslookup youtube.com"],f:"How many addresses can you count?",tip:"Big websites have many servers. Long addresses with : in them are the new kind of IP address (IPv6)."}];
+const XF={};
+$("xlist").innerHTML=XP.map((x,i)=>`<article class="mission xpl" id="xp${i}"><div class="mhead"><div class="mnum">${x.n}</div><h3>${x.t}</h3></div>
+  <pre class="term" id="xc${i}">${x.c.map(esc).join("\n")}</pre><div class="row"><button class="btn ghost" data-copy="xc${i}">Copy command${x.c.length>1?"s":""}</button><span class="msg" role="status"></span></div>
+  ${x.f?`<label><b>Find out:</b> ${x.f}<input class="xin" id="xf${i}" placeholder="I found…"></label>`:`<div class="qlist" id="x${i}list"></div><div class="row"><button class="btn" data-qcheck="x${i}">Check</button></div><p class="msg" id="x${i}msg" role="status"></p>`}
+  ${x.tip?`<p class="xtip">${x.tip}</p>`:""}</article>`).join("");
+XP.forEach((x,i)=>{if(x.q)qSetup("x"+i,[one(...x.q)]);else $("xf"+i).addEventListener("input",e=>{XF[i]=e.target.value.trim();if(XF[i])$("xp"+i).classList.add("done");else $("xp"+i).classList.remove("done");refreshAll();});});
+function xlines(){return XP.map((x,i)=>x.q?qL("x"+i,`Explore ${x.n} ${x.t}`):(XF[i]?`Explore ${x.n} ${x.t}: ${XF[i]}`:"")).filter(Boolean);}
 const HAT=["White hat","Grey hat","Black hat"],LG=["Legal","Illegal"],FIX=["A strong passphrase","2FA","Install updates","Backups","Check visitors' ID"];
 const cf=(t,h,l,f)=>({t,q:[["Which hat?",h,HAT],["Legal or illegal?",l,LG],["Best fix for the weakness:",f,FIX]]});
 qSetup("hq",[
@@ -1003,7 +1024,7 @@ function chainDraw(){$("chainlist").innerHTML=CHAIN.slice(0,Math.min(CHAIN_OK+1,
     if(v===CHAIN[CHAIN_OK][1]){CHAIN_OK++;m.className="msg good";m.textContent=CHAIN_OK===3?"Mission complete! The code word is WOLF.":"Decrypted! Use the key in this message for the next one.";if(CHAIN_OK===3)$("cmc1").classList.add("done");chainDraw();refreshAll();}
     else{m.className="msg bad";m.textContent="Not yet. Set the cipher wheel to the key and type the ciphertext into the ciphertext box.";}};}
 chainDraw();
-function nres(){$("nres").textContent=[`Network Builder results`,dline("d2","Part 1: Who does what"),dline("d2b","Part 2: Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),pline(2)].filter(Boolean).join("\n");}
+function nres(){$("nres").textContent=[`Network Builder results`,dline("d2","Part 1: Who does what"),dline("d2b","Part 2: Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),...xlines(),pline(2)].filter(Boolean).join("\n");}
 function hres(){$("hres").textContent=[`Hacker Hats results`,`Myth or real: ${HH.myth===null?"not checked":HH.myth+" / 6"}`,dline("d4","Which hat"),`Legal or illegal: ${HH.legal===null?"not checked":HH.legal+" / 4"}`,qL("hq","Challenge: case files"),pline(4),`Key idea: hacking without permission is illegal (Computer Misuse Act).`].filter(Boolean).join("\n");}
 function refreshAll(){pres();nres();bres();hres();phres();cres();wres();}
 refreshAll();
