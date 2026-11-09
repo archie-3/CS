@@ -485,8 +485,9 @@ td.mono{font-family:var(--mono)}
   <!-- NETWORK BUILDER -->
   <section class="lab" id="v-builder" hidden>
     <div class="intro"><span class="lesson">Lesson 2 · Inside the internet</span><h2>Network Builder</h2>
-      <p>Build our school network. Drag each piece of hardware to its job. (Or click a card, then click the box.)</p></div>
-    <article class="mission" id="nm1"><div class="mhead"><div class="mnum">1</div><h3>Who does what?</h3></div>
+      <p><b>Task 1</b> is on the <a href="https://www.submarinecablemap.com/" target="_blank" rel="noopener">Submarine Cable Map</a>. Then come back here for Part 1 and Part 2.</p></div>
+    <article class="mission" id="nm1"><div class="mhead"><div class="mnum">1</div><h3>Part 1: Who does what?</h3></div>
+      <p>Do this in <b>Task 2</b>. Drag each piece of hardware to its job. (Or click a card, then click the box.)</p>
       <div class="dpool" id="d2pool"></div>
       <div class="dzones">
         <div class="dzone" data-task="d2" data-ans="router"><span class="zl">Connects our school to the internet</span></div>
@@ -499,8 +500,8 @@ td.mono{font-family:var(--mono)}
       <div class="row"><button class="btn" data-check="d2">Check</button><button class="btn ghost" data-reset="d2">Start again</button></div>
       <p class="msg" id="d2msg" role="status"></p>
     </article>
-    <article class="mission" id="nm2"><div class="mhead"><div class="mnum">2</div><h3>Put the journey in order</h3></div>
-      <p>You open a website at school. Drag the steps into order: 1 is first.</p>
+    <article class="mission" id="nm2"><div class="mhead"><div class="mnum">2</div><h3>Part 2: Put the journey in order</h3></div>
+      <p>Do this in <b>Task 3</b>, after Command Prompt detective. You open a website at school. Drag the steps into order: 1 is first.</p>
       <div class="dpool" id="d2bpool"></div>
       <div class="dzones">
         <div class="dzone" data-task="d2b" data-ans="Your laptop asks for the website"><span class="zl"><b>1</b></span></div>
@@ -512,7 +513,7 @@ td.mono{font-family:var(--mono)}
       <div class="row"><button class="btn" data-check="d2b">Check</button><button class="btn ghost" data-reset="d2b">Start again</button></div>
       <p class="msg" id="d2bmsg" role="status"></p>
     </article>
-    <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
+    <div class="czone"><h2>Challenge zone</h2><p>Now try it on your own. These are like the worked examples from the lesson, but different. Screenshot your scores for your portfolio.</p></div>
     <article class="mission chal" id="nmc1"><div class="mhead"><div class="mnum">C1</div><h3>Read the tracert</h3></div>
       <p>A student in Bangkok typed <span class="kbd">tracert bbc.co.uk</span>. Each line is one <b>hop</b> (one router). The times are in ms. <span class="note">(bkk = Bangkok, sg = Singapore, mrs = Marseille in France, lon = London)</span></p>
       <pre class="term">C:\> tracert bbc.co.uk
@@ -542,8 +543,7 @@ Trace complete.</pre>
       <div class="pgap" id="pg2"></div>
       <div class="row"><button class="btn" data-pcheck="2">Check</button><span class="big" id="pgs2"></span></div>
       <p class="msg" id="pgm2" role="status"></p></article>
-    <div class="results"><h3>My Network Builder results</h3><pre id="nres"></pre><div class="row"><button class="btn" data-copy="nres">Copy results</button><span class="msg" role="status"></span></div>
-      <p class="note">Next: explore the <a href="https://www.submarinecablemap.com/" target="_blank" rel="noopener">Submarine Cable Map</a>.</p></div>
+    <div class="results"><h3>My Network Builder results</h3><pre id="nres"></pre><div class="row"><button class="btn" data-copy="nres">Copy results</button><span class="msg" role="status"></span></div></div>
   </section>
 
   <!-- HACKER HATS -->
@@ -1003,7 +1003,7 @@ function chainDraw(){$("chainlist").innerHTML=CHAIN.slice(0,Math.min(CHAIN_OK+1,
     if(v===CHAIN[CHAIN_OK][1]){CHAIN_OK++;m.className="msg good";m.textContent=CHAIN_OK===3?"Mission complete! The code word is WOLF.":"Decrypted! Use the key in this message for the next one.";if(CHAIN_OK===3)$("cmc1").classList.add("done");chainDraw();refreshAll();}
     else{m.className="msg bad";m.textContent="Not yet. Set the cipher wheel to the key and type the ciphertext into the ciphertext box.";}};}
 chainDraw();
-function nres(){$("nres").textContent=[`Network Builder results`,dline("d2","Who does what"),dline("d2b","Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),pline(2)].filter(Boolean).join("\n");}
+function nres(){$("nres").textContent=[`Network Builder results`,dline("d2","Part 1: Who does what"),dline("d2b","Part 2: Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),pline(2)].filter(Boolean).join("\n");}
 function hres(){$("hres").textContent=[`Hacker Hats results`,`Myth or real: ${HH.myth===null?"not checked":HH.myth+" / 6"}`,dline("d4","Which hat"),`Legal or illegal: ${HH.legal===null?"not checked":HH.legal+" / 4"}`,qL("hq","Challenge: case files"),pline(4),`Key idea: hacking without permission is illegal (Computer Misuse Act).`].filter(Boolean).join("\n");}
 function refreshAll(){pres();nres();bres();hres();phres();cres();wres();}
 refreshAll();
