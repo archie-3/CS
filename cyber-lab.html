@@ -489,7 +489,10 @@ td.mono{font-family:var(--mono)}
   <!-- NETWORK BUILDER -->
   <section class="lab" id="v-builder" hidden>
     <div class="intro"><span class="lesson">Lesson 2 · Inside the internet</span><h2>Network Builder</h2>
-      <p><b>Task 1</b> is on the <a href="https://www.submarinecablemap.com/" target="_blank" rel="noopener">Submarine Cable Map</a>. Then come back here for Part 1 and Part 2.</p></div>
+      <p>Start with Task 1, the cable map. Then do Network Builder Part 1 and Part 2.</p></div>
+    <article class="mission xpl"><div class="mhead"><div class="mnum">T1</div><h3>Task 1: The cable map</h3></div>
+      <p>Explore the <a href="https://www.submarinecablemap.com/" target="_blank" rel="noopener">Submarine Cable Map</a>. Zoom to Thailand. Click the landing stations and the cables. Then answer:</p>
+      <div class="qlist" id="cqlist"></div><div class="row"><button class="btn" data-qcheck="cq">Check</button></div><p class="msg" id="cqmsg" role="status"></p></article>
     <article class="mission" id="nm1"><div class="mhead"><div class="mnum">1</div><h3>Part 1: Who does what?</h3></div>
       <p>Do this in <b>Task 2</b>. Drag each piece of hardware to its job. (Or click a card, then click the box.)</p>
       <div class="dpool" id="d2pool"></div>
@@ -936,7 +939,7 @@ function qSetup(id,items){QS[id]={items,score:null,total:items.reduce((a,it)=>a+
   $(id+"list").innerHTML=items.map((it,i)=>`<div class="qcard">${it.t?`<p>${it.t}</p>`:""}${it.q.map(([p,a,o],j)=>`<label class="qrow" id="${id}_${i}_${j}"><span>${p}</span><select><option value="">Choose…</option>${o.slice().sort((x,y)=>String(x).localeCompare(String(y),undefined,{numeric:true})).map(x=>`<option>${esc(x)}</option>`).join("")}</select></label>`).join("")}</div>`).join("");}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-qcheck]");if(!b)return;const id=b.dataset.qcheck,Q=QS[id];let s=0,blank=0;
   Q.items.forEach((it,i)=>it.q.forEach(([p,a],j)=>{const row=$(`${id}_${i}_${j}`),v=row.querySelector("select").value,ok=v===String(a);if(!v)blank++;row.classList.toggle("right",ok);row.classList.toggle("wrong",!!v&&!ok);if(ok)s++;}));
-  Q.score=s;const m=$(id+"msg");m.className=s===Q.total?"msg good":"msg bad";m.textContent=s===Q.total?(id[0]==="x"?"Correct! Well done, detective.":`All ${Q.total} correct! Challenge complete.`):`${s} / ${Q.total} correct.`+(blank?" Answer every question.":"")+" Red ones are wrong: try again.";
+  Q.score=s;const m=$(id+"msg");m.className=s===Q.total?"msg good":"msg bad";m.textContent=s===Q.total?(id[0]==="x"||id==="cq"?"All correct! Well done.":`All ${Q.total} correct! Challenge complete.`):`${s} / ${Q.total} correct.`+(blank?" Answer every question.":"")+" Red ones are wrong: try again.";
   if(s===Q.total)b.closest(".mission").classList.add("done");refreshAll();});
 const one=(t,a,o)=>({t:"",q:[[t,a,o]]});
 qSetup("pq",[
@@ -960,6 +963,9 @@ qSetup("iq",[
   one("One website is down for everyone in the world. Other websites work.","server",HW),
   one("A ship drops its anchor. Suddenly the internet to Europe is very slow for the whole of Thailand.","undersea cable",HW)]);
 /* ---------- Explore zone: Command Prompt ---------- */
+qSetup("cq",[{t:"",q:[
+ ["Which landing station faces west, towards India and Europe?","Satun",["Songkhla","Satun","Sri Racha"]],
+ ["A short cable to Malaysia or a long cable to the USA: which gives a faster ping?","The short cable to Malaysia",["The short cable to Malaysia","The long cable to the USA","They are the same"]]]}]);
 const XP=[
  {n:"E1",t:"Who am I?",c:["hostname"],f:"What is your computer's name?"},
  {n:"E2",t:"Ping yourself",c:["ping 127.0.0.1"],q:["The time is under 1 ms. Why is it so fast?","The message never leaves my computer",["The message never leaves my computer","The internet is fast today","Google answered","The router is very close"]]},
@@ -1024,7 +1030,7 @@ function chainDraw(){$("chainlist").innerHTML=CHAIN.slice(0,Math.min(CHAIN_OK+1,
     if(v===CHAIN[CHAIN_OK][1]){CHAIN_OK++;m.className="msg good";m.textContent=CHAIN_OK===3?"Mission complete! The code word is WOLF.":"Decrypted! Use the key in this message for the next one.";if(CHAIN_OK===3)$("cmc1").classList.add("done");chainDraw();refreshAll();}
     else{m.className="msg bad";m.textContent="Not yet. Set the cipher wheel to the key and type the ciphertext into the ciphertext box.";}};}
 chainDraw();
-function nres(){$("nres").textContent=[`Network Builder results`,dline("d2","Part 1: Who does what"),dline("d2b","Part 2: Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),...xlines(),pline(2)].filter(Boolean).join("\n");}
+function nres(){$("nres").textContent=[`Network Builder results`,qL("cq","Task 1: Cable map"),dline("d2","Part 1: Who does what"),dline("d2b","Part 2: Journey in order"),qL("tq","Challenge: read the tracert"),qL("iq","Challenge: internet detective"),...xlines(),pline(2)].filter(Boolean).join("\n");}
 function hres(){$("hres").textContent=[`Hacker Hats results`,`Myth or real: ${HH.myth===null?"not checked":HH.myth+" / 6"}`,dline("d4","Which hat"),`Legal or illegal: ${HH.legal===null?"not checked":HH.legal+" / 4"}`,qL("hq","Challenge: case files"),pline(4),`Key idea: hacking without permission is illegal (Computer Misuse Act).`].filter(Boolean).join("\n");}
 function refreshAll(){pres();nres();bres();hres();phres();cres();wres();}
 refreshAll();
