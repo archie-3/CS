@@ -282,9 +282,9 @@ td.mono{font-family:var(--mono)}
       <p>Computers only understand <b>1</b> (on) and <b>0</b> (off). Each 1 or 0 is a <b>bit</b>.</p></div>
 
     <article class="mission" id="bm1"><div class="mhead"><div class="mnum">1</div><h3>Binary cards</h3></div>
-      <p>Click a card to turn it <b>on (1)</b> or <b>off (0)</b>. Add up the cards that are on. Make each target number.</p>
+      <p>Click a card to turn it <b>on (1)</b> or <b>off (0)</b>. Add up the cards that are on. Make each target number. 4 bits are called a <b>nibble</b>.</p>
       <div class="cards" id="bcards"></div>
-      <div class="row"><span>Binary: <span class="bits" id="bbits">00000</span></span><span>Number: <span class="big" id="bval">0</span></span></div>
+      <div class="row"><span>Binary: <span class="bits" id="bbits">0000</span></span><span>Number: <span class="big" id="bval">0</span></span></div>
       <div class="chips" id="btargets"></div>
       <p class="msg" id="bmsg" role="status"></p>
     </article>
@@ -313,7 +313,7 @@ td.mono{font-family:var(--mono)}
 
     <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
     <article class="mission chal" id="bmc0"><div class="mhead"><div class="mnum">C1</div><h3>Byte builder</h3></div>
-      <p><b>4 bits</b> are called a <b>nibble</b>. <b>8 bits</b> are called a <b>byte</b>. In Task 1 you used 5 bits. Now use a whole byte: 8 cards. Click the cards to make each target number.</p>
+      <p><b>4 bits</b> are called a <b>nibble</b>. <b>8 bits</b> are called a <b>byte</b>. In Task 1 you used a nibble. Now use a whole byte: 8 cards. Click the cards to make each target number.</p>
       <div class="cards" id="b8cards"></div>
       <div class="row"><span class="nib">nibble</span><span class="nib">nibble</span></div>
       <div class="row"><span>Binary: <span class="bits" id="b8bits">00000000</span></span><span>Number: <span class="big" id="b8val">0</span></span></div>
@@ -729,13 +729,13 @@ function pres(){
 pres();
 
 /* ---------- Binary Lab ---------- */
-const VAL=[16,8,4,2,1];let on=[0,0,0,0,0];const TARGETS=[5,13,21,31];const hit=new Set();
+const VAL=[8,4,2,1];let on=[0,0,0,0];const TARGETS=[5,9,12,15];const hit=new Set();
 function bdraw(){
   $("bcards").innerHTML=VAL.map((v,i)=>`<button class="bcard ${on[i]?"":"off"}" data-i="${i}" aria-pressed="${!!on[i]}" aria-label="${v} card, ${on[i]?"on":"off"}">${v}<span class="dots">${on[i]?"1":"0"}</span></button>`).join("");
   const n=on.reduce((a,b,i)=>a+b*VAL[i],0);$("bbits").textContent=on.join("");$("bval").textContent=n;
   if(TARGETS.includes(n))hit.add(n);
   $("btargets").innerHTML="Targets: "+TARGETS.map(t=>`<span class="chip ${hit.has(t)?"ok":""}">${t}${hit.has(t)?" ✓":""}</span>`).join("");
-  $("bmsg").className="msg good";$("bmsg").textContent=hit.size===TARGETS.length?"All targets made! Can you make your age? Your birthday date?":"";
+  $("bmsg").className="msg good";$("bmsg").textContent=hit.size===TARGETS.length?"All targets made! 15 is the biggest number a nibble can make. Can you make your age?":"";
   if(hit.size===TARGETS.length)$("bm1").classList.add("done");bres();
 }
 $("bcards").addEventListener("click",e=>{const c=e.target.closest(".bcard");if(!c)return;on[+c.dataset.i]^=1;bdraw();});
