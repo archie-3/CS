@@ -75,6 +75,10 @@ svg text{font-family:var(--body)}
 .bcard.off .dots{color:var(--ink)}
 .bits{font-family:var(--mono);font-size:28px;letter-spacing:.2em;font-weight:700}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
+#b8cards .bcard{width:72px;height:104px;font-size:28px}
+#b8cards+.row{display:grid;grid-template-columns:repeat(2,calc(4*72px + 30px));gap:10px;margin-top:-4px}
+.nib{border-top:3px solid var(--fibre);text-align:center;font-weight:700;color:var(--fibre);padding-top:2px}
+@media (max-width:700px){#b8cards+.row{display:none}}
 .chip{border:2px solid var(--line);border-radius:999px;padding:4px 12px;font-weight:700;font-variant-numeric:tabular-nums}
 .chip.ok{border-color:var(--ok);background:var(--ok-soft)}
 .grid{display:grid;gap:3px;width:max-content}
@@ -308,14 +312,22 @@ td.mono{font-family:var(--mono)}
     </article>
 
     <div class="czone"><h2>Challenge zone</h2><p>Finished the tasks? Try these harder challenges. Screenshot them to show what you can do.</p></div>
-    <article class="mission chal" id="bmc1"><div class="mhead"><div class="mnum">C1</div><h3>Secret binary message</h3></div>
+    <article class="mission chal" id="bmc0"><div class="mhead"><div class="mnum">C1</div><h3>Byte builder</h3></div>
+      <p><b>4 bits</b> are called a <b>nibble</b>. <b>8 bits</b> are called a <b>byte</b>. In Task 1 you used 5 bits. Now use a whole byte: 8 cards. Click the cards to make each target number.</p>
+      <div class="cards" id="b8cards"></div>
+      <div class="row"><span class="nib">nibble</span><span class="nib">nibble</span></div>
+      <div class="row"><span>Binary: <span class="bits" id="b8bits">00000000</span></span><span>Number: <span class="big" id="b8val">0</span></span></div>
+      <div class="chips" id="b8targets"></div>
+      <p class="msg" id="b8msg" role="status"></p>
+    </article>
+    <article class="mission chal" id="bmc1"><div class="mhead"><div class="mnum">C2</div><h3>Secret binary message</h3></div>
       <p>A spy sent 3 words in binary. Each letter is <b>8 bits</b> (1 byte). Work out the number, then the letter. Place values: <span class="kbd">128 64 32 16 8 4 2 1</span></p>
       <div class="ascii" id="asciitab"></div>
       <div class="qlist" id="secretlist"></div>
       <div class="row"><button class="btn" id="secretcheck">Check</button></div>
       <p class="msg" id="secretmsg" role="status"></p>
     </article>
-    <article class="mission chal" id="bmc2"><div class="mhead"><div class="mnum">C2</div><h3>Pixel artist</h3></div>
+    <article class="mission chal" id="bmc2"><div class="mhead"><div class="mnum">C3</div><h3>Pixel artist</h3></div>
       <p><b>Step 1:</b> Draw your own 8 × 8 picture. The computer shows the binary for each row.</p>
       <div class="two"><div class="grid" id="artgrid" style="grid-template-columns:repeat(8,34px)"></div><pre class="code" id="artcode" style="margin:0"></pre></div>
       <div class="row"><button class="btn" data-copy="artcode">Copy my code</button><span class="msg" role="status"></span><button class="btn ghost" id="artclear">Clear</button></div>
@@ -727,6 +739,16 @@ function bdraw(){
   if(hit.size===TARGETS.length)$("bm1").classList.add("done");bres();
 }
 $("bcards").addEventListener("click",e=>{const c=e.target.closest(".bcard");if(!c)return;on[+c.dataset.i]^=1;bdraw();});
+const V8=[128,64,32,16,8,4,2,1];let on8=[0,0,0,0,0,0,0,0];const T8=[100,150,200,255];const hit8=new Set();
+function b8draw(){
+  $("b8cards").innerHTML=V8.map((v,i)=>`<button class="bcard ${on8[i]?"":"off"}" data-i="${i}" aria-pressed="${!!on8[i]}" aria-label="${v} card, ${on8[i]?"on":"off"}">${v}<span class="dots">${on8[i]?"1":"0"}</span></button>`).join("");
+  const n=on8.reduce((a,b,i)=>a+b*V8[i],0);$("b8bits").textContent=on8.join("");$("b8val").textContent=n;
+  if(T8.includes(n))hit8.add(n);
+  $("b8targets").innerHTML="Targets: "+T8.map(t=>`<span class="chip ${hit8.has(t)?"ok":""}">${t}${hit8.has(t)?" ✓":""}</span>`).join("");
+  $("b8msg").className="msg good";$("b8msg").textContent=hit8.size===T8.length?"All targets made! 255 is the biggest number one byte can hold. Why? What happens if you need 256?":"";
+  if(hit8.size===T8.length)$("bmc0").classList.add("done");bres();
+}
+$("b8cards").addEventListener("click",e=>{const c=e.target.closest(".bcard");if(!c)return;on8[+c.dataset.i]^=1;b8draw();});
 let initialsDone="";
 $("initials").addEventListener("input",e=>{const s=e.target.value.toUpperCase().replace(/[^A-Z]/g,"");e.target.value=s;
   $("inittab").innerHTML="<tr><th>Letter</th><th>Number</th><th>Binary (8 bits)</th></tr>"+[...s].map(ch=>`<tr><td><b>${ch}</b></td><td>${ch.charCodeAt(0)}</td><td class="mono">${ch.charCodeAt(0).toString(2).padStart(8,"0")}</td></tr>`).join("");
@@ -754,12 +776,12 @@ function parityOK(){for(let r=0;r<6;r++){let s=0;for(let c=0;c<6;c++)s+=par[r*6+
 $("parready").onclick=()=>{const m=$("parmsg");if(parStage!==0)return;if(parityOK()){parStage=1;$("parflip").disabled=false;pardraw();m.className="msg good";m.textContent="Every row and column is even. Now press Flip one and look away!";}else{m.className="msg bad";m.textContent="Not yet. Count the black squares in each row and column: they must all be even.";}};
 $("parflip").onclick=()=>{if(parStage!==1)return;flipped=Math.floor(Math.random()*36);par[flipped]^=1;parStage=2;$("parflip").disabled=true;pardraw();$("parmsg").className="msg";$("parmsg").textContent="One square has changed. Click the square you think was flipped.";};
 $("parnew").onclick=parNew;parNew();
-function bres(){$("bres").textContent=[`Binary Lab results`,`Binary cards: made ${hit.size} / 4 targets (${[...hit].sort((a,b)=>a-b).join(", ")||"none"})`,
+function bres(){$("bres").textContent=[`Binary Lab results`,`Binary cards: made ${hit.size} / 4 targets (${[...hit].sort((a,b)=>a-b).join(", ")||"none"})`,`Challenge: Byte builder: made ${hit8.size} / 4 targets (${[...hit8].sort((a,b)=>a-b).join(", ")||"none"})`,
   `My initials in binary: ${initialsDone?[...initialsDone].map(ch=>ch+" = "+ch.charCodeAt(0).toString(2).padStart(8,"0")).join(", "):"not done"}`,
   `Hidden pictures found: ${picsDone.size?[...picsDone].join(", "):"none yet"}`,
   `Parity trick: found the flipped square ${parWins} time${parWins===1?"":"s"}`,(window.SECRET&&SECRET.score!==null?`Challenge: secret message ${SECRET.score} / 3 words`:""),(window.ART&&ART.drawn?"Challenge: pixel artist picture made"+(ART.decoded?", partner's picture decoded":""):""),(typeof PG!=="undefined"&&PG[3]?pline(3):""),
   `Computers use binary because they are made of switches that are only on (1) or off (0).`].filter(Boolean).join("\n");}
-bdraw();
+bdraw();b8draw();
 
 /* ---------- Phish Spotter ---------- */
 const PH=[
