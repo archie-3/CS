@@ -353,8 +353,15 @@ print("Answer:", answer)</pre>
       <div class="row"><button class="btn" data-rcheck="c6">Check</button></div>
       <p class="msg" id="c6msg" role="status"></p>
     </article>
-    <article class="mission chal" id="cpulmc"><div class="mhead"><div class="mnum">C5</div><h3>Real CPU simulator: Little Man Computer</h3></div>
-      <p>Ready for the real thing? <b>Little Man Computer</b> is used at GCSE and A-level. It works like Wolf CPU, with short codes: <span class="kbd">LDA</span> = LOAD, <span class="kbd">STA</span> = STORE, <span class="kbd">INP</span> = input, <span class="kbd">OUT</span> = output, <span class="kbd">HLT</span> = STOP.</p>
+    <article class="mission plen" id="plen2"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
+      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
+      <div class="pgap" id="pg2"></div>
+      <div class="row"><button class="btn" data-pcheck="2">Check</button><span class="big" id="pgs2"></span></div>
+      <p class="msg" id="pgm2" role="status"></p></article>
+    <div class="results"><h3>My Wolf CPU results</h3><pre id="res-cpu"></pre><div class="row"><button class="btn" data-copy="res-cpu">Copy results</button><span class="msg" role="status"></span></div></div>
+    <article class="mission" id="cpulmc" style="border-style:dashed"><div class="mhead"><div class="mnum">★</div><h3>Extra for experts: Little Man Computer</h3></div>
+      <p class="note">Optional. This is GCSE level, so it is fine if it feels hard. Try it only when you have finished everything above.</p>
+      <p><b>Little Man Computer</b> is used at GCSE and A-level. It works like Wolf CPU, with short codes: <span class="kbd">LDA</span> = LOAD, <span class="kbd">STA</span> = STORE, <span class="kbd">INP</span> = input, <span class="kbd">OUT</span> = output, <span class="kbd">HLT</span> = STOP.</p>
       <ol class="steps"><li>Open <a href="https://peterhigginson.co.uk/lmc/" target="_blank" rel="noopener">Little Man Computer (Peter Higginson)</a>.</li><li>Copy this program into the big box on the left. Press <b>Submit</b>, then <b>Run</b>. Type two numbers when it asks.</li></ol>
       <pre class="term">        INP
         STA FIRST
@@ -365,12 +372,6 @@ print("Answer:", answer)</pre>
 FIRST   DAT</pre>
       <p><b>Your challenge:</b> change the program so that it <b>subtracts</b> the second number from the first. Screenshot it working.</p>
     </article>
-    <article class="mission plen" id="plen2"><div class="mhead"><div class="mnum">✓</div><h3>Plenary: check yourself</h3></div>
-      <p>Choose the missing keyword for each sentence, then press <b>Check</b>. Screenshot your score for your portfolio.</p>
-      <div class="pgap" id="pg2"></div>
-      <div class="row"><button class="btn" data-pcheck="2">Check</button><span class="big" id="pgs2"></span></div>
-      <p class="msg" id="pgm2" role="status"></p></article>
-    <div class="results"><h3>My Wolf CPU results</h3><pre id="res-cpu"></pre><div class="row"><button class="btn" data-copy="res-cpu">Copy results</button><span class="msg" role="status"></span></div></div>
   </section>
   <section class="lab" id="v-memory" hidden>
     <div class="intro"><span class="lesson">Lesson 3 · Memory</span><h2>Memory Lab</h2><p>The CPU needs somewhere to keep the programs and data it is using. That is <b>memory</b>: RAM, ROM and cache.</p></div>
