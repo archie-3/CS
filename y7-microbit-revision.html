@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Year 7 micro:bit &amp; sensors revision</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --ink:#1E2433; --muted:#566074; --paper:#F4F6FA; --card:#FCFDFE; --line:#D9DEE8;
+  --accent:#4338CA; --tint:#E6E4FA; --on-accent:#FCFDFE;
+  --good:#1F6FB2; --good-bg:#E3EFFA; --bad:#B4530B; --bad-bg:#FCEBDC;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+    --accent:#A5A0F5; --tint:#252D3E; --on-accent:#141925;
+    --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E9ECF3; --muted:#A7AFC0; --paper:#141925; --card:#1C2231; --line:#2E3647;
+  --accent:#A5A0F5; --tint:#252D3E; --on-accent:#141925;
+  --good:#7DB8EC; --good-bg:#1C2B3D; --bad:#F2A767; --bad-bg:#3A2A1C;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",Verdana,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 56px}
+header{border-left:6px solid var(--accent);padding:4px 0 4px 16px;margin-bottom:24px}
+h1{font:700 clamp(28px,6vw,40px)/1.1 Rubik,Arial,sans-serif;margin:0 0 6px}
+header p{margin:0;color:var(--muted)}
+.tabs{display:flex;gap:8px;margin-bottom:20px}
+.tab{flex:1;font:600 17px Rubik,Arial,sans-serif;padding:12px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.progress{height:8px;background:var(--tint);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.qnum{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q{font:600 22px/1.35 Rubik,Arial,sans-serif;margin:0 0 16px}
+pre{background:var(--tint);border-radius:10px;padding:12px 14px;overflow-x:auto;font:16px/1.5 "Courier New",monospace;margin:0 0 16px;white-space:pre}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--good);background:var(--good-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin-top:16px;padding:14px 16px;border-radius:12px;display:none}
+.fb.show{display:block}
+.fb.right{background:var(--good-bg);border-left:5px solid var(--good)}
+.fb.wrong{background:var(--bad-bg);border-left:5px solid var(--bad)}
+.fb b{display:block;margin-bottom:4px}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.btn{font:600 17px Rubik,Arial,sans-serif;padding:12px 20px;border-radius:12px;border:none;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn[hidden]{display:none}
+.score{font:700 64px/1 Rubik,Arial,sans-serif;color:var(--accent);margin:8px 0}
+.list{padding-left:20px}
+.card{min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px;border-radius:16px;background:var(--tint);cursor:pointer;border:2px solid transparent;width:100%;font:inherit;color:var(--ink)}
+.card .term{font:700 clamp(28px,7vw,40px)/1.15 Rubik,Arial,sans-serif}
+.card .hint{color:var(--muted);font-size:15px;margin-top:14px}
+.card .def{font-size:20px}
+.card .ex{margin-top:14px;color:var(--muted)}
+.count{text-align:center;color:var(--muted);margin-top:12px}
+.tabs{flex-wrap:wrap}
+.tab{min-width:120px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;padding:14px;background:var(--tint);border-radius:12px}
+.bank span{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-weight:700}
+.sents{padding-left:24px;margin:0;display:grid;gap:14px}
+.sents li{line-height:2.1}
+.sents select{font:inherit;color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:2px 6px;max-width:100%}
+.sents select.right{border-color:var(--good);background:var(--good-bg)}
+.sents select.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.say{font:inherit;background:none;border:none;cursor:pointer;padding:0 4px;color:var(--accent)}
+@media (prefers-reduced-motion:reduce){.progress span{transition:none}}
+.sets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.tabhead{margin:0 0 8px;font:600 14px Rubik,Arial,sans-serif;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.tabs.code .tab{flex:1 1 30%;min-width:140px;font-size:15px;padding:10px}
+.chips,.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:2px dashed var(--line);border-radius:12px;margin-bottom:14px}
+.chip{font:700 16px "Atkinson Hyperlegible",Verdana,sans-serif;color:var(--ink);background:var(--tint);border:2px solid var(--accent);border-radius:10px;padding:6px 12px;cursor:grab;touch-action:manipulation}
+.chip.sel{outline:3px solid var(--accent);outline-offset:2px}
+.chip.right{border-color:var(--good);background:var(--good-bg)} .chip.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.mzone{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center;margin-bottom:10px}
+.mcode{margin:0;font-size:15px}
+.drop{min-height:52px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;align-items:center;cursor:pointer}
+.drop .ph{color:var(--muted);font-size:14px;padding:0 6px}
+.drop.right{border-style:solid;border-color:var(--good);background:var(--good-bg)} .drop.wrong{border-style:solid;border-color:var(--bad);background:var(--bad-bg)}
+@media (max-width:520px){.mzone{grid-template-columns:minmax(0,1fr)}}
+.rounds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.rounds .btn{font-size:15px;padding:8px 14px}
+.lines{display:grid;gap:4px;margin-bottom:8px;background:#1e1e2a;border-radius:12px;padding:10px;overflow-x:auto}
+.line{display:flex;gap:12px;align-items:center;text-align:left;background:transparent;border:2px solid transparent;border-radius:8px;padding:6px 8px;color:#e8e8f0;cursor:pointer;font:16px/1.4 "JetBrains Mono","Courier New",monospace;white-space:pre}
+.line:hover:not(:disabled){border-color:#a5a0f5}
+.line .ln{color:#8c8ca6;min-width:1.5em;text-align:right}
+.line code{font:inherit}
+.line.right{border-color:#5fd08e;background:#173b2a} .line.wrong{border-color:#f2a767;background:#3a2a1c}
+.codebox{position:relative}
+.codebox pre{background:#1e1e2a;color:#e8e8f0;padding-top:14px}
+.codebox .copy{position:absolute;top:8px;right:8px;font-size:13px;padding:5px 10px;background:#2c2c3c;color:#e8e8f0;border-color:#44445a}
+.tablewrap{overflow-x:auto}
+.tt{border-collapse:collapse;margin:6px 0 10px}
+.tt th,.tt td{border:2px solid var(--line);padding:6px 10px;text-align:center}
+.tt th{background:var(--tint);font-family:"JetBrains Mono","Courier New",monospace}
+.tt input{width:80px;font:inherit;text-align:center;border:2px solid var(--line);border-radius:8px;padding:4px;background:var(--paper);color:var(--ink)}
+.tt input.right{border-color:var(--good);background:var(--good-bg)} .tt input.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.hint2{color:var(--muted);font-size:15px}
+.scols{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.scol{min-height:150px;border:2px dashed var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px;cursor:pointer}
+.scol h3{margin:0 0 4px;font:700 16px Rubik,Arial,sans-serif}
+.task{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;display:grid;gap:8px}
+.task .q{margin:0}
+.task details summary{cursor:pointer;font-weight:700;color:var(--accent)}
+.done{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--muted)}
+
+.card .ex{white-space:pre-wrap;font-family:"JetBrains Mono",Consolas,monospace;font-size:15px;text-align:left}
+</style>
+<!--cl-frame--><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap"><link rel="stylesheet" href="site.css"><!--/cl-frame--></head>
+<body>
+<!--cl-frame--><div class="cl-bar" role="navigation" aria-label="Site"><a class="cl-home" href="index.html"><span class="cl-mark">&lt;/&gt;</span>Computing Lab</a><span class="cl-crumb">Year 7 › micro:bit &amp; sensors</span></div><!--/cl-frame-->
+
+
+
+
+
+
+<div class="wrap">
+  <header>
+    <h1>Year 7 micro:bit &amp; sensors revision</h1>
+    <p>Answer each question. You will see if you are right straight away.</p>
+  </header>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tQuiz" aria-selected="true">Quiz</button>
+    <button class="tab" role="tab" id="tCards" aria-selected="false">Flashcards</button>
+    <button class="tab" role="tab" id="tGaps" aria-selected="false">Fill the gaps</button>
+  </div>
+    <p class="tabhead">Code practice</p>
+    <div class="tabs code" role="tablist">
+      <button class="tab" role="tab" id="tMatch" aria-selected="false">Match the code</button>
+      <button class="tab" role="tab" id="tSpot" aria-selected="false">Spot it</button>
+      <button class="tab" role="tab" id="tPredict" aria-selected="false">What will it do?</button>
+      <button class="tab" role="tab" id="tSort" aria-selected="false">Sort it</button>
+    </div>
+
+  <section class="panel" id="quiz"></section>
+
+  <section class="panel" id="cards" hidden>
+    <button class="card" id="card" aria-live="polite"></button>
+    <p class="count" id="cardCount"></p>
+    <div class="row" style="justify-content:space-between">
+      <button class="btn ghost" id="prev">Back</button>
+      <button class="btn ghost" id="shuf">Shuffle</button>
+      <button class="btn" id="next">Next card</button>
+    </div>
+  </section>
+
+  <section class="panel" id="gaps" hidden>
+    <div class="sets" id="gapSets" role="group" aria-label="Choose a set"></div>
+      <p class="qnum">Word bank</p>
+    <div class="bank" id="bank"></div>
+    <ol class="sents" id="sents"></ol>
+    <div class="fb" id="gapFb" aria-live="polite"></div>
+    <div class="row">
+      <button class="btn ghost" id="gapReset">Start again</button>
+      <button class="btn ghost" id="gapShow">Show answers</button>
+      <button class="btn" id="gapCheck">Check my answers</button>
+    </div>
+  </section>
+    <section class="panel" id="match" hidden>
+      <div class="rounds" id="matchRounds"></div>
+      <div class="pool" id="matchPool"></div>
+      <div id="matchZones"></div>
+      <div class="row"><button class="btn ghost" id="matchReset">Start again</button><button class="btn" id="matchCheck">Check</button></div>
+      <div id="matchFb"></div>
+    </section>
+    <section class="panel" id="spot" hidden><div class="rounds" id="spotRounds"></div><div id="spotBody"></div></section>
+    <section class="panel" id="predict" hidden><div class="body"></div></section>
+    <section class="panel" id="sort" hidden>
+      <div class="pool" id="sortPool"></div>
+      <div class="scols" id="sortCols"></div>
+      <div class="row"><button class="btn ghost" id="sortReset">Start again</button><button class="btn" id="sortCheck">Check</button></div>
+      <div id="sortFb"></div>
+    </section>
+
+</div>
+
+<script>
+const DATA = {"questions": [{"topic": "Input", "q": "What does an input device do?", "options": ["Sends data or signals into a computer", "Shows data on a screen", "Stores files", "Prints on paper"], "why": "Inputs send data in: keyboard, mouse, microphone, micro:bit buttons."}, {"topic": "Output", "q": "What does an output device do?", "options": ["Receives processed data and shows or communicates it", "Sends data into the computer", "Measures light", "Picks a random number"], "why": "Outputs show the result: screen, speaker, micro:bit LEDs."}, {"topic": "Input", "q": "Which of these is an INPUT on the micro:bit?", "options": ["Button A", "The LEDs showing a heart", "The speaker playing music", "clear screen"], "why": "Buttons send a signal into the micro:bit."}, {"topic": "Output", "q": "Which of these is an OUTPUT on the micro:bit?", "options": ["The speaker", "Button B", "The accelerometer", "The light sensor"], "why": "The speaker plays sound: that is an output."}, {"topic": "Sensor", "q": "What is a sensor?", "options": ["It measures data from the environment, like light or sound", "It shows pictures on the LEDs", "It saves your code", "It is a type of output"], "why": "A sensor is a type of input."}, {"topic": "Accelerometer", "q": "Which block uses the accelerometer sensor?", "options": ["on shake", "show icon", "play melody", "clear screen"], "why": "The accelerometer senses movement: shake, tilt, vibration."}, {"topic": "Accelerometer", "q": "What does the accelerometer sense?", "options": ["Movement, like shake or tilt", "Light", "Sound", "Temperature"], "why": "Fitness watches use an accelerometer to count your steps."}, {"topic": "LED", "q": "The micro:bit's LEDs can do 2 things. What are they?", "options": ["Show light (output) and sense light (input)", "Play music and record sound", "Count steps and show time", "Nothing, they only light up"], "why": "That's why light level uses the LEDs."}, {"topic": "Light sensor", "q": "light level gives a number from 0 to 255. What does 0 mean?", "options": ["Very dark", "Very bright", "Very loud", "No sound"], "why": "0 = very dark, 255 = bright light."}, {"topic": "Sound sensor", "q": "sound level gives a number from 0 to 255. What does 255 mean?", "options": ["Very loud", "No sound", "Very dark", "Very bright"], "why": "0 = no sound, 255 = very loud."}, {"topic": "Variable", "q": "In Rock, paper, scissors, how does the micro:bit remember the random number?", "options": ["It puts it in a variable", "It shows it on the LEDs", "It forgets it", "It sends it to the speaker"], "why": "A variable is a named memory location where data is stored."}, {"topic": "Random number", "q": "What numbers can pick random 0 to 2 give?", "options": ["0, 1 or 2", "Only 2", "1, 2 or 3", "Any number"], "why": "Each choice (rock, paper, scissors) gets a number: 0, 1 or 2."}, {"topic": "Selection (if / else)", "q": "What does if / else do?", "options": ["Chooses which code to run", "Repeats code forever", "Stores a number", "Downloads the code"], "why": "Selection makes a decision: if the condition is true, do this; else, do that."}, {"topic": "Threshold", "q": "What is the threshold in this code?", "options": ["150", "sound level", "show icon sad", "255"], "why": "The threshold is the number where things change. Louder than 150 = sad face.", "code": "forever\n  if sound level > 150 then\n    show icon sad\n  else\n    show icon happy"}, {"topic": "Threshold", "q": "You are making a noise monitor. Which threshold is best?", "options": ["Above normal class noise, but below a clap", "0", "255", "Any number, it doesn't matter"], "why": "Test first! Then pick a number between the readings."}, {"topic": "Comparison", "q": "What does > mean?", "options": ["Greater than", "Less than", "Equal to", "Not equal to"], "why": "sound level > 150 means: is the sound level greater than 150?"}, {"topic": "Forever loop", "q": "Why does an alarm use forever instead of on button A pressed?", "options": ["forever keeps checking the sensor all the time", "forever makes it louder", "on button A is faster", "forever saves battery"], "why": "The alarm must check the light all the time, not only when you press a button."}, {"topic": "Download", "q": "How do you put your code onto the micro:bit?", "options": ["Download the .hex file and drag it onto the MICROBIT drive", "Shake it", "Press A and B together", "Email it to the micro:bit"], "why": "Plug in, Download, then drag microbit.hex from Downloads to MICROBIT."}], "cards": [{"term": "Input", "meaning": "An input device sends data or signals into a computer for processing.", "example": "micro:bit: buttons A and B, shake, light level, sound level"}, {"term": "Output", "meaning": "An output device receives processed data and shows or communicates it.", "example": "micro:bit: the 25 LEDs and the speaker"}, {"term": "Sensor", "meaning": "Measures data from the environment, e.g. light, temperature or sound. A sensor is a type of input.", "example": "light level, sound level, accelerometer"}, {"term": "Accelerometer", "meaning": "A sensor that senses movement, such as tilt, shake or vibration.", "example": "the on shake block"}, {"term": "Light sensor", "meaning": "The micro:bit's LEDs can sense light. light level gives 0 (very dark) to 255 (bright).", "example": "if light level > 100 then"}, {"term": "Sound sensor", "meaning": "The micro:bit's microphone measures sound. sound level gives 0 (no sound) to 255 (very loud).", "example": "if sound level > 150 then"}, {"term": "LED", "meaning": "A small light. The micro:bit has 25 red LEDs. They can show light (output) and sense light (input).", "example": "show icon heart"}, {"term": "Variable", "meaning": "A named memory location where data is stored. Its value can change.", "example": "set hand to pick random 0 to 2"}, {"term": "Random number", "meaning": "A number the computer picks by chance.", "example": "pick random 0 to 2 gives 0, 1 or 2"}, {"term": "Selection (if / else)", "meaning": "Chooses which code to run, depending on a condition.", "example": "if sound level > 150 then \u2026 else \u2026"}, {"term": "Condition", "meaning": "A question that is either true or false.", "example": "light level > 100"}, {"term": "Comparison", "meaning": "Compares two values: less than <, greater than > or equal to =.", "example": "sound level > 150"}, {"term": "Threshold", "meaning": "The number where something changes. When the sensor reading goes past it, the micro:bit does something.", "example": "150 in: if sound level > 150"}, {"term": "Forever loop", "meaning": "Repeats the code inside it again and again, so the micro:bit keeps checking the sensor.", "example": "forever"}, {"term": "MakeCode", "meaning": "The website we use to code the micro:bit with blocks.", "example": "makecode.microbit.org"}, {"term": "Download", "meaning": "Save your code as a .hex file, then drag it onto the MICROBIT drive.", "example": "microbit.hex \u2192 MICROBIT"}], "gaps": [{"set": 1, "s": "An ___ device sends data into a computer.", "a": ["input"]}, {"set": 1, "s": "An ___ device shows or communicates the result.", "a": ["output"]}, {"set": 1, "s": "Button A and button B are ___ on the micro:bit.", "a": ["inputs"]}, {"set": 1, "s": "The 25 ___ can show pictures and words.", "a": ["LEDs"]}, {"set": 1, "s": "The ___ plays music and sounds.", "a": ["speaker"]}, {"set": 1, "s": "We code the micro:bit on a website called ___.", "a": ["MakeCode"]}, {"set": 2, "s": "A ___ measures data from the environment, like light or sound.", "a": ["sensor"]}, {"set": 2, "s": "The ___ senses movement, like shake or tilt.", "a": ["accelerometer"]}, {"set": 2, "s": "light level 0 means it is very ___.", "a": ["dark"]}, {"set": 2, "s": "sound level 255 means it is very ___.", "a": ["loud"]}, {"set": 2, "s": "The ___ is the number where something changes.", "a": ["threshold"]}, {"set": 2, "s": "A ___ loop keeps checking the sensor again and again.", "a": ["forever"]}, {"set": 3, "s": "A ___ is a named memory location where data is stored.", "a": ["variable"]}, {"set": 3, "s": "pick random 0 to 2 gives a ___ number.", "a": ["random"]}, {"set": 3, "s": "if / else is called ___.", "a": ["selection"]}, {"set": 3, "s": "A ___ is a question that is true or false.", "a": ["condition"]}, {"set": 3, "s": "> means greater ___.", "a": ["than"]}, {"set": 3, "s": "To test on a real micro:bit, ___ the .hex file and drag it to MICROBIT.", "a": ["download"]}]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+// Tabs
+const TIPS = {
+  quiz: 'Answer each question. You will see if you are right straight away.',
+  cards: 'Say the meaning out loud first. Then tap the card to check.',
+  gaps: 'Choose a word from the word bank for each gap. Tap 🔊 to hear the sentence.'
+};
+const TABS = ['quiz', 'cards', 'gaps', 'match', 'spot', 'predict', 'sort'];
+Object.assign(TIPS, {
+ match: 'Drag each keyword to the code that shows it. (Or tap a keyword, then tap a box.)',
+ spot: 'Read the program. Click the line that shows the keyword.',
+ predict: 'Read the code and the test. What will the micro:bit do?',
+ trace: 'Follow the code one line at a time. Write each value in the table.',
+ sort: 'Drag each keyword into the right group. (Or tap a keyword, then tap a group.)',
+ code: 'Write each program in Thonny. Use the hint if you are stuck, then check the model answer.'
+});
+function showTab(which){
+ TABS.forEach(t => { $('#t' + t[0].toUpperCase() + t.slice(1)).setAttribute('aria-selected', which === t); $('#' + t).hidden = which !== t; });
+ $('header p').textContent = TIPS[which];
+}
+TABS.forEach(t => $('#t' + t[0].toUpperCase() + t.slice(1)).onclick = () => showTab(t));
+
+// Quiz
+let order, qi, score, missed, answered;
+function startQuiz(){
+  order = shuffle(DATA.questions.map((q, i) => i));
+  qi = 0; score = 0; missed = []; renderQ();
+}
+function renderQ(){
+  const q = DATA.questions[order[qi]];
+  answered = false;
+  const opts = shuffle(q.options.map((t, i) => ({ t, i })));
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:${(qi / order.length) * 100}%"></span></div>
+    <p class="qnum">Question ${qi + 1} of ${order.length}</p>
+    <p class="q">${esc(q.q)}</p>
+    ${q.code ? `<pre>${esc(q.code)}</pre>` : ''}
+    <div class="opts">${opts.map(o => `<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <div class="row"><button class="btn" id="nextQ" hidden>${qi + 1 === order.length ? 'See my score' : 'Next question'}</button></div>`;
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(b, q));
+  $('#nextQ').onclick = () => { qi++; qi < order.length ? renderQ() : renderEnd(); };
+}
+function choose(btn, q){
+  if (answered) return;
+  answered = true;
+  const pick = +btn.dataset.i, ok = pick === 0;
+  if (ok) score++; else missed.push(q.topic);
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (+b.dataset.i === 0) b.classList.add('right');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = $('#fb');
+  fb.className = 'fb show ' + (ok ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${ok ? 'Correct!' : 'Not quite. The answer is: ' + esc(q.options[0])}</b>${esc(q.why)}`;
+  const n = $('#nextQ'); n.hidden = false; n.focus();
+}
+function renderEnd(){
+  const pct = Math.round(score / order.length * 100);
+  const msg = pct >= 80 ? 'Great work. You know this well.' : pct >= 50 ? 'Good start. Revise the keywords below.' : 'Keep going. Use the flashcards, then try again.';
+  const topics = [...new Set(missed)];
+  $('#quiz').innerHTML = `
+    <div class="progress"><span style="width:100%"></span></div>
+    <p class="qnum">Your score</p>
+    <p class="score">${score} / ${order.length}</p>
+    <p>${msg}</p>
+    ${topics.length ? `<p><b>Revise these keywords:</b></p><ul class="list">${topics.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '<p>You got every question right!</p>'}
+    <p><b>Write your score in Google Classroom.</b></p>
+    <div class="row"><button class="btn ghost" id="toCards">Practise with flashcards</button><button class="btn" id="again">Try again</button></div>`;
+  $('#again').onclick = startQuiz;
+  $('#toCards').onclick = () => showTab('cards');
+}
+
+// Flashcards
+let deck = DATA.cards.slice(), ci = 0, flipped = false;
+function renderCard(){
+  const c = deck[ci];
+  $('#card').innerHTML = flipped
+    ? `<div class="def">${esc(c.meaning)}</div>${c.example ? `<div class="ex">Example: ${esc(c.example)}</div>` : ''}`
+    : `<div class="term">${esc(c.term)}</div><div class="hint">Tap to see the meaning</div>`;
+  $('#cardCount').textContent = `Card ${ci + 1} of ${deck.length}`;
+}
+$('#card').onclick = () => { flipped = !flipped; renderCard(); };
+$('#next').onclick = () => { ci = (ci + 1) % deck.length; flipped = false; renderCard(); };
+$('#prev').onclick = () => { ci = (ci - 1 + deck.length) % deck.length; flipped = false; renderCard(); };
+$('#shuf').onclick = () => { deck = shuffle(deck); ci = 0; flipped = false; renderCard(); };
+
+startQuiz(); renderCard();
+
+// Fill the gaps
+const SETS = {1: 'Set 1: Inputs and outputs', 2: 'Set 2: Sensors', 3: 'Set 3: Code words'};
+let GSET = 1, BANK = [];
+function renderGaps(){
+  BANK = shuffle([...new Set(DATA.gaps.filter(g => g.set === GSET).flatMap(g => g.a))]);
+  $('#gapSets').innerHTML = Object.entries(SETS).map(([k, t]) => `<button class="btn ${+k === GSET ? '' : 'ghost'}" data-set="${k}" aria-pressed="${+k === GSET}">${esc(t)}</button>`).join('');
+  document.querySelectorAll('[data-set]').forEach(b => b.onclick = () => { GSET = +b.dataset.set; renderGaps(); });
+  $('#bank').innerHTML = BANK.map(w => `<span>${esc(w)}</span>`).join('');
+  const opts = '<option value="">choose…</option>' + BANK.map(w => `<option>${esc(w)}</option>`).join('');
+  $('#sents').innerHTML = DATA.gaps.map((g, i) => {
+    if (g.set !== GSET) return '';
+    const parts = g.s.split('___');
+    let h = esc(parts[0]);
+    for (let k = 1; k < parts.length; k++) h += `<select data-g="${i}" data-k="${k - 1}" aria-label="Gap ${k} in sentence ${i + 1}">${opts}</select>` + esc(parts[k]);
+    return `<li>${h} <button class="say" data-g="${i}" aria-label="Listen to sentence ${i + 1}">🔊</button></li>`;
+  }).join('');
+  document.querySelectorAll('.say').forEach(b => b.onclick = () => speak(+b.dataset.g));
+  document.querySelectorAll('#sents select').forEach(s => s.onchange = () => s.classList.remove('right', 'wrong'));
+  const fb = $('#gapFb'); fb.className = 'fb'; fb.innerHTML = '';
+}
+function speak(i){
+  if (!('speechSynthesis' in window)) return;
+  const g = DATA.gaps[i], parts = g.s.split('___');
+  const sels = [...document.querySelectorAll(`#sents select[data-g="${i}"]`)];
+  let t = parts[0];
+  for (let k = 1; k < parts.length; k++) t += ' ' + (sels[k - 1].value || 'blank') + ' ' + parts[k];
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t.replace(/[“”"]/g, ''));
+  u.lang = 'en-GB'; u.rate = 0.85;
+  speechSynthesis.speak(u);
+}
+$('#gapCheck').onclick = () => {
+  let right = 0, total = 0, empty = 0;
+  document.querySelectorAll('#sents select').forEach(s => {
+    const ans = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    total++;
+    s.classList.remove('right', 'wrong');
+    if (!s.value) { empty++; return; }
+    if (s.value === ans) { right++; s.classList.add('right'); } else s.classList.add('wrong');
+  });
+  const fb = $('#gapFb');
+  fb.className = 'fb show ' + (right === total ? 'right' : 'wrong');
+  fb.innerHTML = `<b>${right} out of ${total} correct.</b>` +
+    (right === total ? 'Brilliant! Every gap is right.' :
+     empty ? `You still have ${empty} empty gap${empty > 1 ? 's' : ''}. Orange gaps are wrong: try another word.` :
+     'Orange gaps are wrong. Try another word, then check again.');
+};
+$('#gapShow').onclick = () => {
+  document.querySelectorAll('#sents select').forEach(s => {
+    s.value = DATA.gaps[s.dataset.g].a[s.dataset.k];
+    s.classList.remove('wrong'); s.classList.add('right');
+  });
+  const fb = $('#gapFb'); fb.className = 'fb show right';
+  fb.innerHTML = '<b>Answers shown.</b>Read each sentence out loud. Then press Start again and try without looking.';
+};
+$('#gapReset').onclick = renderGaps;
+renderGaps();
+
+// ---------- Code practice tabs ----------
+const X = {"match": [{"name": "Round 1: Inputs and outputs", "pairs": [["on button A pressed", "input (button)"], ["on shake", "accelerometer"], ["show icon heart", "output (LEDs)"], ["play tone Middle C for 1 beat", "output (speaker)"], ["light level", "light sensor"], ["sound level", "sound sensor"]]}, {"name": "Round 2: Code words", "pairs": [["set hand to pick random 0 to 2", "variable"], ["if \u2026 then\n  \u2026\nelse\n  \u2026", "selection (if / else)"], ["forever", "forever loop"], ["sound level > 150", "condition"], ["the 150 in:  if sound level > 150", "threshold"], ["pick random 0 to 2", "random number"]]}], "spot": [{"title": "Program 1: Inputs and outputs", "code": "on button A pressed\n  show icon heart\non shake\n  show string \"Hi!\"\non button B pressed\n  play tone Middle C for 1 beat", "qs": [["a button (input)", [1, 5], "Buttons send a signal into the micro:bit."], ["the accelerometer sensor", [3], "on shake uses the accelerometer."], ["an output on the LEDs", [2, 4], "show icon and show string use the LEDs."], ["an output on the speaker", [6], "play tone uses the speaker."]]}, {"title": "Program 2: Rock, paper, scissors", "code": "on shake\n  set hand to pick random 0 to 2\n  if hand = 0 then\n    show leds: rock\n  else if hand = 1 then\n    show leds: paper\n  else\n    show leds: scissors", "qs": [["the sensor", [1], "on shake uses the accelerometer sensor."], ["a variable being set", [2], "hand is a variable. It stores the random number."], ["selection (if / else)", [3, 5, 7], "if, else if and else choose which picture to show."], ["an output", [4, 6, 8], "show leds is an output."]]}, {"title": "Program 3: Sunrise alarm", "code": "on start\n  set threshold to 100\nforever\n  if light level > threshold then\n    show leds: sun\n    play melody until done\n  else\n    clear screen", "qs": [["a variable that holds the threshold number", [2], "threshold is a variable. It holds 100."], ["the loop that keeps checking the sensor", [3], "forever checks the light again and again."], ["the sensor reading (input)", [4], "light level reads the light sensor."], ["an output", [5, 6, 8], "show leds, play melody and clear screen are outputs."]]}, {"title": "Program 4: Noise monitor", "code": "forever\n  if sound level > 150 then\n    show icon sad\n  else\n    show icon happy", "qs": [["the sensor reading (input)", [2], "sound level reads the microphone."], ["the line with the threshold number", [2], "150 is the threshold."], ["an output", [3, 5], "show icon is an output on the LEDs."], ["the loop", [1], "forever keeps checking the sound level."]]}], "predict": [["forever\n  if light level < 150 then\n    show icon heart\n  else\n    clear screen", ["Shows a heart", "Clears the screen", "Shows the number 40", "Nothing happens"], "40 is less than 150, so the condition is true: show a heart.", "It is dark. The light level is 40."], ["forever\n  if light level < 150 then\n    show icon heart\n  else\n    clear screen", ["Clears the screen", "Shows a heart", "Shows the number 200", "Plays music"], "200 is NOT less than 150, so the else part runs: clear screen.", "The classroom lights are on. The light level is 200."], ["forever\n  if sound level > 150 then\n    show icon sad\n  else\n    show icon happy", ["Shows a sad face", "Shows a happy face", "Shows the number 220", "Nothing happens"], "220 is greater than 150, so it is too loud: sad face.", "Someone claps. The sound level is 220."], ["forever\n  if sound level > 150 then\n    show icon sad\n  else\n    show icon happy", ["Shows a happy face", "Shows a sad face", "Plays a beep", "Nothing happens"], "60 is not greater than 150, so the else part runs: happy face.", "The class is quiet. The sound level is 60."], ["forever\n  if light level > 100 then\n    show leds: sun\n    play melody until done\n  else\n    clear screen", ["Clears the screen (no alarm)", "Shows a sun and plays music", "Shows 100", "Plays music only"], "> means greater than. 100 is not greater than 100, so the else part runs. Tricky!", "The light level is exactly 100."], ["on button A pressed\n  show number light level", ["A small number, close to 0", "255", "A heart", "Nothing"], "Covering the LEDs makes it dark, so the light level is low.", "You cover the micro:bit with your hand, then press A."], ["on shake\n  set hand to pick random 0 to 2\n  if hand = 0 then\n    show leds: rock\n  else if hand = 1 then\n    show leds: paper\n  else\n    show leds: scissors", ["Shows paper", "Shows rock", "Shows scissors", "Shows the number 1"], "hand = 1, so the else if part runs: paper.", "You shake it and hand becomes 1."]], "trace": [], "sort": {"cols": [["Input", "in"], ["Output", "out"]], "items": [["on button A pressed", "in"], ["on button B pressed", "in"], ["on shake", "in"], ["light level", "in"], ["sound level", "in"], ["show icon", "out"], ["show string", "out"], ["show number", "out"], ["play melody", "out"], ["clear screen", "out"]]}, "code": []};
+function copyText(text, btn){
+  const done = () => { const o = btn.textContent; btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = o, 1400); };
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done)); else fallbackCopy(text, done);
+}
+function fallbackCopy(text, done){ const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} t.remove(); }
+function fbHTML(ok, title, msg){ return `<div class="fb show ${ok ? 'right' : 'wrong'}"><b>${esc(title)}</b>${esc(msg || '')}</div>`; }
+function roundBtns(id, names, cur, fn){
+  $(id).innerHTML = names.map((n, i) => `<button class="btn ${i === cur ? '' : 'ghost'}" data-r="${i}" aria-pressed="${i === cur}">${esc(n)}</button>`).join('');
+  $(id).querySelectorAll('[data-r]').forEach(b => b.onclick = () => fn(+b.dataset.r));
+}
+
+/* 1. Match the code (drag, or tap a word then tap a box) */
+let mRound = 0, mSel = null;
+function renderMatch(){
+  roundBtns('#matchRounds', X.match.map(r => r.name), mRound, r => { mRound = r; renderMatch(); });
+  const pairs = X.match[mRound].pairs;
+  $('#matchPool').innerHTML = shuffle(pairs.map(p => p[1])).map(w => `<button class="chip" draggable="true" data-w="${esc(w)}">${esc(w)}</button>`).join('');
+  $('#matchZones').innerHTML = pairs.map((p, i) => `<div class="mzone"><pre class="mcode">${esc(p[0])}</pre><div class="drop" data-ans="${esc(p[1])}" data-i="${i}"><span class="ph">drop the keyword here</span></div></div>`).join('');
+  $('#matchFb').innerHTML = ''; mSel = null;
+}
+function placeChip(chip, target){
+  if (target.classList.contains('drop')) { const old = target.querySelector('.chip'); if (old && old !== chip) $('#matchPool').appendChild(old); target.querySelector('.ph')?.remove(); }
+  target.appendChild(chip); chip.classList.remove('sel'); mSel = null;
+  target.classList.remove('right', 'wrong');
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('#match .chip');
+  if (c) { if (mSel === c) { c.classList.remove('sel'); mSel = null; } else { mSel?.classList.remove('sel'); mSel = c; c.classList.add('sel'); } return; }
+  const z = e.target.closest('#match .drop, #matchPool'); if (z && mSel) placeChip(mSel, z);
+});
+document.addEventListener('dragstart', e => { const c = e.target.closest && e.target.closest('.chip[draggable]'); if (c) { e.dataTransfer.setData('text/plain', c.dataset.w); mSel = c; } });
+document.addEventListener('dragover', e => { if (e.target.closest && e.target.closest('.drop, #matchPool, .scol, #sortPool')) e.preventDefault(); });
+document.addEventListener('drop', e => { const z = e.target.closest && e.target.closest('.drop, #matchPool, .scol, #sortPool'); if (!z || !mSel) return; e.preventDefault();
+  if (z.classList.contains('scol') || z.id === 'sortPool') sPlace(mSel, z); else placeChip(mSel, z); });
+$('#matchCheck').onclick = () => { let r = 0; const zs = [...document.querySelectorAll('#matchZones .drop')];
+  zs.forEach(z => { const c = z.querySelector('.chip'); z.classList.remove('right', 'wrong'); if (!c) return; const ok = c.dataset.w === z.dataset.ans; z.classList.add(ok ? 'right' : 'wrong'); if (ok) r++; });
+  $('#matchFb').innerHTML = fbHTML(r === zs.length, `${r} out of ${zs.length} correct.`, r === zs.length ? (mRound < X.match.length - 1 ? 'Brilliant! Try the next round.' : 'Brilliant! You matched every round.') : 'Move the orange ones and check again.'); };
+$('#matchReset').onclick = renderMatch;
+
+/* 2. Spot it in the code */
+let spP = 0, spQ = 0, spScore = 0;
+function renderSpot(){
+  roundBtns('#spotRounds', X.spot.map(p => p.title.split(':')[0]), spP, p => { spP = p; spQ = 0; spScore = 0; renderSpot(); });
+  const p = X.spot[spP];
+  if (spQ >= p.qs.length) { $('#spotBody').innerHTML = `<p class="q">${esc(p.title)}</p><p class="score">${spScore} / ${p.qs.length}</p><p>${spP < X.spot.length - 1 ? 'Now try the next program.' : 'You have done all the programs!'}</p><div class="row"><button class="btn ghost" id="spotAgain">Try again</button>${spP < X.spot.length - 1 ? '<button class="btn" id="spotNext">Next program</button>' : ''}</div>`;
+    $('#spotAgain').onclick = () => { spQ = 0; spScore = 0; renderSpot(); }; if ($('#spotNext')) $('#spotNext').onclick = () => { spP++; spQ = 0; spScore = 0; renderSpot(); }; return; }
+  const q = p.qs[spQ];
+  $('#spotBody').innerHTML = `<p class="qnum">${esc(p.title)} · question ${spQ + 1} of ${p.qs.length}</p><p class="q">Click the line that shows <u>${esc(q[0])}</u>.</p>
+    <div class="lines">${p.code.split('\n').map((l, i) => `<button class="line" data-n="${i + 1}"><span class="ln">${i + 1}</span><code>${esc(l)}</code></button>`).join('')}</div><div id="spotFb"></div>`;
+  let tries = 0;
+  document.querySelectorAll('#spotBody .line').forEach(b => b.onclick = () => {
+    const n = +b.dataset.n; tries++;
+    if (q[1].includes(n)) { if (tries === 1) spScore++; document.querySelectorAll('#spotBody .line').forEach(x => { x.disabled = true; if (q[1].includes(+x.dataset.n)) x.classList.add('right'); });
+      $('#spotFb').innerHTML = fbHTML(true, 'Yes! Line ' + q[1].join(' or ') + '.', q[2]) + '<div class="row"><button class="btn" id="spotGo">Next</button></div>'; $('#spotGo').onclick = () => { spQ++; renderSpot(); }; $('#spotGo').focus(); }
+    else { b.classList.add('wrong'); $('#spotFb').innerHTML = fbHTML(false, 'Not that line. Try again.', 'Look for the keyword in the question.'); }
+  });
+}
+
+/* 3. Predict the output */
+let prI = 0, prScore = 0, prOrder = [];
+function startPredict(){ prOrder = shuffle(X.predict.map((p, i) => i)); prI = 0; prScore = 0; renderPredict(); }
+function renderPredict(){
+  if (prI >= prOrder.length) { $('#predict .body').innerHTML = `<p class="qnum">Your score</p><p class="score">${prScore} / ${prOrder.length}</p><p>Check any you got wrong by building the code in MakeCode.</p><div class="row"><button class="btn" id="prAgain">Try again</button></div>`; $('#prAgain').onclick = startPredict; return; }
+  const [code, opts, why, sc] = X.predict[prOrder[prI]];
+  $('#predict .body').innerHTML = `<div class="progress"><span style="width:${prI / prOrder.length * 100}%"></span></div><p class="qnum">Code ${prI + 1} of ${prOrder.length}</p><p class="q">${sc ? esc(sc) + ' ' : ''}What will the micro:bit do?</p>
+    <div class="codebox"><pre>${esc(code)}</pre></div>
+    <div class="opts">${shuffle(opts.map((t, i) => ({ t, i }))).map(o => `<button class="opt" data-i="${o.i}">${esc(o.t)}</button>`).join('')}</div><div id="prFb"></div>`;
+  document.querySelectorAll('#predict .opt').forEach(b => b.onclick = () => {
+    const ok = +b.dataset.i === 0; if (ok) prScore++;
+    document.querySelectorAll('#predict .opt').forEach(x => { x.disabled = true; if (+x.dataset.i === 0) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    $('#prFb').innerHTML = fbHTML(ok, ok ? 'Correct!' : 'Not quite. Answer: ' + opts[0], why + ' Try it in MakeCode to check.') + `<div class="row"><button class="btn" id="prNext">${prI + 1 === prOrder.length ? 'See my score' : 'Next code'}</button></div>`;
+    $('#prNext').onclick = () => { prI++; renderPredict(); }; $('#prNext').focus();
+  });
+}
+
+/* 4. Mini trace tables */
+let trI = 0;
+function renderTrace(){
+  roundBtns('#traceRounds', X.trace.map(t => t.title.split(':')[0]), trI, t => { trI = t; renderTrace(); });
+  const t = X.trace[trI];
+  $('#traceBody').innerHTML = `<p class="q">${esc(t.title.split(': ')[1])}</p><div class="codebox"><pre>${esc(t.code)}</pre><button class="btn ghost copy">Copy for Thonny</button></div>
+    <p>Fill in the trace table. Write the value after each step.</p>
+    <div class="tablewrap"><table class="tt"><tr>${t.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr>${t.rows.map((r, ri) => `<tr>${r.map((v, ci) => `<td><input inputmode="numeric" autocomplete="off" aria-label="${esc(t.cols[ci])}, row ${ri + 1}" data-a="${esc(v)}"></td>`).join('')}</tr>`).join('')}</table></div>
+    <p class="hint2">Tip: ${esc(t.tip)}</p><div class="row"><button class="btn ghost" id="trShow">Show answers</button><button class="btn" id="trCheck">Check</button></div><div id="trFb"></div>`;
+  $('#trace .copy').onclick = e => copyText(t.code, e.target);
+  $('#trCheck').onclick = () => { let r = 0; const ins = [...document.querySelectorAll('#traceBody input')];
+    ins.forEach(i => { const ok = i.value.trim() === i.dataset.a; i.classList.toggle('right', ok); i.classList.toggle('wrong', !ok && i.value.trim() !== ''); if (ok) r++; });
+    $('#trFb').innerHTML = fbHTML(r === ins.length, `${r} out of ${ins.length} correct.`, r === ins.length ? (trI < X.trace.length - 1 ? 'Great tracing! Try the next one.' : 'Great tracing!') : 'Orange boxes are wrong. Go through the code one line at a time.'); };
+  $('#trShow').onclick = () => { document.querySelectorAll('#traceBody input').forEach(i => { i.value = i.dataset.a; i.classList.add('right'); i.classList.remove('wrong'); }); $('#trFb').innerHTML = fbHTML(true, 'Answers shown.', 'Copy the code into Thonny and add print() lines to watch the values change.'); };
+}
+
+/* 5. Sort it */
+function sPlace(chip, z){ z.appendChild(chip); chip.classList.remove('sel', 'right', 'wrong'); mSel = null; }
+function renderSort(){
+  $('#sortPool').innerHTML = shuffle(X.sort.items).map(([w, k]) => `<button class="chip" draggable="true" data-w="${esc(w)}" data-k="${k}">${esc(w)}</button>`).join('');
+  $('#sortCols').innerHTML = X.sort.cols.map(([n, k]) => `<div class="scol" data-k="${k}"><h3>${esc(n)}</h3></div>`).join('');
+  $('#sortFb').innerHTML = ''; mSel = null;
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('#sort .chip');
+  if (c) { if (mSel === c) { c.classList.remove('sel'); mSel = null; } else { mSel?.classList.remove('sel'); mSel = c; c.classList.add('sel'); } return; }
+  const z = e.target.closest('#sort .scol, #sortPool'); if (z && mSel) sPlace(mSel, z);
+});
+$('#sortCheck').onclick = () => { let r = 0; const all = X.sort.items.length; const left = $('#sortPool').querySelectorAll('.chip').length;
+  document.querySelectorAll('#sortCols .scol').forEach(col => col.querySelectorAll('.chip').forEach(c => { const ok = c.dataset.k === col.dataset.k; c.classList.toggle('right', ok); c.classList.toggle('wrong', !ok); if (ok) r++; }));
+  $('#sortFb').innerHTML = fbHTML(r === all, `${r} out of ${all} correct.`, r === all ? 'Brilliant sorting!' : (left ? `Put all the words in a group (${left} left). ` : '') + 'Move the orange ones and check again.'); };
+$('#sortReset').onclick = renderSort;
+
+/* 6. Code it yourself */
+function renderCode(){
+  $('#codeList').innerHTML = X.code.map(([t, task, kw, hint, ans], i) => `<article class="task"><p class="qnum">Task ${i + 1} · keywords: ${esc(kw)}</p><p class="q">${esc(t)}</p><p>${esc(task)}</p>
+    <details><summary>Hint</summary><p>${esc(hint)}</p></details>
+    <details><summary>Show a model answer</summary><div class="codebox"><pre>${esc(ans)}</pre><button class="btn ghost copy" data-i="${i}">Copy for Thonny</button></div></details>
+    <label class="done"><input type="checkbox"> I wrote it in Thonny and it works</label></article>`).join('');
+  document.querySelectorAll('#codeList .copy').forEach(b => b.onclick = () => copyText(X.code[+b.dataset.i][4], b));
+}
+renderMatch(); renderSpot(); startPredict(); renderSort();
+
+</script>
+</body>
+</html>
